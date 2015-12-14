@@ -6,12 +6,11 @@
 package chat.client;
 
 import chat.Message;
-import java.rmi.RemoteException;
 
 /**
  *
  * @author Nico
  */
 public interface ClientViewInterface {
-    public void displayMessage(Message m) throws RemoteException;
+    public void displayMessage(Message m);
 }

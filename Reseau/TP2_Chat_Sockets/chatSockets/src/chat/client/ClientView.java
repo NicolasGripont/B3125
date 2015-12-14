@@ -207,7 +207,7 @@ public class ClientView extends javax.swing.JFrame implements ClientViewInterfac
     }//GEN-LAST:event_serverPortFieldActionPerformed
 
     @Override
-    public void displayMessage(Message m) throws RemoteException {
+    public void displayMessage(Message m){
         // TODO Auto-generated method stub
         StringBuilder sb = new StringBuilder();
         sb.append(messagesField.getText());

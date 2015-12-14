@@ -2,10 +2,6 @@ package chat.server;
 
 import chat.Message;
 import chat.client.Client;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 
 
 import java.util.*;
@@ -48,7 +44,7 @@ public class Server {
         }
     }
 
-    public void sendMessage(Message m) throws RemoteException {
+    public void sendMessage(Message m) {
         // TODO Auto-generated method stub
         for (Client client : clients) {
             client.displayMessage(m);
@@ -56,7 +52,7 @@ public class Server {
         messages.addLast(m);
     }
 
-    public Boolean addClient(Client c) throws RemoteException {
+    public Boolean addClient(Client c) {
         // TODO Auto-generated method stub
         Boolean result = false;
         if (c != null){
@@ -91,7 +87,7 @@ public class Server {
         return result;
     }
 
-    public void deleteClient(Client c) throws RemoteException {
+    public void deleteClient(Client c) {
         // TODO Auto-generated method stub
         Message msg = new Message(new Date(),"Server",c.getUserName() + " has left.");
         sendMessage(msg);

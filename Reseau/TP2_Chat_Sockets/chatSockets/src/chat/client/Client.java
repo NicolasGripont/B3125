@@ -1,10 +1,6 @@
 package chat.client;
 
 import chat.Message;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 
 import java.util.Date;
 
@@ -61,7 +57,7 @@ public class Client {
         serverPort = sPort;
     }
     
-    public void displayMessage(Message m) throws RemoteException {
+    public void displayMessage(Message m) {
         // TODO Auto-generated method stub
         System.out.println(m.getTextMessage());
         view.displayMessage(m);
