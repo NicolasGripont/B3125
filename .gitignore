@@ -45,5 +45,28 @@ Thumbs.db
 *.vcxproj.filters
 *.vs
 Debug
-./TPLog/Debug
-./TPLog/TPLog/Debug
+
+# Reseau/TP2_Chat_Sockets
+Reseau/TP2_Chat_Sockets/chatSockets/build*
+Reseau/TP2_Chat_Sockets/chatSockets/manifest.mf
+Reseau/TP2_Chat_Sockets/chatSockets/dist
+Reseau/TP2_Chat_Sockets/chatSockets/nbproject
+Reseau/TP2_Chat_Sockets/.*
+
+# Reseau/TP1_Chat_RMI
+Reseau/TP1_Chat_RMI/.*
+Reseau/TP1_Chat_RMI/chat/build*
+Reseau/TP1_Chat_RMI/chat/manifest.mf
+Reseau/TP1_Chat_RMI/chat/dist
+Reseau/TP1_Chat_RMI/chat/nbproject
+
+
+
+
+
+
+
+
+
+
+
