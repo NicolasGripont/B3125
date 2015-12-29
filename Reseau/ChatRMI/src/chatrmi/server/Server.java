@@ -113,10 +113,14 @@ public class Server implements ServerInterface {
     @Override
     public void sendMessageToAll(MessageInterface m) throws RemoteException {
         // TODO Auto-generated method stub
+        Message msg = new Message(m.getDate(),m.getUserName(),m.getTextMessage());
+        MessageInterface stubMsg = (MessageInterface) UnicastRemoteObject
+                    .exportObject(msg, 0);
+        
         for (ClientInterface client : clients) {
-            client.displayMessage(m);
+            client.displayMessage(stubMsg);
         }
-        messages.addLast(m);
+        messages.addLast(stubMsg);
     }
 
     @Override
@@ -181,7 +185,10 @@ public class Server implements ServerInterface {
         MessageInterface stubMsg = (MessageInterface) UnicastRemoteObject
                     .exportObject(msg, 0);
         
-        sendMessageToAll(stubMsg);
+        for (ClientInterface client : clients) {
+            client.displayMessage(stubMsg);
+        }
+        messages.addLast(stubMsg); //Tout depend si on enregistre les messages du server
     }
     
     private void sendServerMessage(ClientInterface c,String m) throws RemoteException {
