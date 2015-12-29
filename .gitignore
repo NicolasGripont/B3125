@@ -60,13 +60,9 @@ Reseau/TP1_Chat_RMI/chat/manifest.mf
 Reseau/TP1_Chat_RMI/chat/dist
 Reseau/TP1_Chat_RMI/chat/nbproject
 
-
-
-
-
-
-
-
-
-
-
+# Reseau/ChatRMI
+Reseau/ChatRMI/.*
+Reseau/ChatRMI/build*
+Reseau/ChatRMI/manifest.mf
+Reseau/ChatRMI/dist
+Reseau/ChatRMI/nbproject
