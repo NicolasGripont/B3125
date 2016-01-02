@@ -47,18 +47,18 @@ Thumbs.db
 Debug
 
 # Reseau/TP2_Chat_Sockets
-Reseau/TP2_Chat_Sockets/chatSockets/build*
-Reseau/TP2_Chat_Sockets/chatSockets/manifest.mf
-Reseau/TP2_Chat_Sockets/chatSockets/dist
-Reseau/TP2_Chat_Sockets/chatSockets/nbproject
+Reseau/TP2_Chat_Sockets/ChatSocket/build*
+Reseau/TP2_Chat_Sockets/ChatSocket/manifest.mf
+Reseau/TP2_Chat_Sockets/ChatSocket/dist
+Reseau/TP2_Chat_Sockets/ChatSocket/nbproject
 Reseau/TP2_Chat_Sockets/.*
 
 # Reseau/TP1_Chat_RMI
 Reseau/TP1_Chat_RMI/.*
-Reseau/TP1_Chat_RMI/chat/build*
-Reseau/TP1_Chat_RMI/chat/manifest.mf
-Reseau/TP1_Chat_RMI/chat/dist
-Reseau/TP1_Chat_RMI/chat/nbproject
+Reseau/TP1_Chat_RMI/ChatRMI/build*
+Reseau/TP1_Chat_RMI/ChatRMI/manifest.mf
+Reseau/TP1_Chat_RMI/ChatRMI/dist
+Reseau/TP1_Chat_RMI/ChatRMI/nbproject
 
 # Reseau/ChatRMI
 Reseau/ChatRMI/.*
@@ -67,3 +67,4 @@ Reseau/ChatRMI/manifest.mf
 Reseau/ChatRMI/dist
 Reseau/ChatRMI/nbproject
 /Reseau/ChatSocket/build/
+/Reseau/TP2_Chat_Sockets/ChatSocket/dist/
