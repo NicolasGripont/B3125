@@ -15,4 +15,74 @@
     <Username>Server</Username>
     <Text>Unknown has left the chat.</Text>
   </Message>
+  <Message>
+    <Date>01/04/16 3:38:32</Date>
+    <Username>Server</Username>
+    <Text>Unknown has joined the chat.</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:38:58</Date>
+    <Username>Server</Username>
+    <Text>Unknown2 has joined the chat.</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:39:3</Date>
+    <Username>Unknown2</Username>
+    <Text>fqfqqegf</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:39:9</Date>
+    <Username>Unknown</Username>
+    <Text>kvqhdvw</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:39:20</Date>
+    <Username>Server</Username>
+    <Text>Unknown has left the chat.</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:39:28</Date>
+    <Username>Server</Username>
+    <Text>Unknown has joined the chat.</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:39:42</Date>
+    <Username>Server</Username>
+    <Text>Unknown3 has joined the chat.</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:39:45</Date>
+    <Username>Unknown3</Username>
+    <Text>faekfqekjfb</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:39:49</Date>
+    <Username>Unknown3</Username>
+    <Text>qhcsgkhgfe</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:39:54</Date>
+    <Username>Server</Username>
+    <Text>Unknown3 has left the chat.</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:39:56</Date>
+    <Username>Server</Username>
+    <Text>Unknown has left the chat.</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:39:58</Date>
+    <Username>Server</Username>
+    <Text>Unknown2 has left the chat.</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:40:30</Date>
+    <Username>Server</Username>
+    <Text>Unknown has joined the chat.</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 3:40:35</Date>
+    <Username>Server</Username>
+    <Text>Unknown has left the chat.</Text>
+  </Message>
 </Messages>
