@@ -38,6 +38,7 @@ public class ClientThread extends Thread{
     /**
      * Méthode exécutée par le thread. Lit les messages provenant du serveur et en notifie le "client".
      */
+    @Override
     public void run(){        
         try {
             String line;

@@ -1,2 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Messages/>
+<Messages>
+  <Message>
+    <Date>01/04/16 12:17:23</Date>
+    <Username>Server</Username>
+    <Text>Unknown has joined the chat.</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 12:17:25</Date>
+    <Username>Unknown</Username>
+    <Text>agqifebava</Text>
+  </Message>
+  <Message>
+    <Date>01/04/16 12:17:29</Date>
+    <Username>Server</Username>
+    <Text>Unknown has left the chat.</Text>
+  </Message>
+</Messages>

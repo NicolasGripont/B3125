@@ -1,5 +1,7 @@
 package chatrmi.protocol;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -50,7 +52,8 @@ public class Message implements MessageInterface{
      */
     @Override
     public String getDateToString() {
-        return String.format("%d/%d/%d %d:%d:%d", date.getDay(), date.getMonth(), date.getYear() + 1900, date.getHours(), date.getMinutes(), date.getSeconds());
+        DateFormat formatter = new SimpleDateFormat("MM/dd/yy h:m:s");
+        return formatter.format(date);
     }
     
     /**
