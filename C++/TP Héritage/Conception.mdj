@@ -352,6 +352,7 @@
 							},
 							"wordWrap": false,
 							"suppressAttributes": false,
+							"suppressOperations": false,
 							"showMultiplicity": true,
 							"showOperationSignature": true,
 							"attributeCompartment": {
@@ -637,6 +638,8 @@
 								"$ref": "AAAAAAFSMO8N+9rBAsU="
 							},
 							"wordWrap": false,
+							"suppressAttributes": false,
+							"suppressOperations": false,
 							"showMultiplicity": true,
 							"showOperationSignature": true,
 							"attributeCompartment": {
@@ -949,6 +952,8 @@
 								"$ref": "AAAAAAFSMO9mf9rpSJc="
 							},
 							"wordWrap": false,
+							"suppressAttributes": false,
+							"suppressOperations": false,
 							"showMultiplicity": true,
 							"showOperationSignature": true,
 							"attributeCompartment": {
@@ -1261,6 +1266,8 @@
 								"$ref": "AAAAAAFSMO+e0NsRWqo="
 							},
 							"wordWrap": false,
+							"suppressAttributes": false,
+							"suppressOperations": false,
 							"showMultiplicity": true,
 							"showOperationSignature": true,
 							"attributeCompartment": {
@@ -1875,6 +1882,8 @@
 								"$ref": "AAAAAAFSMPHYR9tvXkA="
 							},
 							"wordWrap": false,
+							"suppressAttributes": false,
+							"suppressOperations": false,
 							"showMultiplicity": true,
 							"showOperationSignature": true,
 							"attributeCompartment": {
@@ -3349,6 +3358,8 @@
 								"$ref": "AAAAAAFSMRDLTOyuVQQ="
 							},
 							"wordWrap": false,
+							"suppressAttributes": false,
+							"suppressOperations": false,
 							"showMultiplicity": true,
 							"showOperationSignature": true,
 							"attributeCompartment": {
@@ -3634,6 +3645,8 @@
 								"$ref": "AAAAAAFSMRFIQ+5HWHQ="
 							},
 							"wordWrap": false,
+							"suppressAttributes": false,
+							"suppressOperations": false,
 							"showMultiplicity": true,
 							"showOperationSignature": true,
 							"attributeCompartment": {
@@ -4624,6 +4637,8 @@
 								"$ref": "AAAAAAFSMSa6YwGG4bc="
 							},
 							"wordWrap": false,
+							"suppressAttributes": false,
+							"suppressOperations": false,
 							"showMultiplicity": true,
 							"showOperationSignature": true,
 							"attributeCompartment": {
@@ -4936,6 +4951,8 @@
 								"$ref": "AAAAAAFSMSb4CwHc1nY="
 							},
 							"wordWrap": false,
+							"suppressAttributes": false,
+							"suppressOperations": false,
 							"showMultiplicity": true,
 							"showOperationSignature": true,
 							"attributeCompartment": {
@@ -5550,6 +5567,7 @@
 								"$ref": "AAAAAAFSMVJtoVF9JXs="
 							},
 							"wordWrap": false,
+							"suppressAttributes": false,
 							"suppressOperations": false,
 							"showMultiplicity": true,
 							"showOperationSignature": true,
@@ -6320,6 +6338,8 @@
 								"$ref": "AAAAAAFSMWoVmc1OUJs="
 							},
 							"wordWrap": false,
+							"suppressAttributes": false,
+							"suppressOperations": false,
 							"showMultiplicity": true,
 							"showOperationSignature": true,
 							"attributeCompartment": {
@@ -6604,6 +6624,8 @@
 								"$ref": "AAAAAAFSMW0zR85+hKQ="
 							},
 							"wordWrap": false,
+							"suppressAttributes": false,
+							"suppressOperations": false,
 							"showMultiplicity": true,
 							"showOperationSignature": true,
 							"attributeCompartment": {
@@ -6615,6 +6637,52 @@
 							"templateParameterCompartment": {
 								"$ref": "AAAAAAFSMW0zSM6F9S4="
 							}
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAFSMZ4+SQrpXoE=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"visible": true,
+							"enabled": true,
+							"lineColor": "#000000",
+							"fillColor": "#ffffff",
+							"fontColor": "#000000",
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": false,
+							"containerExtending": true,
+							"left": 660,
+							"top": 88,
+							"width": 259,
+							"height": 40,
+							"autoResize": false,
+							"text": "Implémenter l'opérateur pour le cout (<<) \npour tous les composants."
+						},
+						{
+							"_type": "UMLNoteLinkView",
+							"_id": "AAAAAAFSMZ731Qt/IAM=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"visible": true,
+							"enabled": true,
+							"lineColor": "#000000",
+							"fillColor": "#ffffff",
+							"fontColor": "#000000",
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": false,
+							"containerExtending": true,
+							"head": {
+								"$ref": "AAAAAAFSMRDLTOytY6k="
+							},
+							"tail": {
+								"$ref": "AAAAAAFSMZ4+SQrpXoE="
+							},
+							"lineStyle": 0,
+							"points": "792.0764331210191:127;792.0764331210191:208"
 						}
 					]
 				},
