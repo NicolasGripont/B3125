@@ -68,3 +68,7 @@ Reseau/ChatRMI/dist
 Reseau/ChatRMI/nbproject
 /Reseau/ChatSocket/build/
 /Reseau/TP2_Chat_Sockets/ChatSocket/dist/
+
+#C++/TP4
+C++/TP_Héritage/Code/Backups
+
