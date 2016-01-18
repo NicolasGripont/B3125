@@ -135,6 +135,12 @@ bool Clear();
 // Contract :
 //
 
+bool Load();
+// Manual :
+//
+// Contract :
+//
+
 //---------------------------------------------------------------- PRIVATE
 
 //------------------------------------------------- Operators overloading 
@@ -171,7 +177,7 @@ virtual ~ShapeManager();
 protected:
 //------------------------------------------------------ Protected methods
 
-bool Execute(Command *c);
+void Execute(Command *c);
 // Manual :
 //
 // Contract :

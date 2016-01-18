@@ -1,47 +1,51 @@
 /*************************************************************************
-CreateShapeCommand - Header file of the class <CreateShapeCommand>
+AddShapesCommand - Header file of the class <AddShapesCommand>
 --------------------------------------------------------------------------
-beginning : 15/01/2016 20:40:50
+beginning : 15/01/2016 20:41:11
 copyright : (C) 2016 by Nicolas GRIPONT, Rim EL IDRISSI MOKDAD
 e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 *************************************************************************/
 
-//---------- Interface of the class <CreateShapeCommand> (file CreateShapeCommand.h)
-#if ! defined ( CreateShapeCommand_H )
-#define CreateShapeCommand_H
+//---------- Interface of the class <AddShapesCommand> (file AddShapesCommand.h)
+#if ! defined ( AddShapesCommand_H )
+#define AddShapesCommand_H
 
-//-------------------------------------------------------- Used interfaces 
+//-------------------------------------------------------- Used interfaces
 #include <vector>
+#include <string>
 using namespace std;
 
+#include "Shape.h"
 #include "ShapeCommand.h"
-#include "Point.h"
 //-------------------------------------------------------------- Constants
 
-
 //------------------------------------------------------------------ Types
-#if ! defined ( VectorPoint )
-#define VectorPoint
-template class std::vector<Point>;
+#if ! defined ( VectorString )
+#define VectorString
+template class std::vector<string>;
+#endif
+#if ! defined ( VectorShapePtr )
+#define VectorShapePtr
+template class std::vector<Shape*>;
 #endif
 //------------------------------------------------------------------- enum
 
+
 //------------------------------------------------------------------------
-// Role of the class <CreateShapeCommand>
+// Role of the class <AddShapesCommand>
 //
 //
 //------------------------------------------------------------------------
 
 
-
-class CreateShapeCommand : public ShapeCommand
+class AddShapesCommand : public ShapeCommand
 {
 //---------------------------------------------------------------- PUBLIC
 
 public:
 //-------------------------------------------------------- Public methods
 
-virtual bool Execute();
+virtual void Execute();
 // Manual :
 // Method that allows to execute the action command (Do and redo)
 //
@@ -57,7 +61,7 @@ virtual void Undo();
 
 //------------------------------------------------- Operators overloading 
 
-//CreateShapeCommand & operator = (const CreateShapeCommand & oneCreateShapeCommand);
+//AddShapesCommand & operator = (const AddShapesCommand & oneAddShapesCommand);
 //// Manual :
 ////
 //// Contract :
@@ -66,19 +70,19 @@ virtual void Undo();
 
 //--------------------------------------------- Constructors - destructor
 
-//CreateShapeCommand(const CreateShapeCommand & oneCreateShapeCommand);
+//AddShapesCommand(const AddShapesCommand & oneAddShapesCommand);
 //// Manual : Copy constructor.
 ////
 //// Contract : None.
 ////
 
-CreateShapeCommand(map<string, Shape *> *someShapes,Shape *oneShape);
+AddShapesCommand(map<string, Shape *> *someShapes, vector<Shape*> someDeletedShapes);
 // Manual : Constructor.
 //
 // Contract : None.
 //
 
-virtual ~CreateShapeCommand();
+virtual ~AddShapesCommand();
 // Manual : Destructor.
 //
 // Contract : None.
@@ -89,7 +93,6 @@ virtual ~CreateShapeCommand();
 protected:
 //------------------------------------------------------ Protected methods
 
-
 private:
 //-------------------------------------------------------- Private methods
 
@@ -98,11 +101,12 @@ protected:
 
 private:
 //------------------------------------------------------ Pivate attributes
-Shape *shape;
+vector<Shape*> createdShapes;
+bool created;
 };
 
-//---------------------------- Other definition depend on <CreateShapeCommand>
+//---------------------------- Other definition depend on <AddShapesCommand>
 
-#endif // CreateShapeCommand_H
+#endif // AddShapesCommand_H
 
 

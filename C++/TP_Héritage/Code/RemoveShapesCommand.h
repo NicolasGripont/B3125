@@ -1,14 +1,14 @@
 /*************************************************************************
-DeleteShapesCommand - Header file of the class <DeleteShapesCommand>
+RemoveShapesCommand - Header file of the class <RemoveShapesCommand>
 --------------------------------------------------------------------------
 beginning : 15/01/2016 20:41:11
 copyright : (C) 2016 by Nicolas GRIPONT, Rim EL IDRISSI MOKDAD
 e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 *************************************************************************/
 
-//---------- Interface of the class <DeleteShapesCommand> (file DeleteShapesCommand.h)
-#if ! defined ( DeleteShapesCommand_H )
-#define DeleteShapesCommand_H
+//---------- Interface of the class <RemoveShapesCommand> (file RemoveShapesCommand.h)
+#if ! defined ( RemoveShapesCommand_H )
+#define RemoveShapesCommand_H
 
 //-------------------------------------------------------- Used interfaces
 #include <vector>
@@ -30,22 +30,21 @@ template class std::vector<Shape*>;
 #endif
 //------------------------------------------------------------------- enum
 
-
 //------------------------------------------------------------------------
-// Role of the class <DeleteShapesCommand>
+// Role of the class <RemoveShapesCommand>
 //
 //
 //------------------------------------------------------------------------
 
 
-class DeleteShapesCommand : public ShapeCommand
+class RemoveShapesCommand : public ShapeCommand
 {
 //---------------------------------------------------------------- PUBLIC
 
 public:
 //-------------------------------------------------------- Public methods
 
-virtual bool Execute();
+virtual void Execute();
 // Manual :
 // Method that allows to execute the action command (Do and redo)
 //
@@ -61,7 +60,7 @@ virtual void Undo();
 
 //------------------------------------------------- Operators overloading 
 
-//DeleteShapesCommand & operator = (const DeleteShapesCommand & oneDeleteShapesCommand);
+//RemoveShapesCommand & operator = (const RemoveShapesCommand & oneRemoveShapesCommand);
 //// Manual :
 ////
 //// Contract :
@@ -70,19 +69,19 @@ virtual void Undo();
 
 //--------------------------------------------- Constructors - destructor
 
-//DeleteShapesCommand(const DeleteShapesCommand & oneDeleteShapesCommand);
+//RemoveShapesCommand(const RemoveShapesCommand & oneRemoveShapesCommand);
 //// Manual : Copy constructor.
 ////
 //// Contract : None.
 ////
 
-DeleteShapesCommand(map<string, Shape *> *someShapes, vector<Shape*> someDeletedShapes);
+RemoveShapesCommand(map<string, Shape *> *someShapes, vector<Shape*> someDeletedShapes);
 // Manual : Constructor.
 //
 // Contract : None.
 //
 
-virtual ~DeleteShapesCommand();
+virtual ~RemoveShapesCommand();
 // Manual : Destructor.
 //
 // Contract : None.
@@ -93,7 +92,6 @@ virtual ~DeleteShapesCommand();
 protected:
 //------------------------------------------------------ Protected methods
 
-
 private:
 //-------------------------------------------------------- Private methods
 
@@ -103,11 +101,11 @@ protected:
 private:
 //------------------------------------------------------ Pivate attributes
 vector<Shape*> deletedShapes;
-
+bool deleted;
 };
 
-//---------------------------- Other definition depend on <DeleteShapesCommand>
+//---------------------------- Other definition depend on <RemoveShapesCommand>
 
-#endif // DeleteShapesCommand_H
+#endif // RemoveShapesCommand_H
 
 

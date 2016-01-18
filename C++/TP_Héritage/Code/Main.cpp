@@ -174,6 +174,7 @@ int main()
     getline(cin, cmdLine);
     splitedCmd = splitCommand(cmdLine);
 
+
     while ( (splitedCmd.size() == 0) || (splitedCmd.size() > 0 && splitedCmd.front()!="EXIT") )
     {
         if((splitedCmd.size() > 0))

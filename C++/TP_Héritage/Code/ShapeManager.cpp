@@ -20,8 +20,9 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 #include "Reunion.h"
 #include "Intersection.h"
 #include "MoveShapeCommand.h"
-#include "CreateShapeCommand.h"
-#include "DeleteShapesCommand.h"
+#include "RemoveShapesCommand.h"
+#include "AddShapesCommand.h"
+
 
 #include <iostream>
 using namespace std;
@@ -55,49 +56,55 @@ Shape* ShapeManager::GetShape(string name)
 
 bool ShapeManager::CreateRectangle(string name, Point p1, Point p2)
 {
-    bool result = false;
+    bool result = true;
     if(GetShape(name) == nullptr)
     {
         vector<Point> somePoints;
         somePoints.push_back(p1);
         somePoints.push_back(p2);
-        result = Execute(new CreateShapeCommand(&shapes,new Rectangle(name,p1,p2)));
+        vector<Shape*>createdShapes;
+        createdShapes.push_back(new Rectangle(name,p1,p2));
+        Execute(new AddShapesCommand(&shapes,createdShapes));
     }
     return result;
 } //----- End of CreateRectangle
 
 bool ShapeManager::CreateSegment(string name, Point p1, Point p2)
 {
-    bool result = false;
+    bool result = true;
     if(GetShape(name) == nullptr)
     {
         vector<Point> somePoints;
         somePoints.push_back(p1);
         somePoints.push_back(p2);
-        result = Execute(new CreateShapeCommand(&shapes,new Segment(name,p1,p2)));
+        vector<Shape*>createdShapes;
+        createdShapes.push_back(new Segment(name,p1,p2));
+        Execute(new AddShapesCommand(&shapes,createdShapes));
     }
     return result;
 } //----- End of CreateSegment
 
 bool ShapeManager::CreateConvexPolygon(string name, vector<Point> somePoints)
 {
-    bool result = false;
+    bool result = true;
     if(GetShape(name) == nullptr)
     {
-        result = Execute(new CreateShapeCommand(&shapes,new ConvexPolygon(name,somePoints)));
+        vector<Shape*>createdShapes;
+        createdShapes.push_back(new ConvexPolygon(name,somePoints));
+        Execute(new AddShapesCommand(&shapes,createdShapes));
     }
     return result;
 } //----- End of CreateConvexPolygon
 
 bool ShapeManager::CreateIntersection(string name, vector<string> someShapeNames)
 {
-    bool result = false;
+    bool result = true;
     map<string,Shape*>::iterator itm;
     vector<Shape*> someShapes;
 
     for(vector<string>::iterator it = someShapeNames.begin(); it != someShapeNames.end(); it++)
     {
-        itm = shapes.find(name);
+        itm = shapes.find(*it);
         if (itm != shapes.end())
         {
             someShapes.push_back(itm->second);
@@ -106,7 +113,9 @@ bool ShapeManager::CreateIntersection(string name, vector<string> someShapeNames
 
     if(GetShape(name) == nullptr)
     {
-        result = Execute(new CreateShapeCommand(&shapes,new Intersection(name,someShapes)));
+        vector<Shape*>createdShapes;
+        createdShapes.push_back(new Intersection(name,someShapes));
+        Execute(new AddShapesCommand(&shapes,createdShapes));
     }
 
     return result;
@@ -114,12 +123,12 @@ bool ShapeManager::CreateIntersection(string name, vector<string> someShapeNames
 
 bool ShapeManager::CreateReunion(string name, vector<string> someShapeNames)
 {
-    bool result = false;
+    bool result = true;
     map<string,Shape*>::iterator itm;
     vector<Shape*> someShapes;
     for(vector<string>::iterator it = someShapeNames.begin(); it != someShapeNames.end(); it++)
     {
-        itm = shapes.find(name);
+        itm = shapes.find(*it);
         if (itm != shapes.end())
         {
             someShapes.push_back(itm->second);
@@ -128,7 +137,9 @@ bool ShapeManager::CreateReunion(string name, vector<string> someShapeNames)
 
     if(GetShape(name) == nullptr)
     {
-        result = Execute(new CreateShapeCommand(&shapes,new Reunion(name,someShapes)));
+        vector<Shape*>createdShapes;
+        createdShapes.push_back(new Reunion(name,someShapes));
+        Execute(new AddShapesCommand(&shapes,createdShapes));
     }
 
     return result;
@@ -136,7 +147,7 @@ bool ShapeManager::CreateReunion(string name, vector<string> someShapeNames)
 
 bool ShapeManager::DeleteShape(vector<string> names)
 {
-    bool result = false;
+    bool result = true;
     vector<Shape*> someShapes;
     map<string,Shape*>::iterator itm;
 
@@ -149,7 +160,7 @@ bool ShapeManager::DeleteShape(vector<string> names)
         }
     }
 
-    result = Execute(new DeleteShapesCommand(&shapes,someShapes));
+    Execute(new RemoveShapesCommand(&shapes,someShapes));
 
     return result;
 } //----- End of DeleteShape
@@ -169,10 +180,13 @@ void ShapeManager::Undo()
 //
 {
     Command *c;
-    c = undoStack.front();
-    undoStack.pop_front();
-    redoStack.push_front(c);
-    c->Undo();
+    if(undoStack.size() > 0)
+    {
+        c = undoStack.front();
+        undoStack.pop_front();
+        redoStack.push_front(c);
+        c->Undo();
+    }
 } //----- End of Undo
 
 void ShapeManager::Redo()
@@ -180,29 +194,32 @@ void ShapeManager::Redo()
 //
 {
     Command *c;
-    c = redoStack.front();
-    redoStack.pop_front();
-    undoStack.push_front(c);
-    c->Execute();
+    if(redoStack.size() > 0)
+    {
+        c = redoStack.front();
+        redoStack.pop_front();
+        undoStack.push_front(c);
+        c->Execute();
+    }
 } //----- End of Redo
 
 bool ShapeManager::Include(string name, Point p)
 // Algorithm :
 //
 {
-    bool result = false;
+    bool result = true;
     map<string,Shape*>::iterator it;
     it = shapes.find(name);
     if (it != shapes.end())
     {
-        result = it->second->Include(p);
+        it->second->Include(p);
     }
     return result;
 } //----- End of Redo
 
 bool ShapeManager::Clear()
 {
-    bool result = false;
+    bool result = true;
     vector<Shape*> someShapes;
 
     for( map<string,Shape*>::iterator it = shapes.begin(); it != shapes.end(); it++)
@@ -210,7 +227,7 @@ bool ShapeManager::Clear()
         someShapes.push_back(it->second);
     }
 
-    result = Execute(new DeleteShapesCommand(&shapes,someShapes));
+    Execute(new RemoveShapesCommand(&shapes,someShapes));
 
     return result;
 } //----- End of DeleteShape
@@ -275,29 +292,23 @@ ShapeManager::~ShapeManager()
 
 //------------------------------------------------------ Protected methods
 
-bool ShapeManager::Execute(Command* c)
+void ShapeManager::Execute(Command* c)
 // Algorithm :
 //
 {
-    bool result = c->Execute();
-
-    if(result)
+    c->Execute();
+    if(undoStack.size() == MAX_UNDO_REDO)
     {
-        if(undoStack.size() == MAX_UNDO_REDO)
-        {
-            delete undoStack.back();
-            undoStack.pop_back();
-        }
-        undoStack.push_front(c);
+        delete undoStack.back();
+        undoStack.pop_back();
     }
+    undoStack.push_front(c);
 
     for(list<Command*>::iterator it = redoStack.begin(); it != redoStack.end(); it++)
     {
         delete *it;
     }
     redoStack.clear();
-
-    return result;
 } //----- End of Execute
 
 //-------------------------------------------------------- Private methods

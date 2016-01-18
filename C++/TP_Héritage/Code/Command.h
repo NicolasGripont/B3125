@@ -30,7 +30,7 @@ class Command
 public:
 //-------------------------------------------------------- Public methods
 
-virtual bool Execute() = 0;
+virtual void Execute() = 0;
 // Manual :
 // Method that allows to execute the action command (Do and redo)
 //

@@ -50,8 +50,13 @@ string Intersection::ToString()
 //
 {
     string s;
-    s = "OR ";
+    s = "OI ";
     s += name;
+    for(vector<Shape*>::iterator it = children.begin(); it != children.end(); it++)
+    {
+        s += "\n  ";
+        s += (*it)->ToString();
+    }
     return s;
 } //----- End of ToString
 

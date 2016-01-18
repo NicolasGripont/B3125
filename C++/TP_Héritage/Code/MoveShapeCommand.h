@@ -31,7 +31,7 @@ class MoveShapeCommand : public ShapeCommand
 public:
 //-------------------------------------------------------- Public methods
 
-virtual bool Execute();
+virtual void Execute();
 // Manual :
 // Method that allows to execute the action command (Do and redo)
 //

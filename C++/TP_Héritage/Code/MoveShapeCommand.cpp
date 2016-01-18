@@ -22,19 +22,16 @@ using namespace std;
 
 //--------------------------------------------------------- Public methods
 
-bool MoveShapeCommand::Execute()
+void MoveShapeCommand::Execute()
 // Algorithm :
 //
 {
-    bool result = false;
     map<string,Shape*>::iterator it;
     it = shapes->find(shapeName);
     if (! (it == shapes->end()) )
     {
         it->second->Move(dX,dY);
-        result = true;
     }
-    return result;
 } //----- End of Execute
 
 void MoveShapeCommand::Undo()
