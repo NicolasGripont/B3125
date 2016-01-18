@@ -11,8 +11,6 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 //---------------------------------------------------------------- INCLUDE
 
 //---------------------------------------------------------- Sytem include
-#include <iostream>
-using namespace std;
 
 //------------------------------------------------------ Personnal include
 #include "ShapeManager.h"
@@ -21,6 +19,12 @@ using namespace std;
 #include "ConvexPolygon.h"
 #include "Reunion.h"
 #include "Intersection.h"
+#include "MoveShapeCommand.h"
+#include "CreateOrDeleteComplexShapeCommand.h"
+#include "CreateOrDeleteSimpleShapeCommand.h"
+
+#include <iostream>
+using namespace std;
 
 //-------------------------------------------------------------- Constants
 
@@ -54,9 +58,10 @@ bool ShapeManager::CreateRectangle(string name, Point p1, Point p2)
     bool result = false;
     if(GetShape(name) == nullptr)
     {
-//        Rectangle *shape = new Rectangle(name,p1,p2);
-//        shapes.insert(make_pair(name,shape));
-        result = true;
+        vector<Point> somePoints;
+        somePoints.push_back(p1);
+        somePoints.push_back(p2);
+        result = Execute(new CreateOrDeleteSimpleShapeCommand(name,&shapes,somePoints,ShapeType::RectangleType,CreateOrDelete::Create));
     }
     return result;
 } //----- End of CreateRectangle
@@ -66,9 +71,10 @@ bool ShapeManager::CreateSegment(string name, Point p1, Point p2)
     bool result = false;
     if(GetShape(name) == nullptr)
     {
-//        Segment *shape = new Segment(name,p1,p2);
-//        shapes.insert(make_pair(name,shape));
-        result = true;
+        vector<Point> somePoints;
+        somePoints.push_back(p1);
+        somePoints.push_back(p2);
+        result = Execute(new CreateOrDeleteSimpleShapeCommand(name,&shapes,somePoints,ShapeType::SegmentType,CreateOrDelete::Create));
     }
     return result;
 } //----- End of CreateSegment
@@ -78,60 +84,32 @@ bool ShapeManager::CreateConvexPolygon(string name, vector<Point> somePoints)
     bool result = false;
     if(GetShape(name) == nullptr)
     {
-//        ConvexPolygon *shape = new ConvexPolygon(name,somePoints);
-//        shapes.insert(make_pair(name,shape));
-        result = true;
+        result = Execute(new CreateOrDeleteSimpleShapeCommand(name,&shapes,somePoints,ShapeType::ConvexPolygonType,CreateOrDelete::Create));
     }
     return result;
 } //----- End of CreateConvexPolygon
 
 bool ShapeManager::CreateIntersection(string name, vector<string> someShapeNames)
 {
-    bool result = true;
-    vector<Shape*> someShapes;
-    for(vector<string>::iterator it = someShapeNames.begin(); it != someShapeNames.end() && result; it++)
+    bool result = false;
+
+    if(GetShape(name) == nullptr)
     {
-        if(GetShape(*it) != nullptr)
-        {
-            someShapes.push_back(shapes.find(*it)->second);
-        }
-        else
-        {
-            result = false;
-        }
+        result = Execute(new CreateOrDeleteComplexShapeCommand(name,&shapes,someShapeNames,ShapeType::IntersectionType,CreateOrDelete::Create));
     }
 
-    if(result && GetShape(name) == nullptr)
-    {
-//        Intersection *shape = new Intersection(name,someShapes);
-//        shapes.insert(make_pair(name,shape));
-        result = true;
-    }
     return result;
 } //----- End of CreateIntersection
 
 bool ShapeManager::CreateReunion(string name, vector<string> someShapeNames)
 {
-    bool result = true;
-    vector<Shape*> someShapes;
-    for(vector<string>::iterator it = someShapeNames.begin(); it != someShapeNames.end() && result; it++)
+    bool result = false;
+
+    if(GetShape(name) == nullptr)
     {
-        if(GetShape(*it) != nullptr)
-        {
-            someShapes.push_back(shapes.find(*it)->second);
-        }
-        else
-        {
-            result = false;
-        }
+        result = Execute(new CreateOrDeleteComplexShapeCommand(name,&shapes,someShapeNames,ShapeType::ReunionType,CreateOrDelete::Create));
     }
 
-    if(result && GetShape(name) == nullptr)
-    {
-//        Reunion *shape = new Reunion(name,someShapes);
-//        shapes.insert(make_pair(name,shape));
-        return true;
-    }
     return result;
 } //----- End of CreateReunion
 
@@ -142,8 +120,17 @@ bool ShapeManager::DeleteShape(string name)
     it = shapes.find(name);
     if (it != shapes.end())
     {
-        shapes.erase(name);
-        delete it->second;
+        ShapeType type = it->second->GetType();
+        if(type == ShapeType::SegmentType || type == ShapeType::RectangleType || type == ShapeType::ConvexPolygonType)
+        {
+            SimpleShape *s = (SimpleShape*)it->second;
+            result = Execute(new CreateOrDeleteSimpleShapeCommand(name,&shapes,s->GetPoints(),s->GetType(),CreateOrDelete::Delete));
+        }
+        else if(type == ShapeType::IntersectionType || type == ShapeType::ReunionType)
+        {
+            ComplexShape *s = (ComplexShape*)it->second;
+            result = Execute(new CreateOrDeleteComplexShapeCommand(name,&shapes,s->GetDirectChildrenName(),s->GetType(),CreateOrDelete::Delete));
+        }
         result = true;
     }
     return result;
@@ -155,9 +142,32 @@ void ShapeManager::MoveShape(string name,int dx, int dy)
     it = shapes.find(name);
     if (it != shapes.end())
     {
-//        it->second->Move(dx,dy);
+        Execute(new MoveShapeCommand(name,&shapes,dx,dy));
     }
 } //----- End of MoveShape
+
+void ShapeManager::Undo()
+// Algorithm :
+//
+{
+    Command *c;
+    c = undoStack.front();
+    undoStack.pop_front();
+    redoStack.push_front(c);
+    c->Undo();
+} //----- End of Undo
+
+void ShapeManager::Redo()
+// Algorithm :
+//
+{
+    Command *c;
+    c = redoStack.front();
+    redoStack.pop_front();
+    undoStack.push_front(c);
+    c->Execute();
+} //----- End of Redo
+
 
 //------------------------------------------------- Operators overloading
 
@@ -201,6 +211,15 @@ ShapeManager::~ShapeManager()
     {
         delete it->second;
     }
+    for(list<Command*>::iterator it = undoStack.begin(); it != undoStack.end(); it++)
+    {
+        delete *it;
+    }
+
+    for(list<Command*>::iterator it = redoStack.begin(); it != redoStack.end(); it++)
+    {
+        delete *it;
+    }
 } //----- End of ~ShapeManager
 
 
@@ -210,5 +229,29 @@ ShapeManager::~ShapeManager()
 
 //------------------------------------------------------ Protected methods
 
+bool ShapeManager::Execute(Command* c)
+// Algorithm :
+//
+{
+    bool result = c->Execute();
+
+    if(result)
+    {
+        if(undoStack.size() == MAX_UNDO_REDO)
+        {
+            delete undoStack.back();
+            undoStack.pop_back();
+        }
+        undoStack.push_front(c);
+    }
+
+    for(list<Command*>::iterator it = redoStack.begin(); it != redoStack.end(); it++)
+    {
+        delete *it;
+    }
+    redoStack.clear();
+
+    return result;
+} //----- End of Execute
 
 //-------------------------------------------------------- Private methods

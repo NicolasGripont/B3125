@@ -37,6 +37,17 @@ void ComplexShape::Move(int dx,int dy)
     }
 } //----- End of Move
 
+vector<string> ComplexShape::GetDirectChildrenName()
+// Algorithm :
+//
+{
+    vector<string> names;
+    for(vector<Shape*>::iterator it = children.begin(); it != children.end(); it++)
+    {
+        names.push_back((*it)->GetName());
+    }
+    return names;
+} //----- End of GetDirectChildrenName
 
 //------------------------------------------------- Operators overloading
 

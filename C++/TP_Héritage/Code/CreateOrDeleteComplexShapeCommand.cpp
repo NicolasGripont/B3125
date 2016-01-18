@@ -11,11 +11,11 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 //---------------------------------------------------------------- INCLUDE
 
 //---------------------------------------------------------- Sytem include
-#include <iostream>
-using namespace std;
 
 //------------------------------------------------------ Personnal include
 #include "CreateOrDeleteComplexShapeCommand.h"
+#include "Intersection.h"
+#include "Reunion.h"
 
 //-------------------------------------------------------------- Constants
 
@@ -79,8 +79,8 @@ void CreateOrDeleteComplexShapeCommand::Undo()
 //} //----- End of CreateOrDeleteComplexShapeCommand
 
 
-CreateOrDeleteComplexShapeCommand::CreateOrDeleteComplexShapeCommand(string name, vector<string> someShapeNames, ShapeType oneType, CreateOrDelete oneAction):
-    ShapeCommand(name), shapeNames(someShapeNames), type(oneType), action(oneAction)
+CreateOrDeleteComplexShapeCommand::CreateOrDeleteComplexShapeCommand(string name, map<string, Shape *> *someShapes, vector<string> someShapeNames, ShapeType oneType, CreateOrDelete oneAction):
+    ShapeCommand(name,someShapes), shapeNames(someShapeNames), type(oneType), action(oneAction)
 // Algorithm :
 //
 {
@@ -112,17 +112,34 @@ bool CreateOrDeleteComplexShapeCommand::CreateComplexShape()
 // Algorithm :
 //
 {
-    bool result = false;
-    switch (type) {
-    case ShapeType::ReunionType:
-        result = ShapeManager::GetInstance().CreateReunion(shapeName,shapeNames);
-        break;
-    case ShapeType::IntersectionType:
-        result = ShapeManager::GetInstance().CreateIntersection(shapeName,shapeNames);
-        break;
-    default:
-        break;
+    bool result = true;
+    vector<Shape*> someShapes;
+    for(vector<string>::iterator it = shapeNames.begin(); it != shapeNames.end(); it++)
+    {
+        map<string,Shape*>::iterator itm;
+        itm = shapes->find(*it);
+        if (itm == shapes->end())
+        {
+            someShapes.push_back(itm->second);
+        }
+        else
+        {
+            result = false;
+            break;
+        }
     }
+
+    if(result && (type == ShapeType::ReunionType))
+    {
+        Reunion *shape = new Reunion(shapeName,someShapes);
+        shapes->insert(make_pair(shapeName,shape));
+    }
+    else if(result && (type == ShapeType::IntersectionType))
+    {
+        Intersection *shape = new Intersection(shapeName,someShapes);
+        shapes->insert(make_pair(shapeName,shape));
+    }
+
     return result;
 
 } //----- End of CreateComplexShape
@@ -131,5 +148,14 @@ bool CreateOrDeleteComplexShapeCommand::DeleteComplexShape()
 // Algorithm :
 //
 {
-    return ShapeManager::GetInstance().DeleteShape(shapeName);
+    bool result = false;
+    map<string,Shape*>::iterator it;
+    it = shapes->find(shapeName);
+    if (it != shapes->end())
+    {
+        shapes->erase(shapeName);
+        delete it->second;
+        result = true;
+    }
+    return result;
 } //----- End of DeleteComplexShape

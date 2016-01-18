@@ -44,8 +44,8 @@ ShapeCommand::ShapeCommand(const ShapeCommand & oneShapeCommand) :
 } //----- End of ShapeCommand
 
 
-ShapeCommand::ShapeCommand(string name) :
-    Command(), shapeName(name)
+ShapeCommand::ShapeCommand(string name, map<string, Shape *> *someShapes) :
+    Command(), shapeName(name), shapes(someShapes)
 // Algorithm :
 //
 {

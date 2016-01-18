@@ -63,7 +63,7 @@ MoveShapeCommand(const MoveShapeCommand & unMoveShapeCommand);
 // Contract : None.
 //
 
-MoveShapeCommand(string name, int dx, int dy);
+MoveShapeCommand(string name, map<string, Shape *> *someShapes, int dx, int dy);
 // Manual : Constructor.
 //
 // Contract : None.

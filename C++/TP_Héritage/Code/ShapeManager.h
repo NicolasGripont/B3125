@@ -14,19 +14,28 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 #include <string>
 #include <map>
 #include <vector>
-
-
+#include <list>
 using namespace std;
 
 #include "Point.h"
 #include "Shape.h"
+#include "Command.h"
 //-------------------------------------------------------------- Constants
 
 //------------------------------------------------------------------ Types
-
+#if ! defined ( ListCommandPtr )
+#define ListCommandPtr
+template class std::list<Command*>;
+#endif
+#if ! defined ( MapStringShapePtr )
+#define MapStringShapePtr
 template class std::map<string,Shape*>;
-//template class std::vector<Point>;
+#endif
+#if ! defined ( VectorString )
+#define VectorString
 template class std::vector<string>;
+#endif
+//template class std::vector<Point>;
 //template class std::vector<Shape*>;
 
 //------------------------------------------------------------------------
@@ -102,6 +111,18 @@ void MoveShape(string name, int dx, int dy);
 // Contract :
 //
 
+void Undo();
+// Manual :
+//
+// Contract :
+//
+
+void Redo();
+// Manual :
+//
+// Contract :
+//
+
 //---------------------------------------------------------------- PRIVATE
 
 //------------------------------------------------- Operators overloading 
@@ -138,6 +159,11 @@ virtual ~ShapeManager();
 protected:
 //------------------------------------------------------ Protected methods
 
+bool Execute(Command *c);
+// Manual :
+//
+// Contract :
+//
 
 private:
 //-------------------------------------------------------- Private methods
@@ -147,6 +173,12 @@ protected:
     static ShapeManager instance;
 
     map<string,Shape*> shapes;
+
+    list<Command*> undoStack;
+
+    list<Command*> redoStack;
+
+    static const int MAX_UNDO_REDO = 20 ;
 
 private:
 //------------------------------------------------------ Pivate attributes

@@ -11,13 +11,12 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 //---------------------------------------------------------------- INCLUDE
 
 //---------------------------------------------------------- Sytem include
-#include <iostream>
-using namespace std;
 
 //------------------------------------------------------ Personnal include
 #include "CreateOrDeleteSimpleShapeCommand.h"
-#include "ShapeManager.h"
-
+#include "Segment.h"
+#include "Rectangle.h"
+#include "ConvexPolygon.h"
 //-------------------------------------------------------------- Constants
 
 //----------------------------------------------------------------- PUBLIC
@@ -79,8 +78,8 @@ void CreateOrDeleteSimpleShapeCommand::Undo()
 //} //----- End of CreateOrDeleteSimpleShapeCommand
 
 
-CreateOrDeleteSimpleShapeCommand::CreateOrDeleteSimpleShapeCommand(string name, vector<Point> somePoints, ShapeType oneType, CreateOrDelete oneAction) :
-    ShapeCommand(name), points(somePoints),type(oneType),action(oneAction)
+CreateOrDeleteSimpleShapeCommand::CreateOrDeleteSimpleShapeCommand(string name, map<string, Shape *> *someShapes, vector<Point> somePoints, ShapeType oneType, CreateOrDelete oneAction) :
+    ShapeCommand(name,someShapes), points(somePoints),type(oneType),action(oneAction)
 // Algorithm :
 //
 {
@@ -113,19 +112,25 @@ bool CreateOrDeleteSimpleShapeCommand::CreateSimpleShape()
 //
 {
     bool result = false;
-    switch (type) {
-    case ShapeType::SegmentType:
-        result = ShapeManager::GetInstance().CreateSegment(shapeName,points[0],points[1]);
-        break;
-    case ShapeType::RectangleType:
-        result = ShapeManager::GetInstance().CreateRectangle(shapeName,points[0],points[1]);
-        break;
-    case ShapeType::ConvexPolygonType:
-        result = ShapeManager::GetInstance().CreateConvexPolygon(shapeName,points);
-        break;
-    default:
-        break;
+    if(type == ShapeType::SegmentType)
+    {
+        Segment *shape = new Segment(shapeName,points[0],points[1]);
+        shapes->insert(make_pair(shapeName,shape));
+        result = true;
     }
+    else if(type == ShapeType::RectangleType)
+    {
+        Rectangle *shape = new Rectangle(shapeName,points[0],points[1]);
+        shapes->insert(make_pair(shapeName,shape));
+        result = true;
+    }
+    else if(type == ShapeType::ConvexPolygonType)
+    {
+        ConvexPolygon *shape = new ConvexPolygon(shapeName,points);
+        shapes->insert(make_pair(shapeName,shape));
+        result = true;
+    }
+
     return result;
 
 } //----- End of CreateSimpleShape
@@ -134,5 +139,14 @@ bool CreateOrDeleteSimpleShapeCommand::DeleteSimpleShape()
 // Algorithm :
 //
 {
-    return ShapeManager::GetInstance().DeleteShape(shapeName);
+    bool result = false;
+    map<string,Shape*>::iterator it;
+    it = shapes->find(shapeName);
+    if (it != shapes->end())
+    {
+        shapes->erase(shapeName);
+        delete it->second;
+        result = true;
+    }
+    return result;
 } //----- End of DeleteSimpleShape

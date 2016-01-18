@@ -69,6 +69,12 @@ ShapeType GetType() const;
 // Contract :
 //
 
+string GetName() const;
+// Manual :
+//
+// Contract :
+//
+
 //------------------------------------------------- Operators overloading 
 
 Shape & operator = (const Shape & unShape);

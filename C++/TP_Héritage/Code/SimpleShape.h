@@ -20,7 +20,10 @@ using namespace std;
 //-------------------------------------------------------------- Constants
 
 //------------------------------------------------------------------ Types
+#if ! defined ( VectorPoint )
+#define VectorPoint
 template class std::vector<Point>;
+#endif
 //------------------------------------------------------------------------
 // Role of the class <SimpleShape>
 //
@@ -49,6 +52,11 @@ SimpleShape & operator = (const SimpleShape & oneSimpleShape);
 // Contract : 
 //
 
+vector<Point> GetPoints();
+// Manual :
+//
+// Contract :
+//
 
 //--------------------------------------------- Constructors - destructor
 

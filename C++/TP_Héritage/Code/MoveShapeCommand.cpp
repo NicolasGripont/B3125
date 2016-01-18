@@ -11,12 +11,11 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 //---------------------------------------------------------------- INCLUDE
 
 //---------------------------------------------------------- Sytem include
-#include <iostream>
-using namespace std;
 
 //------------------------------------------------------ Personnal include
+#include <iostream>
+using namespace std;
 #include "MoveShapeCommand.h"
-#include "ShapeManager.h"
 //-------------------------------------------------------------- Constants
 
 //----------------------------------------------------------------- PUBLIC
@@ -27,14 +26,27 @@ bool MoveShapeCommand::Execute()
 // Algorithm :
 //
 {
-    ShapeManager::GetInstance().MoveShape(shapeName,dX,dY);
+    bool result = false;
+    map<string,Shape*>::iterator it;
+    it = shapes->find(shapeName);
+    if (! (it == shapes->end()) )
+    {
+        it->second->Move(dX,dY);
+        result = true;
+    }
+    return result;
 } //----- End of Execute
 
 void MoveShapeCommand::Undo()
 // Algorithm :
 //
 {
-    ShapeManager::GetInstance().MoveShape(shapeName,-dX,-dY);
+    map<string,Shape*>::iterator it;
+    it = shapes->find(shapeName);
+    if (! (it == shapes->end()) )
+    {
+        it->second->Move(-dX,-dY);
+    }
 } //----- End of Undo
 
 //------------------------------------------------- Operators overloading
@@ -49,7 +61,7 @@ void MoveShapeCommand::Undo()
 //--------------------------------------------- Constructors - destructor
 
 MoveShapeCommand::MoveShapeCommand(const MoveShapeCommand & oneMoveShapeCommand) :
-    ShapeCommand(oneMoveShapeCommand.shapeName), dX(oneMoveShapeCommand.dX), dY(oneMoveShapeCommand.dY)
+    ShapeCommand(oneMoveShapeCommand), dX(oneMoveShapeCommand.dX), dY(oneMoveShapeCommand.dY)
 // Algorithm :
 //
 {
@@ -59,8 +71,8 @@ MoveShapeCommand::MoveShapeCommand(const MoveShapeCommand & oneMoveShapeCommand)
 } //----- End of MoveShapeCommand
 
 
-MoveShapeCommand::MoveShapeCommand(string name,int dx, int dy) :
-    ShapeCommand(name), dX(dx), dY(dy)
+MoveShapeCommand::MoveShapeCommand(string name, map<string, Shape *> *someShapes, int dx, int dy) :
+    ShapeCommand(name,someShapes), dX(dx), dY(dy)
 // Algorithm :
 //
 {

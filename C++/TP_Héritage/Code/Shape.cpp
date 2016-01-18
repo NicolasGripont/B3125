@@ -28,6 +28,12 @@ ShapeType Shape::GetType() const
     return type;
 } //----- End of GetType
 
+string Shape::GetName() const
+// Algorithm :
+//
+{
+    return name;
+} //----- End of GetType
 
 //------------------------------------------------- Operators overloading
 
@@ -37,6 +43,7 @@ Shape & Shape::operator = (const Shape & unShape)
 {
     name = unShape.name;
     type = unShape.type;
+    return *this;
 } //----- End of operator =
 
 

@@ -30,6 +30,14 @@ void SimpleShape::Move(int dx, int dy)
         it->Move(dx,dy);
     }
 } //----- End of Move
+
+vector<Point> SimpleShape::GetPoints()
+// Algorithm :
+//
+{
+    return points;
+} //----- End of GetPoints
+
 //------------------------------------------------- Operators overloading
 
 SimpleShape & SimpleShape::operator = (const SimpleShape & oneSimpleShape)

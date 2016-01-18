@@ -11,11 +11,20 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 #define ShapeCommand_H
 
 //-------------------------------------------------------- Used interfaces 
-#include "Command.h"
-//-------------------------------------------------------------- Constants
 #include <string>
+#include <map>
 using namespace std;
+
+#include "Command.h"
+#include "Shape.h"
+//-------------------------------------------------------------- Constants
+
 //------------------------------------------------------------------ Types
+
+#if ! defined ( MapStringShapePtr )
+#define MapStringShapePtr
+template class std::map<string,Shape*>;
+#endif
 
 //------------------------------------------------------------------------
 // Role of the class <ShapeCommand>
@@ -50,7 +59,7 @@ ShapeCommand(const ShapeCommand & oneShapeCommand);
 // Contract : None.
 //
 
-ShapeCommand(string name);
+ShapeCommand(string name,map<string,Shape*>* someShapes);
 // Manual : Constructor.
 //
 // Contract : None.
@@ -73,6 +82,7 @@ private:
 protected:
 //--------------------------------------------------- Protected attributes
     string shapeName;
+    map<string,Shape*>* shapes;
 private:
 //------------------------------------------------------ Pivate attributes
 

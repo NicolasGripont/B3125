@@ -11,19 +11,25 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 #define CreateOrDeleteComplexShapeCommand_H
 
 //-------------------------------------------------------- Used interfaces
-#include "ShapeManager.h"
+#include <vector>
+#include <string>
+using namespace std;
+
+#include "Shape.h"
 #include "ShapeCommand.h"
 //-------------------------------------------------------------- Constants
 
 //------------------------------------------------------------------ Types
-
+#if ! defined ( VectorString )
+#define VectorString
+template class std::vector<string>;
+#endif
+#if ! defined ( VectorShapePtr )
+#define VectorShapePtr
+template class std::vector<Shape*>;
+#endif
 //------------------------------------------------------------------- enum
 
-enum ComplexShapeType
-{
-    Reunion,
-    Intersection
-};
 
 //------------------------------------------------------------------------
 // Role of the class <CreateOrDeleteComplexShapeCommand>
@@ -70,7 +76,7 @@ virtual void Undo();
 //// Contract : None.
 ////
 
-CreateOrDeleteComplexShapeCommand(string name, vector<string> someShapeNames, ShapeType oneType, CreateOrDelete oneAction);
+CreateOrDeleteComplexShapeCommand(string name, map<string, Shape *> *someShapes, vector<string> someShapeNames, ShapeType oneType, CreateOrDelete oneAction);
 // Manual : Constructor.
 //
 // Contract : None.

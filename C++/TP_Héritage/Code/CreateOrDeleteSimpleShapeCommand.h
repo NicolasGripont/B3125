@@ -11,13 +11,19 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 #define CreateOrDeleteSimpleShapeCommand_H
 
 //-------------------------------------------------------- Used interfaces 
-#include "ShapeManager.h"
-#include "ShapeCommand.h"
+#include <vector>
+using namespace std;
 
+#include "ShapeCommand.h"
+#include "Point.h"
 //-------------------------------------------------------------- Constants
 
-//------------------------------------------------------------------ Types
 
+//------------------------------------------------------------------ Types
+#if ! defined ( VectorPoint )
+#define VectorPoint
+template class std::vector<Point>;
+#endif
 //------------------------------------------------------------------- enum
 
 //------------------------------------------------------------------------
@@ -66,7 +72,7 @@ virtual void Undo();
 //// Contract : None.
 ////
 
-CreateOrDeleteSimpleShapeCommand(string name, vector<Point> somePoints, ShapeType oneType, CreateOrDelete oneAction);
+CreateOrDeleteSimpleShapeCommand(string name, map<string, Shape *> *someShapes, vector<Point> somePoints, ShapeType oneType, CreateOrDelete oneAction);
 // Manual : Constructor.
 //
 // Contract : None.
