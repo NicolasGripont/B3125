@@ -63,7 +63,7 @@ MoveShapeCommand(const MoveShapeCommand & unMoveShapeCommand);
 // Contract : None.
 //
 
-MoveShapeCommand(string name, map<string, Shape *> *someShapes, int dx, int dy);
+MoveShapeCommand(map<string, Shape *> *someShapes, string name, int dx, int dy);
 // Manual : Constructor.
 //
 // Contract : None.
@@ -87,9 +87,9 @@ private:
 protected:
 //--------------------------------------------------- Protected attributes
 
-    int dX;  //
-    int dY;  //
-
+    string shapeName;   //
+    int dX;             //
+    int dY;             //
 private:
 //------------------------------------------------------ Pivate attributes
 

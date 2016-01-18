@@ -35,12 +35,6 @@ template class std::map<string,Shape*>;
 
 //------------------------------------------------------------------- enum
 
-enum CreateOrDelete
-{
-    Create,
-    Delete
-};
-
 
 class ShapeCommand : public Command
 {
@@ -59,7 +53,7 @@ ShapeCommand(const ShapeCommand & oneShapeCommand);
 // Contract : None.
 //
 
-ShapeCommand(string name,map<string,Shape*>* someShapes);
+ShapeCommand(map<string,Shape*>* someShapes);
 // Manual : Constructor.
 //
 // Contract : None.
@@ -81,8 +75,9 @@ private:
 
 protected:
 //--------------------------------------------------- Protected attributes
-    string shapeName;
-    map<string,Shape*>* shapes;
+
+map<string,Shape*>* shapes;
+
 private:
 //------------------------------------------------------ Pivate attributes
 

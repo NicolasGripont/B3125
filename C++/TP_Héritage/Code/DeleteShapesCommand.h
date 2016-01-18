@@ -1,14 +1,14 @@
 /*************************************************************************
-CreateOrDeleteComplexShapeCommand - Header file of the class <CreateOrDeleteComplexShapeCommand>
+DeleteShapesCommand - Header file of the class <DeleteShapesCommand>
 --------------------------------------------------------------------------
 beginning : 15/01/2016 20:41:11
 copyright : (C) 2016 by Nicolas GRIPONT, Rim EL IDRISSI MOKDAD
 e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 *************************************************************************/
 
-//---------- Interface of the class <CreateOrDeleteComplexShapeCommand> (file CreateOrDeleteComplexShapeCommand.h)
-#if ! defined ( CreateOrDeleteComplexShapeCommand_H )
-#define CreateOrDeleteComplexShapeCommand_H
+//---------- Interface of the class <DeleteShapesCommand> (file DeleteShapesCommand.h)
+#if ! defined ( DeleteShapesCommand_H )
+#define DeleteShapesCommand_H
 
 //-------------------------------------------------------- Used interfaces
 #include <vector>
@@ -32,13 +32,13 @@ template class std::vector<Shape*>;
 
 
 //------------------------------------------------------------------------
-// Role of the class <CreateOrDeleteComplexShapeCommand>
+// Role of the class <DeleteShapesCommand>
 //
 //
 //------------------------------------------------------------------------
 
 
-class CreateOrDeleteComplexShapeCommand : public ShapeCommand
+class DeleteShapesCommand : public ShapeCommand
 {
 //---------------------------------------------------------------- PUBLIC
 
@@ -61,7 +61,7 @@ virtual void Undo();
 
 //------------------------------------------------- Operators overloading 
 
-//CreateOrDeleteComplexShapeCommand & operator = (const CreateOrDeleteComplexShapeCommand & unCreateOrDeleteComplexShapeCommand);
+//DeleteShapesCommand & operator = (const DeleteShapesCommand & oneDeleteShapesCommand);
 //// Manual :
 ////
 //// Contract :
@@ -70,19 +70,19 @@ virtual void Undo();
 
 //--------------------------------------------- Constructors - destructor
 
-//CreateOrDeleteComplexShapeCommand(const CreateOrDeleteComplexShapeCommand & unCreateOrDeleteComplexShapeCommand);
+//DeleteShapesCommand(const DeleteShapesCommand & oneDeleteShapesCommand);
 //// Manual : Copy constructor.
 ////
 //// Contract : None.
 ////
 
-CreateOrDeleteComplexShapeCommand(string name, map<string, Shape *> *someShapes, vector<string> someShapeNames, ShapeType oneType, CreateOrDelete oneAction);
+DeleteShapesCommand(map<string, Shape *> *someShapes, vector<Shape*> someDeletedShapes);
 // Manual : Constructor.
 //
 // Contract : None.
 //
 
-virtual ~CreateOrDeleteComplexShapeCommand();
+virtual ~DeleteShapesCommand();
 // Manual : Destructor.
 //
 // Contract : None.
@@ -97,30 +97,17 @@ protected:
 private:
 //-------------------------------------------------------- Private methods
 
-bool CreateComplexShape();
-// Manual :
-//
-// Contract :
-//
-
-bool DeleteComplexShape();
-// Manual :
-//
-// Contract :
-//
-
 protected:
 //--------------------------------------------------- Protected attributes
 
 private:
 //------------------------------------------------------ Pivate attributes
-vector<string> shapeNames;
-ShapeType type;
-CreateOrDelete action;
+vector<Shape*> deletedShapes;
+
 };
 
-//---------------------------- Other definition depend on <CreateOrDeleteComplexShapeCommand>
+//---------------------------- Other definition depend on <DeleteShapesCommand>
 
-#endif // CreateOrDeleteComplexShapeCommand_H
+#endif // DeleteShapesCommand_H
 
 

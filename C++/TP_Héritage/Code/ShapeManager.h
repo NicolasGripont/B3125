@@ -99,7 +99,7 @@ bool CreateReunion(string name, vector<string> someShapeNames);
 // Contract :
 //
 
-bool DeleteShape(string name);
+bool DeleteShape(vector<string> names);
 // Manual :
 //
 // Contract :
@@ -118,6 +118,18 @@ void Undo();
 //
 
 void Redo();
+// Manual :
+//
+// Contract :
+//
+
+bool Include(string name, Point p);
+// Manual :
+//
+// Contract :
+//
+
+bool Clear();
 // Manual :
 //
 // Contract :

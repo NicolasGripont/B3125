@@ -61,7 +61,8 @@ void MoveShapeCommand::Undo()
 //--------------------------------------------- Constructors - destructor
 
 MoveShapeCommand::MoveShapeCommand(const MoveShapeCommand & oneMoveShapeCommand) :
-    ShapeCommand(oneMoveShapeCommand), dX(oneMoveShapeCommand.dX), dY(oneMoveShapeCommand.dY)
+    ShapeCommand(oneMoveShapeCommand), shapeName(oneMoveShapeCommand.shapeName),
+    dX(oneMoveShapeCommand.dX), dY(oneMoveShapeCommand.dY)
 // Algorithm :
 //
 {
@@ -71,8 +72,8 @@ MoveShapeCommand::MoveShapeCommand(const MoveShapeCommand & oneMoveShapeCommand)
 } //----- End of MoveShapeCommand
 
 
-MoveShapeCommand::MoveShapeCommand(string name, map<string, Shape *> *someShapes, int dx, int dy) :
-    ShapeCommand(name,someShapes), dX(dx), dY(dy)
+MoveShapeCommand::MoveShapeCommand(map<string, Shape *> *someShapes, string name, int dx, int dy) :
+    ShapeCommand(someShapes),shapeName(name), dX(dx), dY(dy)
 // Algorithm :
 //
 {

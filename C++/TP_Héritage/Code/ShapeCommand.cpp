@@ -34,7 +34,7 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 //--------------------------------------------- Constructors - destructor
 
 ShapeCommand::ShapeCommand(const ShapeCommand & oneShapeCommand) :
-    Command(), shapeName(oneShapeCommand.shapeName)
+    Command(), shapes(oneShapeCommand.shapes)
 // Algorithm :
 //
 {
@@ -44,8 +44,8 @@ ShapeCommand::ShapeCommand(const ShapeCommand & oneShapeCommand) :
 } //----- End of ShapeCommand
 
 
-ShapeCommand::ShapeCommand(string name, map<string, Shape *> *someShapes) :
-    Command(), shapeName(name), shapes(someShapes)
+ShapeCommand::ShapeCommand(map<string, Shape *> *someShapes) :
+    Command(), shapes(someShapes)
 // Algorithm :
 //
 {

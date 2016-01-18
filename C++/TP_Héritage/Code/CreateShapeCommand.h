@@ -1,14 +1,14 @@
 /*************************************************************************
-CreateOrDeleteSimpleShapeCommand - Header file of the class <CreateOrDeleteSimpleShapeCommand>
+CreateShapeCommand - Header file of the class <CreateShapeCommand>
 --------------------------------------------------------------------------
 beginning : 15/01/2016 20:40:50
 copyright : (C) 2016 by Nicolas GRIPONT, Rim EL IDRISSI MOKDAD
 e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 *************************************************************************/
 
-//---------- Interface of the class <CreateOrDeleteSimpleShapeCommand> (file CreateOrDeleteSimpleShapeCommand.h)
-#if ! defined ( CreateOrDeleteSimpleShapeCommand_H )
-#define CreateOrDeleteSimpleShapeCommand_H
+//---------- Interface of the class <CreateShapeCommand> (file CreateShapeCommand.h)
+#if ! defined ( CreateShapeCommand_H )
+#define CreateShapeCommand_H
 
 //-------------------------------------------------------- Used interfaces 
 #include <vector>
@@ -27,14 +27,14 @@ template class std::vector<Point>;
 //------------------------------------------------------------------- enum
 
 //------------------------------------------------------------------------
-// Role of the class <CreateOrDeleteSimpleShapeCommand>
+// Role of the class <CreateShapeCommand>
 //
 //
 //------------------------------------------------------------------------
 
 
 
-class CreateOrDeleteSimpleShapeCommand : public ShapeCommand
+class CreateShapeCommand : public ShapeCommand
 {
 //---------------------------------------------------------------- PUBLIC
 
@@ -57,7 +57,7 @@ virtual void Undo();
 
 //------------------------------------------------- Operators overloading 
 
-//CreateOrDeleteSimpleShapeCommand & operator = (const CreateOrDeleteSimpleShapeCommand & unCreateOrDeleteSimpleShapeCommand);
+//CreateShapeCommand & operator = (const CreateShapeCommand & oneCreateShapeCommand);
 //// Manual :
 ////
 //// Contract :
@@ -66,19 +66,19 @@ virtual void Undo();
 
 //--------------------------------------------- Constructors - destructor
 
-//CreateOrDeleteSimpleShapeCommand(const CreateOrDeleteSimpleShapeCommand & unCreateOrDeleteSimpleShapeCommand);
+//CreateShapeCommand(const CreateShapeCommand & oneCreateShapeCommand);
 //// Manual : Copy constructor.
 ////
 //// Contract : None.
 ////
 
-CreateOrDeleteSimpleShapeCommand(string name, map<string, Shape *> *someShapes, vector<Point> somePoints, ShapeType oneType, CreateOrDelete oneAction);
+CreateShapeCommand(map<string, Shape *> *someShapes,Shape *oneShape);
 // Manual : Constructor.
 //
 // Contract : None.
 //
 
-virtual ~CreateOrDeleteSimpleShapeCommand();
+virtual ~CreateShapeCommand();
 // Manual : Destructor.
 //
 // Contract : None.
@@ -93,30 +93,16 @@ protected:
 private:
 //-------------------------------------------------------- Private methods
 
-bool CreateSimpleShape();
-// Manual :
-//
-// Contract :
-//
-
-bool DeleteSimpleShape();
-// Manual :
-//
-// Contract :
-//
-
 protected:
 //--------------------------------------------------- Protected attributes
 
 private:
 //------------------------------------------------------ Pivate attributes
-vector<Point> points;
-ShapeType type;
-CreateOrDelete action;
+Shape *shape;
 };
 
-//---------------------------- Other definition depend on <CreateOrDeleteSimpleShapeCommand>
+//---------------------------- Other definition depend on <CreateShapeCommand>
 
-#endif // CreateOrDeleteSimpleShapeCommand_H
+#endif // CreateShapeCommand_H
 
 
