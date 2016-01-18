@@ -1,0 +1,8 @@
+TODO : 
+- vérifier si un polygone est convexe 
+- finir et tester les méthodes include pour chaque forme
+- ajouter mécanisme d’enregistrement et de chargement de fichier
+- ajouter les tests dans ShapeManager (pour avoir une commande valide et une figure valide)
+- ajouter contrat (notamment commandes) et commenter
+- faire les testes de non régression
+- finir compte rendu, cahier de charges, compte rendu performance
