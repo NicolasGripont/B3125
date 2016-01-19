@@ -51,61 +51,61 @@ class ShapeManager
 public:
 //-------------------------------------------------------- Public methods
 
-static ShapeManager& GetInstance();
+static ShapeManager & GetInstance();
 // Manual :
 //
 // Contract :
 //
 
-map<string, Shape *> &GetShapes();
+const map<string, Shape *> & GetShapes() const;
 // Manual :
 //
 // Contract :
 //
 
-Shape* GetShape(string name);
+const Shape * GetShape(const string & name) const;
 // Manual :
 //
 // Contract :
 //
 
-bool CreateRectangle(string name, Point p1, Point p2);
+bool CreateRectangle(const string & name, const Point & p1, const Point & p2);
 // Manual :
 //
 // Contract :
 //
 
-bool CreateSegment(string name, Point p1, Point p2);
+bool CreateSegment(const string & name, const Point & p1, const Point & p2);
 // Manual :
 //
 // Contract :
 //
 
-bool CreateConvexPolygon(string name, vector<Point> somePoints);
+bool CreateConvexPolygon(const string & name, const vector<Point> & somePoints);
 // Manual :
 //
 // Contract :
 //
 
-bool CreateIntersection(string name, vector<string> someShapeNames);
+bool CreateIntersection(const string & name, const vector<string> & someShapeNames);
 // Manual :
 //
 // Contract :
 //
 
-bool CreateReunion(string name, vector<string> someShapeNames);
+bool CreateReunion(const string & name, const vector<string> & someShapeNames);
 // Manual :
 //
 // Contract :
 //
 
-bool DeleteShape(vector<string> names);
+bool DeleteShape(const vector<string> & names);
 // Manual :
 //
 // Contract :
 //
 
-void MoveShape(string name, int dx, int dy);
+void MoveShape(const string  & name, int dx, int dy);
 // Manual :
 //
 // Contract :
@@ -123,7 +123,7 @@ void Redo();
 // Contract :
 //
 
-bool Include(string name, Point p);
+bool Include(const string & name, const Point & p) const;
 // Manual :
 //
 // Contract :
@@ -135,13 +135,13 @@ bool Clear();
 // Contract :
 //
 
-bool Load(string filePath);
+bool Load(const string & filePath);
 // Manual :
 //
 // Contract :
 //
 
-bool Save(string filePath);
+bool Save(const string & filePath) const;
 // Manual :
 //
 // Contract :

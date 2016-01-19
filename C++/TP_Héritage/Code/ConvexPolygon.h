@@ -31,19 +31,19 @@ class ConvexPolygon : public SimpleShape
 public:
 //-------------------------------------------------------- Public methods
 
-virtual bool Include(Point P);
+virtual bool Include(const Point & p) const;
 // Manual :
 //
 // Contract :
 //
 
-virtual string ToString();
+virtual string ToString() const;
 // Manual :
 //
 // Contract :
 //
 
-virtual Shape* Clone();
+virtual Shape* Clone() const;
 // Manual :
 //
 // Contract :
@@ -66,7 +66,7 @@ ConvexPolygon(const ConvexPolygon & oneConvexPolygon);
 // Contract : None.
 //
 
-ConvexPolygon(string oneName, vector<Point> somePoints);
+ConvexPolygon(const string & oneName, const vector<Point> & somePoints);
 // Manual : Constructor.
 //
 // Contract : None.

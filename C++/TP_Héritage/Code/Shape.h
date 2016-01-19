@@ -13,6 +13,7 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 //-------------------------------------------------------- Used interfaces 
 
 #include <string>
+#include <ostream>
 using namespace std;
 
 #include "Point.h"
@@ -41,19 +42,19 @@ virtual void Move(int dx, int dy) = 0;
 // Contract :
 //
 
-virtual bool Include(Point p) = 0;
+virtual bool Include(const Point & p) const = 0;
 // Manual :
 //
 // Contract :
 //
 
-virtual string ToString() = 0;
+virtual string ToString() const = 0 ;
 // Manual :
 //
 // Contract :
 //
 
-virtual Shape* Clone() = 0;
+virtual Shape* Clone() const = 0;
 // Manual :
 //
 // Contract :
@@ -73,6 +74,11 @@ Shape & operator = (const Shape & unShape);
 // Contract : 
 //
 
+friend ostream & operator << (ostream & os, Shape const & shape);
+// Manual :
+//
+// Contract :
+//
 
 //--------------------------------------------- Constructors - destructor
 
@@ -82,7 +88,7 @@ Shape(const Shape & oneShape);
 // Contract : None.
 //
 
-Shape(string oneName);
+Shape(const string & oneName);
 // Manual : Constructor.
 //
 // Contract : None.

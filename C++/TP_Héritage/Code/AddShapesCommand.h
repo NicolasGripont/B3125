@@ -76,7 +76,7 @@ virtual void Undo();
 //// Contract : None.
 ////
 
-AddShapesCommand(map<string, Shape *> *someShapes, vector<Shape*> someDeletedShapes);
+AddShapesCommand(map<string, Shape *> *someShapes, const vector<Shape*> & someDeletedShapes);
 // Manual : Constructor.
 //
 // Contract : None.

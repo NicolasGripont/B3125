@@ -69,7 +69,7 @@ MoveShapeCommand::MoveShapeCommand(const MoveShapeCommand & oneMoveShapeCommand)
 } //----- End of MoveShapeCommand
 
 
-MoveShapeCommand::MoveShapeCommand(map<string, Shape *> *someShapes, string name, int dx, int dy) :
+MoveShapeCommand::MoveShapeCommand(map<string, Shape *> *someShapes, const string & name, int dx, int dy) :
     ShapeCommand(someShapes),shapeName(name), dX(dx), dY(dy)
 // Algorithm :
 //

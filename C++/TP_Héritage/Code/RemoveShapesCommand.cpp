@@ -75,7 +75,7 @@ void RemoveShapesCommand::Undo()
 //} //----- End of RemoveShapesCommand
 
 
-RemoveShapesCommand::RemoveShapesCommand(map<string, Shape *> *someShapes, vector<Shape*> someDeletedShapes):
+RemoveShapesCommand::RemoveShapesCommand(map<string, Shape *> *someShapes, const vector<Shape *> & someDeletedShapes):
     ShapeCommand(someShapes), deletedShapes(someDeletedShapes), deleted(false)
 // Algorithm :
 //

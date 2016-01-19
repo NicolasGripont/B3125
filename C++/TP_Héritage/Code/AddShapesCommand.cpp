@@ -75,7 +75,7 @@ void AddShapesCommand::Undo()
 //} //----- End of AddShapesCommand
 
 
-AddShapesCommand::AddShapesCommand(map<string, Shape *> *someShapes, vector<Shape*> someCreatedShapes):
+AddShapesCommand::AddShapesCommand(map<string, Shape *> *someShapes, const vector<Shape *> & someCreatedShapes):
     ShapeCommand(someShapes), createdShapes(someCreatedShapes), created(true)
 // Algorithm :
 //

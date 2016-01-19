@@ -29,12 +29,12 @@ using namespace std;
 
 //--------------------------------------------------------- Public methods
 
-bool Intersection::Include(Point p)
+bool Intersection::Include(const Point & p) const
 // Algorithm :
 //
 {
     bool result = true;
-    for(vector<Shape*>::iterator it = children.begin(); it != children.end(); it++)
+    for(vector<Shape*>::const_iterator it = children.begin(); it != children.end(); it++)
     {
         if(!(*it)->Include(p))
         {
@@ -45,22 +45,22 @@ bool Intersection::Include(Point p)
     return result;
 } //----- End of Include
 
-string Intersection::ToString()
+string Intersection::ToString() const
 // Algorithm :
 //
 {
     string s;
     s = "OI ";
     s += name;
-    for(vector<Shape*>::iterator it = children.begin(); it != children.end(); it++)
-    {
-        s += "\n  ";
-        s += (*it)->ToString();
-    }
+//    for(vector<Shape*>::const_iterator it = children.begin(); it != children.end(); it++)
+//    {
+//        s += "\n  ";
+//        s += (*it)->ToString();
+//    }
     return s;
 } //----- End of ToString
 
-Shape* Intersection::Clone()
+Shape* Intersection::Clone() const
 // Algorithm :
 //
 {
@@ -98,7 +98,7 @@ Intersection::Intersection(const Intersection & oneIntersection) :
 } //----- End of Intersection
 
 
-Intersection::Intersection(string oneName, vector<Shape *> someShapes) :
+Intersection::Intersection(const string & oneName, const vector<Shape *> & someShapes) :
     ComplexShape(oneName,someShapes)
 // Algorithm :
 //

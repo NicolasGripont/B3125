@@ -38,6 +38,13 @@ Shape & Shape::operator = (const Shape & unShape)
     return *this;
 } //----- End of operator =
 
+ostream & operator << (ostream & os, const Shape & shape)
+// Algorithm :
+//
+{
+    os << shape.ToString();
+    return os;
+} //----- End of operator =
 
 //--------------------------------------------- Constructors - destructor
 
@@ -52,7 +59,7 @@ Shape::Shape(const Shape & oneShape) :
 } //----- End of Shape
 
 
-Shape::Shape(string oneName) :
+Shape::Shape(const string & oneName) :
     name(oneName)
 // Algorithm :
 //

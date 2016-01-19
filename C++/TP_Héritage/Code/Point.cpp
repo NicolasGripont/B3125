@@ -29,21 +29,21 @@ void Point::Move(int dx, int dy)
     y += dy;
 } //----- End of Move
 
-int Point::GetX()
+int Point::GetX() const
 // Algorithm :
 //
 {
     return x;
 } //----- End of GetX
 
-int Point::GetY()
+int Point::GetY() const
 // Algorithm :
 //
 {
     return y;
 } //----- End of GetY
 
-int Point::MaxX(Point p)
+int Point::MaxX(Point p) const
 // Algorithm :
 //
 {
@@ -54,7 +54,7 @@ int Point::MaxX(Point p)
     return p.x;
 } //----- End of MaxX
 
-int Point::MaxY(Point p)
+int Point::MaxY(Point p) const
 // Algorithm :
 //
 {
@@ -65,7 +65,7 @@ int Point::MaxY(Point p)
     return p.y;
 } //----- End of MaxY
 
-int Point::MinX(Point p)
+int Point::MinX(Point p) const
 // Algorithm :
 //
 {
@@ -76,7 +76,7 @@ int Point::MinX(Point p)
     return p.x;
 } //----- End of MinX
 
-int Point::MinY(Point p)
+int Point::MinY(Point p) const
 // Algorithm :
 //
 {
@@ -98,7 +98,7 @@ Point & Point::operator = (const Point & onePoint)
     return *this;
 } //----- End of operator =
 
-bool Point::operator == ( const Point & onePoint )
+bool Point::operator == ( const Point & onePoint ) const
 // Algorithm :
 //
 {
@@ -121,7 +121,7 @@ Point::Point(const Point & onePoint) :
 #endif
 } //----- End of Point
 
-Point::Point(int oneX, int oneY) :
+Point::Point(const int & oneX, const int & oneY) :
     Moveable(), x(oneX), y(oneY)
 // Algorithm :
 //

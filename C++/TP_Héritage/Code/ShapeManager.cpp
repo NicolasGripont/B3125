@@ -38,14 +38,14 @@ ShapeManager& ShapeManager::GetInstance()
     return instance;
 } //----- End of GetInstance
 
-map<string,Shape*>& ShapeManager::GetShapes()
+const map<string,Shape*> & ShapeManager::GetShapes() const
 {
     return shapes;
 } //----- End of GetShapes
 
-Shape* ShapeManager::GetShape(string name)
+const Shape* ShapeManager::GetShape(const string & name) const
 {
-    map<string,Shape*>::iterator it;
+    map<string,Shape*>::const_iterator it;
     it = shapes.find(name);
     if (it == shapes.end())
     {
@@ -54,7 +54,7 @@ Shape* ShapeManager::GetShape(string name)
     return it->second;
 } //----- End of GetShape
 
-bool ShapeManager::CreateRectangle(string name, Point p1, Point p2)
+bool ShapeManager::CreateRectangle(const string & name, const Point & p1, const Point & p2)
 {
     bool result = true;
     if(GetShape(name) == nullptr)
@@ -69,7 +69,7 @@ bool ShapeManager::CreateRectangle(string name, Point p1, Point p2)
     return result;
 } //----- End of CreateRectangle
 
-bool ShapeManager::CreateSegment(string name, Point p1, Point p2)
+bool ShapeManager::CreateSegment(const string & name, const Point & p1, const Point & p2)
 {
     bool result = true;
     if(GetShape(name) == nullptr)
@@ -84,7 +84,7 @@ bool ShapeManager::CreateSegment(string name, Point p1, Point p2)
     return result;
 } //----- End of CreateSegment
 
-bool ShapeManager::CreateConvexPolygon(string name, vector<Point> somePoints)
+bool ShapeManager::CreateConvexPolygon(const string & name, const vector<Point> & somePoints)
 {
     bool result = true;
     if(GetShape(name) == nullptr)
@@ -96,13 +96,13 @@ bool ShapeManager::CreateConvexPolygon(string name, vector<Point> somePoints)
     return result;
 } //----- End of CreateConvexPolygon
 
-bool ShapeManager::CreateIntersection(string name, vector<string> someShapeNames)
+bool ShapeManager::CreateIntersection(const string & name,const vector<string> & someShapeNames)
 {
     bool result = true;
     map<string,Shape*>::iterator itm;
     vector<Shape*> someShapes;
 
-    for(vector<string>::iterator it = someShapeNames.begin(); it != someShapeNames.end(); it++)
+    for(vector<string>::const_iterator it = someShapeNames.begin(); it != someShapeNames.end(); it++)
     {
         itm = shapes.find(*it);
         if (itm != shapes.end())
@@ -121,12 +121,12 @@ bool ShapeManager::CreateIntersection(string name, vector<string> someShapeNames
     return result;
 } //----- End of CreateIntersection
 
-bool ShapeManager::CreateReunion(string name, vector<string> someShapeNames)
+bool ShapeManager::CreateReunion(const string & name, const vector<string> & someShapeNames)
 {
     bool result = true;
     map<string,Shape*>::iterator itm;
     vector<Shape*> someShapes;
-    for(vector<string>::iterator it = someShapeNames.begin(); it != someShapeNames.end(); it++)
+    for(vector<string>::const_iterator it = someShapeNames.begin(); it != someShapeNames.end(); it++)
     {
         itm = shapes.find(*it);
         if (itm != shapes.end())
@@ -145,13 +145,13 @@ bool ShapeManager::CreateReunion(string name, vector<string> someShapeNames)
     return result;
 } //----- End of CreateReunion
 
-bool ShapeManager::DeleteShape(vector<string> names)
+bool ShapeManager::DeleteShape(const vector<string> & names)
 {
     bool result = true;
     vector<Shape*> someShapes;
     map<string,Shape*>::iterator itm;
 
-    for(vector<string>::iterator it = names.begin(); it != names.end(); it++)
+    for(vector<string>::const_iterator it = names.begin(); it != names.end(); it++)
     {
         itm = shapes.find(*it);
         if (itm != shapes.end())
@@ -165,7 +165,7 @@ bool ShapeManager::DeleteShape(vector<string> names)
     return result;
 } //----- End of DeleteShape
 
-void ShapeManager::MoveShape(string name,int dx, int dy)
+void ShapeManager::MoveShape(const string & name, int dx, int dy)
 {
     map<string,Shape*>::iterator it;
     it = shapes.find(name);
@@ -203,12 +203,12 @@ void ShapeManager::Redo()
     }
 } //----- End of Redo
 
-bool ShapeManager::Include(string name, Point p)
+bool ShapeManager::Include(const string & name, const Point & p) const
 // Algorithm :
 //
 {
     bool result = true;
-    map<string,Shape*>::iterator it;
+    map<string,Shape*>::const_iterator it;
     it = shapes.find(name);
     if (it != shapes.end())
     {
@@ -232,14 +232,14 @@ bool ShapeManager::Clear()
     return result;
 } //----- End of DeleteShape
 
-bool ShapeManager::Load(string filePath)
+bool ShapeManager::Load(const string & filePath)
 {
     bool result = false;
 
     return result;
 } //----- End of DeleteShape
 
-bool ShapeManager::Save(string filePath)
+bool ShapeManager::Save(const string & filePath) const
 {
     bool result = false;
 

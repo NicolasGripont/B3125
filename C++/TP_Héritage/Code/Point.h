@@ -36,37 +36,37 @@ void Move(int dx, int dy);
 // Contract :
 //
 
-int GetX();
+int GetX() const;
 // Manual :
 //
 // Contract :
 //
 
-int GetY();
+int GetY() const;
 // Manual :
 //
 // Contract :
 //
 
-int MaxX(Point p);
+int MaxX(Point p) const;
 // Manual :
 //
 // Contract :
 //
 
-int MaxY(Point p);
+int MaxY(Point p) const;
 // Manual :
 //
 // Contract :
 //
 
-int MinX(Point p);
+int MinX(Point p) const;
 // Manual :
 //
 // Contract :
 //
 
-int MinY(Point p);
+int MinY(Point p) const;
 // Manual :
 //
 // Contract :
@@ -80,7 +80,7 @@ Point & operator = (const Point & onePoint);
 // Contract : 
 //
 
-bool operator == ( const Point & onePoint );
+bool operator == ( const Point & onePoint ) const;
 // Manual :
 //
 // Contract :
@@ -95,7 +95,7 @@ Point(const Point & onePoint);
 // Contract : None.
 //
 
-Point (int oneX,int oneY);
+Point (const int & oneX, const int & oneY);
 // Manual : Copy constructor.
 //
 // Contract : None.

@@ -38,11 +38,11 @@ public:
 
 //------------------------------------------------- Operators overloading 
 
-ShapeFileManager & operator = (const ShapeFileManager & unShapeFileManager);
-// Manual :
-//
-// Contract : 
-//
+//ShapeFileManager & operator = (const ShapeFileManager & unShapeFileManager);
+//// Manual :
+////
+//// Contract :
+////
 
 
 //--------------------------------------------- Constructors - destructor

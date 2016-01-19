@@ -31,25 +31,25 @@ class Segment : public SimpleShape
 public:
 //-------------------------------------------------------- Public methods
 
-virtual bool Include(Point P);
+virtual bool Include(const Point & p) const;
 // Manual :
 //
 // Contract :
 //
 
-virtual string ToString();
+virtual string ToString() const;
 // Manual :
 //
 // Contract :
 //
 
-virtual Shape* Clone();
+virtual Shape* Clone() const;
 // Manual :
 //
 // Contract :
 //
 
-int LigneEquation();
+int LigneEquation() const;
 // Manual :
 //
 // Contract :
@@ -78,7 +78,7 @@ Segment(const Segment & oneSegment);
 // Contract : None.
 //
 
-Segment(string oneName, Point p1, Point p2);
+Segment(const string & oneName, const Point & p1, const Point & p2);
 // Manual : Constructor.
 //
 // Contract : None.

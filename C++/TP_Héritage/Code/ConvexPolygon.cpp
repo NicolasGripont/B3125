@@ -23,7 +23,7 @@ using namespace std;
 
 //--------------------------------------------------------- Public methods
 
-bool ConvexPolygon::Include(Point P)
+bool ConvexPolygon::Include(const Point & p) const
 // Algorithm :
 //
 {
@@ -60,14 +60,14 @@ bool ConvexPolygon::Include(Point P)
     return false;
 } //----- End of Include
 
-string ConvexPolygon::ToString()
+string ConvexPolygon::ToString() const
 // Algorithm :
 //
 {
     string s;
     s = "PC ";
     s+= name;
-    for(vector<Point>::iterator it = points.begin(); it != points.end(); it++)
+    for(vector<Point>::const_iterator it = points.begin(); it != points.end(); it++)
     {
         s += " ";
         s += to_string((*it).GetX());
@@ -78,7 +78,7 @@ string ConvexPolygon::ToString()
     return s;
 } //----- End of ToString
 
-Shape* ConvexPolygon::Clone()
+Shape* ConvexPolygon::Clone() const
 // Algorithm :
 //
 {
@@ -111,7 +111,7 @@ ConvexPolygon::ConvexPolygon(const ConvexPolygon & oneConvexPolygon) :
 } //----- End of ConvexPolygon
 
 
-ConvexPolygon::ConvexPolygon(string oneName, vector<Point> somePoints) :
+ConvexPolygon::ConvexPolygon(const string & oneName, const vector<Point> & somePoints) :
     SimpleShape(oneName,somePoints)
 // Algorithm :
 //

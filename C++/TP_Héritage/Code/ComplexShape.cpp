@@ -27,7 +27,7 @@ using namespace std;
 
 //--------------------------------------------------------- Public methods
 
-void ComplexShape::Move(int dx,int dy)
+void ComplexShape::Move(int dx, int dy)
 // Algorithm :
 //
 {
@@ -37,17 +37,12 @@ void ComplexShape::Move(int dx,int dy)
     }
 } //----- End of Move
 
-vector<string> ComplexShape::GetDirectChildrenName()
+const vector<Shape*> & ComplexShape::GetChildren() const
 // Algorithm :
 //
 {
-    vector<string> names;
-    for(vector<Shape*>::iterator it = children.begin(); it != children.end(); it++)
-    {
-        names.push_back((*it)->GetName());
-    }
-    return names;
-} //----- End of GetDirectChildrenName
+    return children;
+} //----- End of GetChildren
 
 //------------------------------------------------- Operators overloading
 
@@ -83,7 +78,7 @@ ComplexShape::ComplexShape(const ComplexShape & oneComplexShape) :
 } //----- End of ComplexShape
 
 
-ComplexShape::ComplexShape(string oneName, vector<Shape *> someShapes):
+ComplexShape::ComplexShape(const string & oneName, const vector<Shape *> & someShapes):
     Shape(oneName), children()
 // Algorithm :
 //

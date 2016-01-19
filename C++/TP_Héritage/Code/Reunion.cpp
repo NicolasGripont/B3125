@@ -29,12 +29,12 @@ using namespace std;
 
 //--------------------------------------------------------- Public methods
 
-bool Reunion::Include(Point p)
+bool Reunion::Include(const Point & p) const
 // Algorithm :
 //
 {
     bool result = false;
-    for(vector<Shape*>::iterator it = children.begin(); it != children.end(); it++)
+    for(vector<Shape*>::const_iterator it = children.begin(); it != children.end(); it++)
     {
         if((*it)->Include(p))
         {
@@ -45,22 +45,22 @@ bool Reunion::Include(Point p)
     return result;
 } //----- End of Include
 
-string Reunion::ToString()
+string Reunion::ToString() const
 // Algorithm :
 //
 {
     string s;
     s = "OR ";
     s += name;
-    for(vector<Shape*>::iterator it = children.begin(); it != children.end(); it++)
-    {
-        s += "\n  ";
-        s += (*it)->ToString();
-    }
+//    for(vector<Shape*>::const_iterator it = children.begin(); it != children.end(); it++)
+//    {
+//        s += "\n  ";
+//        s += (*it)->ToString();
+//    }
     return s;
 } //----- End of ToString
 
-Shape* Reunion::Clone()
+Shape* Reunion::Clone() const
 // Algorithm :
 //
 {
@@ -98,7 +98,7 @@ Reunion::Reunion(const Reunion & oneReunion) :
 } //----- End of Reunion
 
 
-Reunion::Reunion(string oneName, vector<Shape *> someShapes) :
+Reunion::Reunion(const string & oneName, const vector<Shape *> & someShapes) :
     ComplexShape(oneName,someShapes)
 // Algorithm :
 //

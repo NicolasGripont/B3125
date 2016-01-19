@@ -31,7 +31,7 @@ void SimpleShape::Move(int dx, int dy)
     }
 } //----- End of Move
 
-vector<Point> SimpleShape::GetPoints()
+const vector<Point> & SimpleShape::GetPoints() const
 // Algorithm :
 //
 {
@@ -63,7 +63,7 @@ SimpleShape::SimpleShape(const SimpleShape & oneSimpleShape) :
 } //----- End of SimpleShape
 
 
-SimpleShape::SimpleShape(string oneName,vector<Point> somePoints) :
+SimpleShape::SimpleShape(const string & oneName,const vector<Point> & somePoints) :
     Shape(oneName), points(somePoints)
 // Algorithm :
 //
@@ -73,7 +73,7 @@ SimpleShape::SimpleShape(string oneName,vector<Point> somePoints) :
 #endif
 } //----- End of SimpleShape
 
-SimpleShape::SimpleShape(string oneName) :
+SimpleShape::SimpleShape(const string & oneName) :
     Shape(oneName), points()
 // Algorithm :
 //

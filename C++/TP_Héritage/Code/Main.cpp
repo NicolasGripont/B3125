@@ -40,20 +40,20 @@ template class std::deque<string>;
 
 //---------------------------------------------------- Method declarations
 
-bool createSegment(deque<string> params);
-bool createRectangle(deque<string> params);
-bool createConvexPolygon(deque<string> params);
-bool createReunion(deque<string> params);
-bool createIntersection(deque<string> params);
-bool include(deque<string> params);
-bool deleteShapes(deque<string> params);
-bool moveShape(deque<string> params);
-bool showShapes(deque<string> params);
-bool undo(deque<string> params);
-bool redo(deque<string> params);
-bool load(deque<string> params);
-bool save(deque<string> params);
-bool clear(deque<string> params);
+bool createSegment(const deque<string> & params);
+bool createRectangle(const deque<string> & params);
+bool createConvexPolygon(const deque<string> & params);
+bool createReunion(const deque<string> & params);
+bool createIntersection(const deque<string> & params);
+bool include(const deque<string> & params);
+bool deleteShapes(const deque<string> & params);
+bool moveShape(const deque<string> & params);
+bool showShapes(const deque<string> & params);
+bool undo(const deque<string> & params);
+bool redo(const deque<string> & params);
+bool load(const deque<string> & params);
+bool save(const deque<string> & params);
+bool clear(const deque<string> & params);
 deque<string> splitCommand(string cmd);
 
 //----------------------------------------------------- Method definitions
@@ -252,7 +252,7 @@ int main()
 //    cout << *it << endl;
 //}
 
-bool createSegment(deque<string> params)
+bool createSegment(const deque<string> & params)
 {
     bool result = false;
 
@@ -278,7 +278,7 @@ bool createSegment(deque<string> params)
     return result;
 }
 
-bool createRectangle(deque<string> params)
+bool createRectangle(const deque<string> & params)
 {
     bool result = false;
 
@@ -304,7 +304,7 @@ bool createRectangle(deque<string> params)
     return result;
 }
 
-bool createConvexPolygon(deque<string> params)
+bool createConvexPolygon(const deque<string> & params)
 {
     bool result = false;
 
@@ -335,7 +335,7 @@ bool createConvexPolygon(deque<string> params)
     return result;
 }
 
-bool createReunion(deque<string> params)
+bool createReunion(const deque<string> & params)
 {
     bool result = false;
     string name;
@@ -356,7 +356,7 @@ bool createReunion(deque<string> params)
     return result;
 }
 
-bool createIntersection(deque<string> params)
+bool createIntersection(const deque<string> & params)
 {
     bool result = false;
     string name;
@@ -377,7 +377,7 @@ bool createIntersection(deque<string> params)
     return result;
 }
 
-bool include(deque<string> params)
+bool include(const deque<string> & params)
 {
     bool result = false;
     string name;
@@ -394,14 +394,14 @@ bool include(deque<string> params)
     return result;
 }
 
-bool deleteShapes(deque<string> params)
+bool deleteShapes(const deque<string> & params)
 {
     bool result = false;
 
     vector<string> names;
     if(params.size() > 0)
     {
-        for(deque<string>::iterator it = params.begin(); it != params.end(); it++)
+        for(deque<string>::const_iterator it = params.begin(); it != params.end(); it++)
         {
             names.push_back(*it);
         }
@@ -411,7 +411,7 @@ bool deleteShapes(deque<string> params)
     return result;
 }
 
-bool moveShape(deque<string> params)
+bool moveShape(const deque<string> & params)
 {
     bool result = false;
     string name;
@@ -434,23 +434,23 @@ bool moveShape(deque<string> params)
     return result;
 }
 
-bool showShapes(deque<string> params)
+bool showShapes(const deque<string> & params)
 {
     bool result = false;
 
     if(params.size() == 0)
     {
-        map<string,Shape*> shapes = ShapeManager::GetInstance().GetShapes();
-        for(map<string,Shape*>::iterator it = shapes.begin(); it != shapes.end(); it++)
+        const map<string,Shape*> * shapes = &ShapeManager::GetInstance().GetShapes();
+        for(map<string,Shape*>::const_iterator it = shapes->begin(); it != shapes->end(); it++)
         {
-            cout << ">" <<it->second->ToString() << endl;
+            cout << ">" << *(it->second) << endl;
         }
     }
 
     return result;
 }
 
-bool undo(deque<string> params) // si parametre apres UNDO -> false, si pas de undo à exec -> true
+bool undo(const deque<string> & params) // si parametre apres UNDO -> false, si pas de undo à exec -> true
 {
     bool result = false;
 
@@ -463,7 +463,7 @@ bool undo(deque<string> params) // si parametre apres UNDO -> false, si pas de u
     return result;
 }
 
-bool redo(deque<string> params) // idem que undo
+bool redo(const deque<string> & params) // idem que undo
 {
     bool result = false;
 
@@ -476,21 +476,21 @@ bool redo(deque<string> params) // idem que undo
     return result;
 }
 
-bool load(deque<string> params)
+bool load(const deque<string> & params)
 {
     bool result = false;
 
     return result;
 }
 
-bool save(deque<string> params)
+bool save(const deque<string> & params)
 {
     bool result = false;
 
     return result;
 }
 
-bool clear(deque<string> params)
+bool clear(const deque<string> & params)
 {
     bool result = false;
 

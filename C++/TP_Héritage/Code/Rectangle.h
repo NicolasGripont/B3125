@@ -31,19 +31,19 @@ class Rectangle : public SimpleShape
 public:
 //-------------------------------------------------------- Public methods
 
-virtual bool Include(Point P);
+virtual bool Include(const Point & p) const;
 // Manual :
 //
 // Contract :
 //
 
-virtual string ToString();
+virtual string ToString() const;
 // Manual :
 //
 // Contract :
 //
 
-virtual Shape* Clone();
+virtual Shape* Clone() const;
 // Manual :
 //
 // Contract :
@@ -66,7 +66,7 @@ Rectangle(const Rectangle & oneRectangle);
 // Contract : None.
 //
 
-Rectangle(string oneName, Point p1, Point p2);
+Rectangle(const string & oneName, const Point & p1, const Point & p2);
 // Manual : Constructor.
 //
 // Contract : None.

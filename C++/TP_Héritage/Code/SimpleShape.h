@@ -43,6 +43,12 @@ virtual void Move(int dx, int dy);
 // Contract :
 //
 
+const vector<Point> & GetPoints() const;
+// Manual :
+//
+// Contract :
+//
+
 
 //------------------------------------------------- Operators overloading 
 
@@ -52,11 +58,6 @@ SimpleShape & operator = (const SimpleShape & oneSimpleShape);
 // Contract : 
 //
 
-vector<Point> GetPoints();
-// Manual :
-//
-// Contract :
-//
 
 //--------------------------------------------- Constructors - destructor
 
@@ -66,13 +67,13 @@ SimpleShape(const SimpleShape & oneSimpleShape);
 // Contract : None.
 //
 
-SimpleShape(string oneName, vector<Point> somePoints);
+SimpleShape(const string & oneName, const vector<Point> & somePoints);
 // Manual : Constructor.
 //
 // Contract : None.
 //
 
-SimpleShape(string oneName);
+SimpleShape(const string & oneName);
 // Manual : Constructor.
 //
 // Contract : None.

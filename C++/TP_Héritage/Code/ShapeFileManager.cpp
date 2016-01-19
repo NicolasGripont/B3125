@@ -32,11 +32,11 @@ using namespace std;
 
 //------------------------------------------------- Operators overloading
 
-ShapeFileManager & ShapeFileManager::operator = (const ShapeFileManager & unShapeFileManager)
-// Algorithm :
-//
-{
-} //----- End of operator =
+//ShapeFileManager & ShapeFileManager::operator = (const ShapeFileManager & unShapeFileManager)
+//// Algorithm :
+////
+//{
+//} //----- End of operator =
 
 
 //--------------------------------------------- Constructors - destructor

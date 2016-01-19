@@ -23,13 +23,13 @@ using namespace std;
 
 //--------------------------------------------------------- Public methods
 
-bool Segment::Include(Point P)
+bool Segment::Include(const Point & p) const
 // Algorithm :
 //
 {
-    Point p1=SimpleShape::points[0];
-    Point p2=SimpleShape::points[1];
-    if(P==p1 || P==p2)
+    Point p1=points[0];
+    Point p2=points[1];
+    if( p == p1 || p == p2)
     {
         return true;
     }
@@ -39,11 +39,11 @@ bool Segment::Include(Point P)
         int ymax= p1.MaxY(p2);
         int xmin=p1.MinX(p2);
         int ymin= p1.MinY(p2);
-        if((xmin<=P.GetX() && P.GetX()<=xmax) && (ymin<=P.GetY() && P.GetY()<=ymax))
+        if((xmin<=p.GetX() && p.GetX()<=xmax) && (ymin<=p.GetY() && p.GetY()<=ymax))
         {
             //linear equation :
             int ypoint=LigneEquation();
-            if(P.GetY()==ypoint)
+            if(p.GetY()==ypoint)
             {
                 return true;
             }
@@ -52,14 +52,14 @@ bool Segment::Include(Point P)
     return false;
 } //----- End of Include
 
-string Segment::ToString()
+string Segment::ToString() const
 // Algorithm :
 //
 {
     string s;
     s = "S ";
     s+= name;
-    for(vector<Point>::iterator it = points.begin(); it != points.end(); it++)
+    for(vector<Point>::const_iterator it = points.begin(); it != points.end(); it++)
     {
         s += " ";
         s += to_string((*it).GetX());
@@ -69,7 +69,7 @@ string Segment::ToString()
     return s;
 } //----- End of ToString
 
-Shape* Segment::Clone()
+Shape* Segment::Clone() const
 // Algorithm :
 //
 {
@@ -77,7 +77,7 @@ Shape* Segment::Clone()
     return clone;
 } //----- End of Clone
 
-int Segment::LigneEquation()
+int Segment::LigneEquation() const
 {
     float coef = (points[0].GetY()-points[1].GetY())/(points[0].GetX()-points[1].GetX());
     float b= SimpleShape::points[0].GetY() - coef*SimpleShape::points[0].GetX();
@@ -135,7 +135,7 @@ Segment::Segment(const Segment & oneSegment) :
 } //----- End of Segment
 
 
-Segment::Segment(string oneName, Point p1, Point p2) :
+Segment::Segment(const string & oneName, const Point & p1, const Point & p2) :
     SimpleShape(oneName)
 // Algorithm :
 //

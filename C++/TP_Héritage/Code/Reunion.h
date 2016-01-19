@@ -30,19 +30,19 @@ class Reunion : public ComplexShape
 public:
 //-------------------------------------------------------- Public methods
 
-bool Include(Point p);
+bool Include(const Point & p) const;
 // Manual :
 //
 // Contract :
 //
 
-string ToString();
+string ToString() const;
 // Manual :
 //
 // Contract :
 //
 
-virtual Shape* Clone();
+virtual Shape* Clone() const;
 // Manual :
 //
 // Contract :
@@ -65,7 +65,7 @@ Reunion(const Reunion & oneReunion);
 // Contract : None.
 //
 
-Reunion(string oneName, vector<Shape *> someShapes);
+Reunion(const string & oneName, const vector<Shape *> & someShapes);
 // Manual : Constructor.
 //
 // Contract : None.

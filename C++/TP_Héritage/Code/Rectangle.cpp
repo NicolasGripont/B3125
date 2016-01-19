@@ -22,7 +22,7 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 //--------------------------------------------------------- Public methods
 
 
-bool Rectangle::Include(Point P)
+bool Rectangle::Include(const Point & p) const
 // Algorithm :
 //
 {
@@ -32,21 +32,21 @@ bool Rectangle::Include(Point P)
         int ymax=d1.MaxY(d2);
         int xmin=d1.MinX(d2);
         int ymin=d1.MinY(d2);
-    if((xmin<=P.GetX() && P.GetX()<=xmax) && (ymin<=P.GetY() && P.GetY()<=ymax))
+    if((xmin<=p.GetX() && p.GetX()<=xmax) && (ymin<=p.GetY() && p.GetY()<=ymax))
     {
         return true;
     }
     return false;// ou pas du tout?
 } //----- End of Include
 
-string Rectangle::ToString()
+string Rectangle::ToString() const
 // Algorithm :
 //
 {
     string s;
     s = "R ";
     s+= name;
-    for(vector<Point>::iterator it = points.begin(); it != points.end(); it++)
+    for(vector<Point>::const_iterator it = points.begin(); it != points.end(); it++)
     {
         s += " ";
         s += to_string((*it).GetX());
@@ -56,7 +56,7 @@ string Rectangle::ToString()
     return s;
 } //----- End of ToString
 
-Shape* Rectangle::Clone()
+Shape* Rectangle::Clone() const
 // Algorithm :
 //
 {
@@ -89,7 +89,7 @@ Rectangle::Rectangle(const Rectangle & oneRectangle) :
 } //----- End of Rectangle
 
 
-Rectangle::Rectangle(string oneName, Point p1, Point p2) :
+Rectangle::Rectangle(const string & oneName, const Point & p1, const Point & p2) :
     SimpleShape(oneName)
 // Algorithm :
 //

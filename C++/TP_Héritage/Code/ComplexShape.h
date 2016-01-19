@@ -42,13 +42,13 @@ class ComplexShape : public Shape
 public:
 //-------------------------------------------------------- Public methods
 
-virtual void Move(int dx,int dy);
+virtual void Move(int dx, int dy);
 // Manual :
 //
 // Contract :
 //
 
-vector<string> GetDirectChildrenName();
+const vector<Shape *> & GetChildren() const;
 // Manual :
 //
 // Contract :
@@ -71,7 +71,7 @@ ComplexShape(const ComplexShape & oneComplexShape);
 // Contract : None.
 //
 
-ComplexShape(string oneName, vector<Shape*> someShapes);
+ComplexShape(const string & oneName, const vector<Shape *> & someShapes);
 // Manual : Constructor.
 //
 // Contract : None.
