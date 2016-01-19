@@ -98,10 +98,12 @@ private:
 protected:
 //--------------------------------------------------- Protected attributes
 
-private:
-//------------------------------------------------------ Pivate attributes
 vector<Shape*> deletedShapes;
 bool deleted;
+
+private:
+//------------------------------------------------------ Pivate attributes
+
 };
 
 //---------------------------- Other definition depend on <RemoveShapesCommand>

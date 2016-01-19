@@ -125,10 +125,11 @@ private:
 protected:
 //--------------------------------------------------- Protected attributes
 
-private:
-//------------------------------------------------------ Pivate attributes
 int x;
 int y;
+
+private:
+//------------------------------------------------------ Pivate attributes
 
 };
 

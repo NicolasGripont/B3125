@@ -90,6 +90,7 @@ protected:
     string shapeName;   //
     int dX;             //
     int dY;             //
+
 private:
 //------------------------------------------------------ Pivate attributes
 

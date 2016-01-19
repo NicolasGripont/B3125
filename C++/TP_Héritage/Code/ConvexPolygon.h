@@ -43,6 +43,12 @@ virtual string ToString();
 // Contract :
 //
 
+virtual Shape* Clone();
+// Manual :
+//
+// Contract :
+//
+
 //------------------------------------------------- Operators overloading 
 
 ConvexPolygon & operator = (const ConvexPolygon & oneConvexPolygon);

@@ -28,16 +28,6 @@ using namespace std;
 //
 //------------------------------------------------------------------------
 
-enum ShapeType
-{
-    SegmentType,
-    RectangleType,
-    ConvexPolygonType,
-    ReunionType,
-    IntersectionType
-};
-
-
 class Shape : public Moveable
 {
 //---------------------------------------------------------------- PUBLIC
@@ -63,7 +53,7 @@ virtual string ToString() = 0;
 // Contract :
 //
 
-ShapeType GetType() const;
+virtual Shape* Clone() = 0;
 // Manual :
 //
 // Contract :
@@ -92,13 +82,13 @@ Shape(const Shape & oneShape);
 // Contract : None.
 //
 
-Shape(string oneName,ShapeType oneType);
+Shape(string oneName);
 // Manual : Constructor.
 //
 // Contract : None.
 //
 
-Shape(ShapeType oneType);
+Shape();
 // Manual : Constructor.
 //
 // Contract : None.
@@ -123,8 +113,6 @@ protected:
 //--------------------------------------------------- Protected attributes
 
 string name;
-
-ShapeType type;
 
 private:
 //------------------------------------------------------ Pivate attributes

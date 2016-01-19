@@ -43,6 +43,12 @@ virtual string ToString();
 // Contract :
 //
 
+virtual Shape* Clone();
+// Manual :
+//
+// Contract :
+//
+
 //------------------------------------------------- Operators overloading 
 
 Rectangle & operator = (const Rectangle & oneRectangle);

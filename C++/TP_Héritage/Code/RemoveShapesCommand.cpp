@@ -39,7 +39,8 @@ void RemoveShapesCommand::Execute()
         {
             shapes->erase(itm->second->GetName());
         }
-    }} //----- End of Execute
+    }
+} //----- End of Execute
 
 void RemoveShapesCommand::Undo()
 // Algorithm :

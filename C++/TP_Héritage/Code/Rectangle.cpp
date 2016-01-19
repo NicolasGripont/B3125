@@ -56,6 +56,14 @@ string Rectangle::ToString()
     return s;
 } //----- End of ToString
 
+Shape* Rectangle::Clone()
+// Algorithm :
+//
+{
+    Rectangle* clone = new Rectangle(*this);
+    return clone;
+} //----- End of Clone
+
 //------------------------------------------------- Operators overloading
 
 Rectangle & Rectangle::operator = (const Rectangle & oneRectangle)
@@ -63,7 +71,6 @@ Rectangle & Rectangle::operator = (const Rectangle & oneRectangle)
 //
 {
     name = oneRectangle.name;
-    type = oneRectangle.type;
     points = oneRectangle.points;
     return *this;
 } //----- End of operator =
@@ -83,7 +90,7 @@ Rectangle::Rectangle(const Rectangle & oneRectangle) :
 
 
 Rectangle::Rectangle(string oneName, Point p1, Point p2) :
-    SimpleShape(oneName,ShapeType::RectangleType)
+    SimpleShape(oneName)
 // Algorithm :
 //
 {

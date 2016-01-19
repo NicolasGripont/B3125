@@ -21,13 +21,6 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 
 //--------------------------------------------------------- Public methods
 
-ShapeType Shape::GetType() const
-// Algorithm :
-//
-{
-    return type;
-} //----- End of GetType
-
 string Shape::GetName() const
 // Algorithm :
 //
@@ -42,7 +35,6 @@ Shape & Shape::operator = (const Shape & unShape)
 //
 {
     name = unShape.name;
-    type = unShape.type;
     return *this;
 } //----- End of operator =
 
@@ -50,7 +42,7 @@ Shape & Shape::operator = (const Shape & unShape)
 //--------------------------------------------- Constructors - destructor
 
 Shape::Shape(const Shape & oneShape) :
-    name(oneShape.name), type(oneShape.type)
+    name(oneShape.name)
 // Algorithm :
 //
 {
@@ -60,8 +52,8 @@ Shape::Shape(const Shape & oneShape) :
 } //----- End of Shape
 
 
-Shape::Shape(string oneName,ShapeType oneType) :
-    name(oneName), type(oneType)
+Shape::Shape(string oneName) :
+    name(oneName)
 // Algorithm :
 //
 {
@@ -70,8 +62,8 @@ Shape::Shape(string oneName,ShapeType oneType) :
 #endif
 } //----- End of Shape
 
-Shape::Shape(ShapeType oneType) :
-    name(""), type(oneType)
+Shape::Shape() :
+    name("")
 // Algorithm :
 //
 {

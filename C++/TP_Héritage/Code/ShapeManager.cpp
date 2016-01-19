@@ -232,6 +232,20 @@ bool ShapeManager::Clear()
     return result;
 } //----- End of DeleteShape
 
+bool ShapeManager::Load(string filePath)
+{
+    bool result = false;
+
+    return result;
+} //----- End of DeleteShape
+
+bool ShapeManager::Save(string filePath)
+{
+    bool result = false;
+
+    return result;
+} //----- End of DeleteShape
+
 //------------------------------------------------- Operators overloading
 
 //ShapeManager & ShapeManager::operator = (const ShapeManager & oneShapeManager)

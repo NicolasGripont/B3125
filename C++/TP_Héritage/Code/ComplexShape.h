@@ -71,7 +71,7 @@ ComplexShape(const ComplexShape & oneComplexShape);
 // Contract : None.
 //
 
-ComplexShape(string oneName, ShapeType oneType, vector<Shape*> someShapes);
+ComplexShape(string oneName, vector<Shape*> someShapes);
 // Manual : Constructor.
 //
 // Contract : None.

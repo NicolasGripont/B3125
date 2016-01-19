@@ -60,6 +60,13 @@ string Intersection::ToString()
     return s;
 } //----- End of ToString
 
+Shape* Intersection::Clone()
+// Algorithm :
+//
+{
+    Intersection* clone = new Intersection(*this);
+    return clone;
+} //----- End of Clone
 
 //------------------------------------------------- Operators overloading
 
@@ -68,36 +75,10 @@ Intersection & Intersection::operator = (const Intersection & oneIntersection)
 //
 {
     name = oneIntersection.name;
-    type = oneIntersection.type;
 
     for(vector<Shape*>::const_iterator it = oneIntersection.children.begin(); it != oneIntersection.children.end(); it++)
     {
-        ShapeType t = (*it)->GetType();
-        if(t == ShapeType::SegmentType)
-        {
-            Segment* shape = (Segment*)*it;
-            children.push_back(new Segment(*shape));
-        }
-        else if (t == ShapeType::RectangleType)
-        {
-            Rectangle* shape = (Rectangle*)*it;
-            children.push_back(new Rectangle(*shape));
-        }
-        else if (t == ShapeType::ConvexPolygonType)
-        {
-            ConvexPolygon* shape = (ConvexPolygon*)*it;
-            children.push_back(new ConvexPolygon(*shape));
-        }
-        else if (t == ShapeType::ReunionType)
-        {
-            Reunion* shape = (Reunion*)*it;
-            children.push_back(new Reunion(*shape));
-        }
-        else if (t == ShapeType::IntersectionType)
-        {
-            Intersection* shape = (Intersection*)*it;
-            children.push_back(new Intersection(*shape));
-        }
+        children.push_back((*it)->Clone());
     }
 
     return *this;
@@ -118,7 +99,7 @@ Intersection::Intersection(const Intersection & oneIntersection) :
 
 
 Intersection::Intersection(string oneName, vector<Shape *> someShapes) :
-    ComplexShape(oneName,ShapeType::IntersectionType,someShapes)
+    ComplexShape(oneName,someShapes)
 // Algorithm :
 //
 {

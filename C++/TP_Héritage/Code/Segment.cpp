@@ -69,6 +69,13 @@ string Segment::ToString()
     return s;
 } //----- End of ToString
 
+Shape* Segment::Clone()
+// Algorithm :
+//
+{
+    Segment* clone = new Segment(*this);
+    return clone;
+} //----- End of Clone
 
 int Segment::LigneEquation()
 {
@@ -110,7 +117,6 @@ Segment & Segment::operator = (const Segment & oneSegment)
 //
 {
     name = oneSegment.name;
-    type = oneSegment.type;
     points = oneSegment.points;
     return *this;
 } //----- End of operator =
@@ -130,7 +136,7 @@ Segment::Segment(const Segment & oneSegment) :
 
 
 Segment::Segment(string oneName, Point p1, Point p2) :
-    SimpleShape(oneName,ShapeType::SegmentType)
+    SimpleShape(oneName)
 // Algorithm :
 //
 {
@@ -139,8 +145,6 @@ Segment::Segment(string oneName, Point p1, Point p2) :
 #endif
     points.push_back(p1);
     points.push_back(p2);
-//    points[0] = p1;
-//    points[1] = p2;
 } //----- End of Segment
 
 

@@ -78,6 +78,14 @@ string ConvexPolygon::ToString()
     return s;
 } //----- End of ToString
 
+Shape* ConvexPolygon::Clone()
+// Algorithm :
+//
+{
+    ConvexPolygon* clone = new ConvexPolygon(*this);
+    return clone;
+} //----- End of Clone
+
 //------------------------------------------------- Operators overloading
 
 ConvexPolygon & ConvexPolygon::operator = (const ConvexPolygon & oneConvexPolygon)
@@ -85,7 +93,6 @@ ConvexPolygon & ConvexPolygon::operator = (const ConvexPolygon & oneConvexPolygo
 //
 {
     name = oneConvexPolygon.name;
-    type = oneConvexPolygon.type;
     points = oneConvexPolygon.points;
     return *this;
 } //----- End of operator =
@@ -105,7 +112,7 @@ ConvexPolygon::ConvexPolygon(const ConvexPolygon & oneConvexPolygon) :
 
 
 ConvexPolygon::ConvexPolygon(string oneName, vector<Point> somePoints) :
-    SimpleShape(oneName,ShapeType::ConvexPolygonType,somePoints)
+    SimpleShape(oneName,somePoints)
 // Algorithm :
 //
 {

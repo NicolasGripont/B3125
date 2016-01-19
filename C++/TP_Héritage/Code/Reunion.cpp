@@ -60,6 +60,13 @@ string Reunion::ToString()
     return s;
 } //----- End of ToString
 
+Shape* Reunion::Clone()
+// Algorithm :
+//
+{
+    Reunion* clone = new Reunion(*this);
+    return clone;
+} //----- End of Clone
 
 //------------------------------------------------- Operators overloading
 
@@ -68,36 +75,10 @@ Reunion & Reunion::operator = (const Reunion & oneReunion)
 //
 {
     name = oneReunion.name;
-    type = oneReunion.type;
 
     for(vector<Shape*>::const_iterator it = oneReunion.children.begin(); it != oneReunion.children.end(); it++)
     {
-        ShapeType t = (*it)->GetType();
-        if(t == ShapeType::SegmentType)
-        {
-            Segment* shape = (Segment*)*it;
-            children.push_back(new Segment(*shape));
-        }
-        else if (t == ShapeType::RectangleType)
-        {
-            Rectangle* shape = (Rectangle*)*it;
-            children.push_back(new Rectangle(*shape));
-        }
-        else if (t == ShapeType::ConvexPolygonType)
-        {
-            ConvexPolygon* shape = (ConvexPolygon*)*it;
-            children.push_back(new ConvexPolygon(*shape));
-        }
-        else if (t == ShapeType::ReunionType)
-        {
-            Reunion* shape = (Reunion*)*it;
-            children.push_back(new Reunion(*shape));
-        }
-        else if (t == ShapeType::IntersectionType)
-        {
-            Intersection* shape = (Intersection*)*it;
-            children.push_back(new Intersection(*shape));
-        }
+        children.push_back((*it)->Clone());
     }
 
     return *this;
@@ -118,7 +99,7 @@ Reunion::Reunion(const Reunion & oneReunion) :
 
 
 Reunion::Reunion(string oneName, vector<Shape *> someShapes) :
-    ComplexShape(oneName,ShapeType::ReunionType,someShapes)
+    ComplexShape(oneName,someShapes)
 // Algorithm :
 //
 {

@@ -135,7 +135,13 @@ bool Clear();
 // Contract :
 //
 
-bool Load();
+bool Load(string filePath);
+// Manual :
+//
+// Contract :
+//
+
+bool Save(string filePath);
 // Manual :
 //
 // Contract :
@@ -188,15 +194,16 @@ private:
 
 protected:
 //--------------------------------------------------- Protected attributes
-    static ShapeManager instance;
 
-    map<string,Shape*> shapes;
+static ShapeManager instance;
 
-    list<Command*> undoStack;
+map<string,Shape*> shapes;
 
-    list<Command*> redoStack;
+list<Command*> undoStack;
 
-    static const int MAX_UNDO_REDO = 20 ;
+list<Command*> redoStack;
+
+static const int MAX_UNDO_REDO = 30 ;
 
 private:
 //------------------------------------------------------ Pivate attributes

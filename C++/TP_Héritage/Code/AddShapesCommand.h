@@ -99,10 +99,14 @@ private:
 protected:
 //--------------------------------------------------- Protected attributes
 
+vector<Shape*> createdShapes;
+
+bool created;
+
 private:
 //------------------------------------------------------ Pivate attributes
-vector<Shape*> createdShapes;
-bool created;
+
+
 };
 
 //---------------------------- Other definition depend on <AddShapesCommand>

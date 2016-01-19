@@ -45,7 +45,6 @@ SimpleShape & SimpleShape::operator = (const SimpleShape & oneSimpleShape)
 //
 {
     name = oneSimpleShape.name;
-    type = oneSimpleShape.type;
     points = oneSimpleShape.points;
     return *this;
 } //----- End of operator =
@@ -64,8 +63,8 @@ SimpleShape::SimpleShape(const SimpleShape & oneSimpleShape) :
 } //----- End of SimpleShape
 
 
-SimpleShape::SimpleShape(string oneName, ShapeType oneType, vector<Point> somePoints) :
-    Shape(oneName,oneType), points(somePoints)
+SimpleShape::SimpleShape(string oneName,vector<Point> somePoints) :
+    Shape(oneName), points(somePoints)
 // Algorithm :
 //
 {
@@ -74,8 +73,8 @@ SimpleShape::SimpleShape(string oneName, ShapeType oneType, vector<Point> somePo
 #endif
 } //----- End of SimpleShape
 
-SimpleShape::SimpleShape(string oneName, ShapeType oneType) :
-    Shape(oneName,oneType), points()
+SimpleShape::SimpleShape(string oneName) :
+    Shape(oneName), points()
 // Algorithm :
 //
 {

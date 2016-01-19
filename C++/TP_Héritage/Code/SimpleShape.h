@@ -66,13 +66,13 @@ SimpleShape(const SimpleShape & oneSimpleShape);
 // Contract : None.
 //
 
-SimpleShape(string oneName, ShapeType oneType, vector<Point> somePoints);
+SimpleShape(string oneName, vector<Point> somePoints);
 // Manual : Constructor.
 //
 // Contract : None.
 //
 
-SimpleShape(string oneName, ShapeType oneType);
+SimpleShape(string oneName);
 // Manual : Constructor.
 //
 // Contract : None.
@@ -95,7 +95,9 @@ private:
 
 protected:
 //--------------------------------------------------- Protected attributes
-    vector<Point> points;
+
+vector<Point> points;
+
 private:
 //------------------------------------------------------ Pivate attributes
 
