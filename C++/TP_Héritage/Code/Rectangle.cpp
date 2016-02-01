@@ -44,8 +44,12 @@ string Rectangle::ToString() const
 //
 {
     string s;
-    s = "R ";
-    s+= name;
+    for(int i = 0; i < nbTabs; i++)
+    {
+        s += "\t";
+    }
+    s += "R ";
+    s += name;
     for(vector<Point>::const_iterator it = points.begin(); it != points.end(); it++)
     {
         s += " ";

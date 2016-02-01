@@ -1,0 +1,12 @@
+5
+S seg 1 2 3 4
+R rect 1 2 3 4
+PC pc 1 2 3 4 5 6 
+OI oi 2
+	S seg 1 2 3 4
+	R rect 1 2 3 4
+OR or 2
+	PC pc 1 2 3 4 5 6
+	OI oi 2
+		S seg 1 2 3 4
+		R rect 1 2 3 4

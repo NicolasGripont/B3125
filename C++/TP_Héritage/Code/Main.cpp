@@ -169,88 +169,84 @@ int main()
 
     string cmdLine;
     string cmd;
-    deque<string> splitedCmd;
+    deque<string> splittedCmd;
 
     getline(cin, cmdLine);
-    splitedCmd = splitCommand(cmdLine);
+    splittedCmd = splitCommand(cmdLine);
 
 
-    while ( (splitedCmd.size() == 0) || (splitedCmd.size() > 0 && splitedCmd.front()!="EXIT") )
+    while ( (splittedCmd.size() == 0) || (splittedCmd.size() > 0 && splittedCmd.front()!="EXIT") )
     {
-        if((splitedCmd.size() > 0))
+        if((splittedCmd.size() > 0))
         {
-            cmd = splitedCmd.front();
-            splitedCmd.pop_front();
+            cmd = splittedCmd.front();
+            splittedCmd.pop_front();
 
             if ( cmd == "S" )
             {
-                createSegment(splitedCmd);
+                createSegment(splittedCmd);
             }
             else if ( cmd == "R" )
             {
-                createRectangle(splitedCmd);
+                createRectangle(splittedCmd);
             }
             else if ( cmd == "PC" )
             {
-                createConvexPolygon(splitedCmd);
+                createConvexPolygon(splittedCmd);
             }
             else if ( cmd == "OR" )
             {
-                createReunion(splitedCmd);
+                createReunion(splittedCmd);
             }
             else if ( cmd == "OI" )
             {
-                createIntersection(splitedCmd);
+                createIntersection(splittedCmd);
             }
             else if ( cmd == "HIT" )
             {
-                include(splitedCmd);
+                include(splittedCmd);
             }
             else if ( cmd == "DELETE" )
             {
-                deleteShapes(splitedCmd);
+                deleteShapes(splittedCmd);
             }
             else if ( cmd == "MOVE" )
             {
-                moveShape(splitedCmd);
+                moveShape(splittedCmd);
             }
             else if ( cmd == "LIST" )
             {
-                showShapes(splitedCmd);
+                showShapes(splittedCmd);
             }
             else if ( cmd == "UNDO" )
             {
-                undo(splitedCmd);
+                undo(splittedCmd);
             }
             else if ( cmd == "REDO" )
             {
-                redo(splitedCmd);
+                redo(splittedCmd);
             }
             else if ( cmd == "LOAD" )
             {
-                load(splitedCmd);
+                load(splittedCmd);
             }
             else if ( cmd == "SAVE" )
             {
-                save(splitedCmd);
+                save(splittedCmd);
             }
             else if ( cmd == "CLEAR" )
             {
-                clear(splitedCmd);
+                clear(splittedCmd);
             }
         }
         getline(cin, cmdLine);
-        splitedCmd = splitCommand(cmdLine);
+        splittedCmd = splitCommand(cmdLine);
     }
 
     return 0;
 
 }
 
-//for(deque<string>::iterator it = params.begin(); it != params.end(); it++)
-//{
-//    cout << *it << endl;
-//}
 
 bool createSegment(const deque<string> & params)
 {
@@ -443,7 +439,7 @@ bool showShapes(const deque<string> & params)
         const map<string,Shape*> * shapes = &ShapeManager::GetInstance().GetShapes();
         for(map<string,Shape*>::const_iterator it = shapes->begin(); it != shapes->end(); it++)
         {
-            cout << ">" << *(it->second) << endl;
+            cout << *(it->second) << endl;
         }
     }
 
@@ -480,6 +476,12 @@ bool load(const deque<string> & params)
 {
     bool result = false;
 
+    if(params.size() == 1)
+    {
+        result = ShapeManager::GetInstance().Load(params[0]);
+        result = true;
+    }
+
     return result;
 }
 
@@ -487,12 +489,24 @@ bool save(const deque<string> & params)
 {
     bool result = false;
 
+    if(params.size() == 1)
+    {
+        result = ShapeManager::GetInstance().Save(params[0]);
+        result = true;
+    }
+
     return result;
 }
 
 bool clear(const deque<string> & params)
 {
     bool result = false;
+
+    if(params.size() == 0)
+    {
+        result = ShapeManager::GetInstance().Clear();
+        result = true;
+    }
 
     return result;
 }

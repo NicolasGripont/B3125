@@ -120,6 +120,8 @@ protected:
 
 string name;
 
+static int nbTabs;
+
 private:
 //------------------------------------------------------ Pivate attributes
 

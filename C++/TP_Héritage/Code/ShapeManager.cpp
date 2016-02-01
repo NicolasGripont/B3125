@@ -22,9 +22,11 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 #include "MoveShapeCommand.h"
 #include "RemoveShapesCommand.h"
 #include "AddShapesCommand.h"
+#include "ShapeFileManager.h"
 
-
+#include <fstream>
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 //-------------------------------------------------------------- Constants
@@ -234,17 +236,43 @@ bool ShapeManager::Clear()
 
 bool ShapeManager::Load(const string & filePath)
 {
-    bool result = false;
+    bool result = true;
+
+    vector<Shape*> someShapes = ShapeFileManager::Load(filePath);
+
+    for(vector<Shape*>::iterator it = someShapes.begin(); it != someShapes.end(); it++)
+    {
+        if(shapes.find((*it)->GetName()) != shapes.end())
+        {
+            result = false;
+            break;
+        }
+    }
+
+    if(result)
+    {
+        Execute(new AddShapesCommand(&shapes,someShapes));
+    }
+    else
+    {
+        for(vector<Shape*>::iterator it = someShapes.begin(); it != someShapes.end(); it++)
+        {
+            delete *it;
+        }
+    }
 
     return result;
-} //----- End of DeleteShape
+} //----- End of Load
+
 
 bool ShapeManager::Save(const string & filePath) const
 {
     bool result = false;
 
+    ShapeFileManager::Save(filePath,shapes);
+
     return result;
-} //----- End of DeleteShape
+} //----- End of Save
 
 //------------------------------------------------- Operators overloading
 
@@ -325,4 +353,6 @@ void ShapeManager::Execute(Command* c)
     redoStack.clear();
 } //----- End of Execute
 
+
 //-------------------------------------------------------- Private methods
+

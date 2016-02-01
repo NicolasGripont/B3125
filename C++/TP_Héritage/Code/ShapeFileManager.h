@@ -12,10 +12,28 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 
 //-------------------------------------------------------- Used interfaces 
 
+#include "Shape.h"
+
+#include <map>
+#include <deque>
+#include <vector>
+#include <string>
+using namespace std;
 //-------------------------------------------------------------- Constants
 
 //------------------------------------------------------------------ Types
-
+#if ! defined ( MapStringShapePtr )
+#define MapStringShapePtr
+template class std::map<string,Shape*>;
+#endif
+#if ! defined ( DequeString )
+#define DequeString
+template class std::deque<string>;
+#endif
+#if ! defined ( VectorShapePtr )
+#define VectorShapePtr
+template class std::vector<Shape*>;
+#endif
 //------------------------------------------------------------------------
 // Role of the class <ShapeFileManager>
 //
@@ -29,12 +47,29 @@ class ShapeFileManager
 public:
 //-------------------------------------------------------- Public methods
 
-// type Method ( parameter liste );
+static vector<Shape*> Load(const string & filePath);
 // Manual :
 //
 // Contract :
 //
 
+static deque<string> SplitLine(string line);
+// Manual :
+//
+// Contract :
+//
+
+static Shape* CreateComplexShape(ifstream & file, deque<string> params);
+// Manual :
+//
+// Contract :
+//
+
+static bool Save(const string & filePath, const map<string, Shape *> &shapes);
+// Manual :
+//
+// Contract :
+//
 
 //------------------------------------------------- Operators overloading 
 
@@ -45,7 +80,15 @@ public:
 ////
 
 
-//--------------------------------------------- Constructors - destructor
+
+
+
+
+//---------------------------------------------------------------- PRIVATE
+
+//------------------------------------ Protected constructors - destructor
+
+protected:
 
 ShapeFileManager(const ShapeFileManager & unShapeFileManager);
 // Manual : Copy constructor.
@@ -65,11 +108,15 @@ virtual ~ShapeFileManager();
 // Contract : None.
 //
 
-//---------------------------------------------------------------- PRIVATE
 
 protected:
 //------------------------------------------------------ Protected methods
 
+static Shape* CreateSegment(const deque<string> & params);
+static Shape* CreateRectangle(const deque<string> & params);
+static Shape* CreateConvexPolygon(const deque<string> & params);
+//Shape* CreateSegment(const deque<string> & params);
+//Shape* CreateSegment(const deque<string> & params);
 
 private:
 //-------------------------------------------------------- Private methods

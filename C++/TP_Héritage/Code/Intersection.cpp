@@ -50,13 +50,21 @@ string Intersection::ToString() const
 //
 {
     string s;
-    s = "OI ";
+    for(int i = 0; i < nbTabs; i++)
+    {
+        s += "\t";
+    }
+    s += "OI ";
     s += name;
-//    for(vector<Shape*>::const_iterator it = children.begin(); it != children.end(); it++)
-//    {
-//        s += "\n  ";
-//        s += (*it)->ToString();
-//    }
+    s += " ";
+    s += to_string(children.size());
+    nbTabs++;
+    for(vector<Shape*>::const_iterator it = children.begin(); it != children.end(); it++)
+    {
+        s += "\n";
+        s += (*it)->ToString();
+    }
+    nbTabs--;
     return s;
 } //----- End of ToString
 

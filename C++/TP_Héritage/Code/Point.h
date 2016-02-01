@@ -11,6 +11,8 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 #define Point_H
 
 //-------------------------------------------------------- Used interfaces 
+#include <ostream>
+using namespace std;
 #include "Moveable.h"
 //-------------------------------------------------------------- Constants
 
@@ -86,6 +88,11 @@ bool operator == ( const Point & onePoint ) const;
 // Contract :
 //
 
+friend ostream & operator << (ostream & os, Point const & point);
+// Manual :
+//
+// Contract :
+//
 
 //--------------------------------------------- Constructors - destructor
 

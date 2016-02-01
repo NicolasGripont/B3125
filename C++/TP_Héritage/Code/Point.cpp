@@ -109,6 +109,14 @@ bool Point::operator == ( const Point & onePoint ) const
     return false;
 } //----- end of operator ==
 
+ostream & operator << (ostream & os, const Point & point)
+// Algorithm :
+//
+{
+    os << point.x << " " << point.y;
+    return os;
+} //----- End of operator =
+
 //--------------------------------------------- Constructors - destructor
 
 Point::Point(const Point & onePoint) :

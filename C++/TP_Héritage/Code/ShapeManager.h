@@ -15,6 +15,7 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 #include <map>
 #include <vector>
 #include <list>
+#include <deque>
 using namespace std;
 
 #include "Point.h"
@@ -35,8 +36,11 @@ template class std::map<string,Shape*>;
 #define VectorString
 template class std::vector<string>;
 #endif
-//template class std::vector<Point>;
-//template class std::vector<Shape*>;
+#if ! defined ( DequeString )
+#define DequeString
+template class std::deque<string>;
+#endif
+
 
 //------------------------------------------------------------------------
 // Role of the class <ShapeManager>

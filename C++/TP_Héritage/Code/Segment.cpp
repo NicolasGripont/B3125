@@ -57,8 +57,12 @@ string Segment::ToString() const
 //
 {
     string s;
-    s = "S ";
-    s+= name;
+    for(int i = 0; i < nbTabs; i++)
+    {
+        s += "\t";
+    }
+    s += "S ";
+    s += name;
     for(vector<Point>::const_iterator it = points.begin(); it != points.end(); it++)
     {
         s += " ";
