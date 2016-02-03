@@ -21,6 +21,7 @@ using namespace std;
 
 //-------------------------------------------------------------- Constants
 
+
 //------------------------------------------------------------------ Types
 
 
@@ -40,6 +41,7 @@ void redo(const deque<string> & params);
 void load(const deque<string> & params);
 void save(const deque<string> & params);
 void clear(const deque<string> & params);
+inline void showMessage(string result, string message);
 deque<string> splitCommand(string cmd);
 
 //----------------------------------------------------- Method definitions
@@ -138,6 +140,10 @@ int main()
             {
                 clear(splittedCmd);
             }
+            else
+            {
+                showMessage("ERR","Invalid command");
+            }
         }
         getline(cin, cmdLine);
         splittedCmd = splitCommand(cmdLine);
@@ -150,7 +156,7 @@ int main()
 
 void createSegment(const deque<string> & params)
 {
-    bool result = false;
+    int result = 0;
 
     string name;
     int x1,x2,y1,y2;
@@ -168,15 +174,38 @@ void createSegment(const deque<string> & params)
         }
         catch ( const std::invalid_argument & )
         {
+            result = 3;
         }
     }
+    else
+    {
+        result = 4;
+    }
 
-
+    switch (result) {
+    case 0:
+        showMessage("OK","New object : " + params[0]);
+        break;
+    case 1:
+        showMessage("ERR","Figure name \""+params[0]+"\" already used.");
+        break;
+    case 2:
+        showMessage("ERR","Invalid segment");
+        break;
+    case 3:
+        showMessage("ERR","Invalid parameters");
+        break;
+    case 4:
+        showMessage("ERR","Invalid number of parameters");
+        break;
+    default:
+        break;
+    }
 }
 
 void createRectangle(const deque<string> & params)
 {
-    bool result = false;
+    int result = 0;
 
     string name;
     int x1,x2,y1,y2;
@@ -194,15 +223,38 @@ void createRectangle(const deque<string> & params)
         }
         catch ( const std::invalid_argument & )
         {
+            result = 3;
         }
     }
+    else
+    {
+        result = 4;
+    }
 
-
+    switch (result) {
+    case 0:
+        showMessage("OK","New object : " + params[0]);
+        break;
+    case 1:
+        showMessage("ERR","Figure name \""+params[0]+"\" already used.");
+        break;
+    case 2:
+        showMessage("ERR","Invalid rectangle");
+        break;
+    case 3:
+        showMessage("ERR","Invalid parameters");
+        break;
+    case 4:
+        showMessage("ERR","Invalid number of parameters");
+        break;
+    default:
+        break;
+    }
 }
 
 void createConvexPolygon(const deque<string> & params)
 {
-    bool result = false;
+    int result = 0;
 
     string name;
     int x,y;
@@ -225,15 +277,38 @@ void createConvexPolygon(const deque<string> & params)
         }
         catch ( const std::invalid_argument & )
         {
+            result = 3;
         }
     }
+    else
+    {
+        result = 4;
+    }
 
-
+    switch (result) {
+    case 0:
+        showMessage("OK","New object : " + params[0]);
+        break;
+    case 1:
+        showMessage("ERR","Figure name \""+params[0]+"\" already used.");
+        break;
+    case 2:
+        showMessage("ERR","Invalid convex polygon");
+        break;
+    case 3:
+        showMessage("ERR","Invalid parameters");
+        break;
+    case 4:
+        showMessage("ERR","Invalid number of parameters");
+        break;
+    default:
+        break;
+    }
 }
 
 void createReunion(const deque<string> & params)
 {
-    bool result = false;
+    int result = 0;
     string name;
 
     vector<string> names;
@@ -248,13 +323,35 @@ void createReunion(const deque<string> & params)
         }
         result = ShapeManager::GetInstance().CreateReunion(name,names);
     }
+    else
+    {
+        result = 4;
+    }
 
-
+    switch (result) {
+    case 0:
+        showMessage("OK","New object : " + params[0]);
+        break;
+    case 1:
+        showMessage("ERR","Figure name \""+params[0]+"\" already used.");
+        break;
+    case 2:
+        showMessage("ERR","Invalid reunion");
+        break;
+    case 3:
+        showMessage("ERR","Some shape names are unknown");
+        break;
+    case 4:
+        showMessage("ERR","Invalid number of parameters");
+        break;
+    default:
+        break;
+    }
 }
 
 void createIntersection(const deque<string> & params)
 {
-    bool result = false;
+    int result = 0;
     string name;
 
     vector<string> names;
@@ -269,13 +366,35 @@ void createIntersection(const deque<string> & params)
         }
         result = ShapeManager::GetInstance().CreateIntersection(name,names);
     }
+    else
+    {
+        result = 4;
+    }
 
-
+    switch (result) {
+    case 0:
+        showMessage("OK","New object : " + params[0]);
+        break;
+    case 1:
+        showMessage("ERR","Figure name \""+params[0]+"\" already used.");
+        break;
+    case 2:
+        showMessage("ERR","Invalid intersection");
+        break;
+    case 3:
+        showMessage("ERR","Some shape names are unknown");
+        break;
+    case 4:
+        showMessage("ERR","Invalid number of parameters");
+        break;
+    default:
+        break;
+    }
 }
 
 void include(const deque<string> & params)
 {
-    bool result = false;
+    int result = 0;
     string name;
     int x,y;
 
@@ -286,13 +405,32 @@ void include(const deque<string> & params)
         y = stoi(params[2]);
         result = ShapeManager::GetInstance().Include(name,Point(x,y));
     }
-
+    else
+    {
+        result = 3;
+    }
+    switch (result) {
+    case 0:
+        showMessage("YES","");
+        break;
+    case 1:
+        showMessage("NO","");
+        break;
+    case 2:
+        showMessage("ERR","Figure name \""+params[0]+"\" already used.");
+        break;
+    case 3:
+        showMessage("ERR","Invalid number of parameters");
+        break;
+    default:
+        break;
+    }
 
 }
 
 void deleteShapes(const deque<string> & params)
 {
-    bool result = false;
+    int result = 0;
 
     vector<string> names;
     if(params.size() > 0)
@@ -303,13 +441,28 @@ void deleteShapes(const deque<string> & params)
         }
         result = ShapeManager::GetInstance().DeleteShape(names);
     }
-
-
+    else
+    {
+        result = 2;
+    }
+    switch (result) {
+    case 0:
+        showMessage("OK","Figures deleted.");
+        break;
+    case 1:
+        showMessage("ERR","Some shape names are unknown");
+        break;
+    case 2:
+        showMessage("ERR","Invalid number of parameters");
+        break;
+    default:
+        break;
+    }
 }
 
 void moveShape(const deque<string> & params)
 {
-    bool result = false;
+    int result = 0;
     string name;
     int dx,dy;
 
@@ -324,7 +477,28 @@ void moveShape(const deque<string> & params)
         }
         catch ( const std::invalid_argument & )
         {
+            result = 2;
         }
+    }
+    else
+    {
+        result = 3;
+    }
+    switch (result) {
+    case 0:
+        showMessage("OK","Figure \""+params[0]+"\" moved.");
+        break;
+    case 1:
+        showMessage("ERR","Figure name \""+params[0]+"\" unknown.");
+        break;
+    case 2:
+        showMessage("ERR","Invalid parameters");
+        break;
+    case 3:
+        showMessage("ERR","Invalid number of parameters");
+        break;
+    default:
+        break;
     }
 
 
@@ -332,8 +506,6 @@ void moveShape(const deque<string> & params)
 
 void showShapes(const deque<string> & params)
 {
-    bool result = false;
-
     if(params.size() == 0)
     {
         const map<string,Shape*> * shapes = &ShapeManager::GetInstance().GetShapes();
@@ -342,59 +514,116 @@ void showShapes(const deque<string> & params)
             cout << *(it->second) << endl;
         }
     }
-
-
 }
 
 void undo(const deque<string> & params) // si parametre apres UNDO -> false, si pas de undo à exec -> true
 {
-    bool result = false;
+    int result = 0;
 
     if(params.size() == 0)
     {
         ShapeManager::GetInstance().Undo();
-        result = true;
     }
-
-
+    else
+    {
+        result = 1;
+    }
+    switch (result) {
+    case 0:
+        showMessage("OK","");
+        break;
+    case 1:
+        showMessage("ERR","Invalid number of parameters");
+        break;
+    default:
+        break;
+    }
 }
 
 void redo(const deque<string> & params) // idem que undo
 {
-    bool result = false;
+    int result = 0;
 
     if(params.size() == 0)
     {
         ShapeManager::GetInstance().Redo();
-        result = true;
     }
-
-
+    else
+    {
+        result = 1;
+    }
+    switch (result) {
+    case 0:
+        showMessage("OK","");
+        break;
+    case 1:
+        showMessage("ERR","Invalid number of parameters");
+        break;
+    default:
+        break;
+    }
 }
 
 void load(const deque<string> & params)
 {
-    bool result = false;
+    int result = 0;
 
     if(params.size() == 1)
     {
         result = ShapeManager::GetInstance().Load(params[0]);
-        result = true;
     }
-
+    else
+    {
+        result = 4;
+    }
+    switch (result) {
+    case 0:
+        showMessage("OK","");
+        break;
+    case 1:
+        showMessage("ERR","File can't be opened");
+        break;
+    case 2:
+        showMessage("ERR","Error in loading");
+        break;
+    case 3:
+        showMessage("ERR","Some shape names already used");
+        break;
+    case 4:
+        showMessage("ERR","Invalid number of parameters");
+        break;
+    default:
+        break;
+    }
 
 }
 
 void save(const deque<string> & params)
 {
-    bool result = false;
+    int result = false;
 
     if(params.size() == 1)
     {
         result = ShapeManager::GetInstance().Save(params[0]);
         result = true;
     }
-
+    else
+    {
+        result = 2;
+    }
+    switch (result) {
+    case 0:
+        showMessage("OK","");
+        break;
+    case 1:
+        showMessage("ERR","File can't be opened");
+        break;
+    case 2:
+        showMessage("ERR","Invalid number of parameters");
+        break;
+    default:
+        break;
+    }
 
 }
 
@@ -404,6 +633,7 @@ void clear(const deque<string> & params)
     {
         ShapeManager::GetInstance().Clear();
     }
+    showMessage("OK","");
 }
 
 deque<string> splitCommand(string cmd)
@@ -413,8 +643,21 @@ deque<string> splitCommand(string cmd)
     deque<string> tokens;
     while (getline(ss, item, ' '))
     {
-        tokens.push_back(item);
+        if(item != " " && item != "")
+        {
+            tokens.push_back(item);
+        }
     }
 
     return tokens;
 }
+
+inline void showMessage(string result, string message)
+{
+    cout << result << endl;
+    if(message != "")
+    {
+        cout << "#" << message << endl;
+    }
+}
+

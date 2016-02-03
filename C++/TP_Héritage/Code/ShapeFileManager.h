@@ -35,15 +35,21 @@ class ShapeFileManager
 public:
 //-------------------------------------------------------- Public methods
 
-static bool Load(const string & filePath, vector<Shape *> & shapes);
+static int Load(const string & filePath, vector<Shape *> & shapes);
 // Manual : Load the shapes saved in the file filePath. It adds the shapes to
 // the vector<Shape*> shapes given in parameters.
+// Return 0 if succeeded.
+// Return 1 if file can't be opened.
+// Return 2 if there is an error in the file.
 //
-// Contract : File must be well written.
+// Contract : None
 //
 
-static bool Save(const string & filePath, const map<string, Shape *> &shapes);
-// Manual :
+static int Save(const string & filePath, const map<string, Shape *> &shapes);
+// Manual :// Manual : Save the shapes from the map given in parameters
+// in the file filePath. If the file exists it replaces it, else it creates it.
+// Return 0 if succeeded.
+// Return 1 if file can't be opened.
 //
 // Contract : None.
 //

@@ -65,7 +65,7 @@ int CreateRectangle(const string & name, const Point & p1, const Point & p2);
 // Manual : Method that creates and add a Rectangle in the map. (can be undo/redo)
 // Return 0 if succeded.
 // Return 1 if name already used in map.
-// Return 2 if the rectangle is not valid. (Rectangle.IsValid() == false)
+// Return 2 if the Rectangle is not valid. (Rectangle.IsValid() == false)
 //
 // Contract : None.
 //
@@ -74,7 +74,7 @@ int CreateSegment(const string & name, const Point & p1, const Point & p2);
 // Manual : Method that creates and add a Segment in the map. (can be undo/redo)
 // Return 0 if succeded.
 // Return 1 if name already used in map.
-// Return 2 if the rectangle is not valid. (Segment.IsValid() == false)
+// Return 2 if the Segment is not valid. (Segment.IsValid() == false)
 //
 // Contract : None.
 //
@@ -83,7 +83,7 @@ int CreateConvexPolygon(const string & name, const vector<Point> & somePoints);
 // Manual : Method that creates and add a ConvexPolygon in the map. (can be undo/redo)
 // Return 0 if succeded.
 // Return 1 if name already used in map.
-// Return 2 if the rectangle is not valid. (ConvexPolygon.IsValid() == false)
+// Return 2 if the ConvexPolygon is not valid. (ConvexPolygon.IsValid() == false)
 //
 // Contract : None.
 //
@@ -92,7 +92,7 @@ int CreateIntersection(const string & name, const vector<string> & someShapeName
 // Manual : Method that creates and add a Intersection in the map. (can be undo/redo)
 // Return 0 if succeded.
 // Return 1 if name already used in map.
-// Return 2 if the rectangle is not valid. (Intersection.IsValid() == false)
+// Return 2 if the Intersection is not valid. (Intersection.IsValid() == false)
 // Return 3 if one or more shape name of someShapesNames is not in the map.
 //
 // Contract : None.
@@ -102,7 +102,7 @@ int CreateReunion(const string & name, const vector<string> & someShapeNames);
 // Manual : Method that creates and add a Reunion in the map. (can be undo/redo)
 // Return 0 if succeded.
 // Return 1 if name already used in map.
-// Return 2 if the rectangle is not valid. (Reunion.IsValid() == false)
+// Return 2 if the Reunion is not valid. (Reunion.IsValid() == false)
 // Return 3 if one or more shape name of someShapesNames is not in the map.
 //
 // Contract : None.
@@ -119,7 +119,7 @@ int DeleteShape(const vector<string> & names);
 int MoveShape(const string  & name, int dx, int dy);
 // Manual : Method that allows to move the shape named name. (can be undo/redo)
 // Return 0 if succeded.
-// Return 1 name is not in the map.
+// Return 1 if name is not in the map.
 //
 // Contract : None.
 //
@@ -156,18 +156,20 @@ int Load(const string & filePath);
 // Manual : Method that creates Shapes from the file filePath and adds it
 // to the map. (can be undo/redo)
 // Return 0 if succeeded.
-// Return 1 if one (or more) figure loaded has a name which is in the map,
+// Return 1 if file can't be opened.
+// Return 2 if error in loading, if line is wrong.
+// Return 3 if one (or more) figure loaded has a name which is in the map,
 // the load is canceled.
-// Return 2 if file can't be opened.
 //
-// Contract : ????
+// Contract : None
 //
 
-bool Save(const string & filePath) const;
+
+int Save(const string & filePath) const;
 // Manual : Method that save shapes from the map in the file filePath.
 // It creates the file if it doesn't exist or replace it if it exists.
-// Return true if succeeded.
-// Return false if file can't be opened.
+// Return 0 if succeeded.
+// Return 1 if file can't be opened.
 //
 // Contract : None.
 //

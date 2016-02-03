@@ -11,7 +11,7 @@ REAL = $(INT:.h=.cpp) Main.cpp
 OBJ = $(INT:.h=.o) Main.o
 OUTPUT = -o
 RMFLAGS = -f
-CPPFLAGS = -std=c++11 -Wall -O3 -D TEST #-D MAP
+CPPFLAGS = -std=c++11 -Wall -O3 #-D TEST #-D MAP
 EDLFLAGS = 
 LIBS = 
 LIBPATH =# -L

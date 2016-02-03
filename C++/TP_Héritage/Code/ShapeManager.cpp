@@ -358,21 +358,21 @@ int ShapeManager::Load(const string & filePath)
     int result = 0;
 
     vector<Shape*> someShapes;
-    if(!ShapeFileManager::Load(filePath,someShapes))
-    {
-        result = 2;
-    }
-    else
+
+    result = ShapeFileManager::Load(filePath,someShapes);
+
+    if(result == 0)
     {
         for(vector<Shape*>::iterator it = someShapes.begin(); it != someShapes.end(); it++)
         {
             if(GetShape((*it)->GetName()) != nullptr)
             {
-                result = 1;
+                result = 3;
                 break;
             }
         }
     }
+
     if(result == 0)
     {
         Execute(new AddShapesCommand(&shapes,someShapes));
@@ -384,15 +384,16 @@ int ShapeManager::Load(const string & filePath)
             delete *it;
         }
     }
+
     return result;
 } //----- End of Load
 
 
-bool ShapeManager::Save(const string & filePath) const
+int ShapeManager::Save(const string & filePath) const
 // Algorithm :
 //
 {
-    bool result = false;
+    bool result = 0;
 
     result = ShapeFileManager::Save(filePath,shapes);
 
