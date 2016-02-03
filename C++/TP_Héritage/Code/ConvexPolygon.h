@@ -20,8 +20,9 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 
 //------------------------------------------------------------------------
 // Role of the class <ConvexPolygon>
-//
-//
+// Describes a convex polygon. This class first tests if the polygon built
+// by the user is convex. If so, the user can move and test if a point is
+// inside the polygon.
 //------------------------------------------------------------------------
 
 class ConvexPolygon : public SimpleShape
@@ -33,20 +34,28 @@ public:
 
 virtual bool Include(const Point & p) const;
 // Manual :
+// Tests if P is inside the convex polygon.
 //
-// Contract :
+// Contract : The convex polygon must be valid to have a good result.
 //
 
 virtual string ToString() const;
 // Manual :
+// Displays the polygon's caracteristics
 //
 // Contract :
 //
 
-virtual Shape* Clone() const;
-// Manual :
+bool IsValid() const;
+// Manual : Tests if the convex polygon is valid.
 //
-// Contract :
+// Contract : All the points of the polygon must be ordered.
+//
+virtual Shape* Clone() const;
+// Manual : Clone the ConvexPolygon, use the copy constructeur, allows
+// to use copy with polymorphism
+//
+// Contract : None.
 //
 
 //------------------------------------------------- Operators overloading 
@@ -86,6 +95,25 @@ protected:
 
 private:
 //-------------------------------------------------------- Private methods
+static int ccw(Point a, Point b, Point c);
+// Manual :
+//
+// Contract :
+//
+
+static int sqrDist(Point a, Point b);
+// Manual :
+//
+// Contract :
+//
+
+static Point pivot;
+
+static bool POLAR_ORDER(Point a, Point b);
+// Manual :
+//
+// Contract :
+//
 
 protected:
 //--------------------------------------------------- Protected attributes

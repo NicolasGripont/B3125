@@ -33,6 +33,8 @@ using namespace std;
 //--------------------------------------------------------- Public methods
 
 vector<Shape*> ShapeFileManager::Load(const string & filePath)
+// Algorithm :
+//
 {
     vector<Shape*> shapes;
     string line;
@@ -74,120 +76,11 @@ vector<Shape*> ShapeFileManager::Load(const string & filePath)
     return shapes;
 } //----- End of Load
 
-deque<string> ShapeFileManager::SplitLine(string line)
-{
-    stringstream ss(line);
-    string item;
-    deque<string> tokens;
-    while (getline(ss, item, ' '))
-    {
-        tokens.push_back(item);
-    }
 
-    return tokens;
-} //----- End of SplitLine
-
-
-Shape* ShapeFileManager::CreateComplexShape(ifstream & file, deque<string> params)
-{
-    Shape* shape = nullptr;
-
-    string complexType = params[0];
-    string name = params[1];
-    int nbShapes = stoi(params[2]);
-    vector<Shape*> someShapes;
-
-    for(int i = 0; i < nbShapes; i++)
-    {
-        string line;
-        getline(file,line);
-
-        deque<string> splittedLine = SplitLine(line);
-        string type = splittedLine[0];
-
-        if(type.back() == 'S')
-        {
-            someShapes.push_back(CreateSegment(splittedLine));
-        }
-        else if(type.back() == 'R')
-        {
-            someShapes.push_back(CreateRectangle(splittedLine));
-        }
-        else if(type[type.size()-2] == 'C' && type[type.size()-1] == 'C')
-        {
-            someShapes.push_back(CreateConvexPolygon(splittedLine));
-        }
-        else if(type[type.size()-2] == 'O' && (type[type.size()-1] == 'R' || type[type.size()-1] == 'I'))
-        {
-            someShapes.push_back(CreateComplexShape(file,splittedLine));
-        }
-    }
-
-    if(complexType[complexType.size()-2] == 'O' && complexType[complexType.size()-1] == 'I')
-    {
-        shape = new Intersection(name,someShapes);
-    }
-    else if(complexType[complexType.size()-2] == 'O' && complexType[complexType.size()-1] == 'R')
-    {
-        shape = new Reunion(name,someShapes);
-    }
-
-    return shape;
-} //----- End of CreateComplexShape
-
-
-
-Shape* ShapeFileManager::CreateSegment(const deque<string> & params)
-{
-    string name;
-    int x1,x2,y1,y2;
-
-    name = params[1];
-
-    x1 = stoi(params[2]);
-    y1 = stoi(params[3]);
-    x2 = stoi(params[4]);
-    y2 = stoi(params[5]);
-
-    return new Segment(name,Point(x1,y1),Point(x2,y2));
-}
-
-Shape* ShapeFileManager::CreateRectangle(const deque<string> & params)
-{
-    string name;
-    int x1,x2,y1,y2;
-
-    name = params[1];
-
-    x1 = stoi(params[2]);
-    y1 = stoi(params[3]);
-    x2 = stoi(params[4]);
-    y2 = stoi(params[5]);
-
-    return new Rectangle(name,Point(x1,y1),Point(x2,y2));
-}
-
-Shape* ShapeFileManager::CreateConvexPolygon(const deque<string> & params)
-{
-    string name;
-    int x,y;
-    int nbParams = params.size();
-
-    vector<Point> points;
-
-    name = params[1];
-    for(int i=2; i < nbParams; i+=2)
-    {
-        x = stoi(params[i]);
-        y = stoi(params[i+1]);
-        points.push_back(Point(x,y));
-    }
-
-
-    return new ConvexPolygon(name,points);
-}
 
 bool ShapeFileManager::Save(const string & filePath, const map<string,Shape*> & shapes)
+// Algorithm :
+//
 {
     bool result = false;
 
@@ -252,5 +145,127 @@ ShapeFileManager::~ShapeFileManager()
 
 //------------------------------------------------------ Protected methods
 
+deque<string> ShapeFileManager::SplitLine(string line)
+// Algorithm :
+//
+{
+    stringstream ss(line);
+    string item;
+    deque<string> tokens;
+    while (getline(ss, item, ' '))
+    {
+        tokens.push_back(item);
+    }
+
+    return tokens;
+} //----- End of SplitLine
+
+
+Shape* ShapeFileManager::CreateComplexShape(ifstream & file, deque<string> params)
+// Algorithm :
+//
+{
+    Shape* shape = nullptr;
+
+    string complexType = params[0];
+    string name = params[1];
+    int nbShapes = stoi(params[2]);
+    vector<Shape*> someShapes;
+
+    for(int i = 0; i < nbShapes; i++)
+    {
+        string line;
+        getline(file,line);
+
+        deque<string> splittedLine = SplitLine(line);
+        string type = splittedLine[0];
+
+        if(type.back() == 'S')
+        {
+            someShapes.push_back(CreateSegment(splittedLine));
+        }
+        else if(type.back() == 'R')
+        {
+            someShapes.push_back(CreateRectangle(splittedLine));
+        }
+        else if(type[type.size()-2] == 'C' && type[type.size()-1] == 'C')
+        {
+            someShapes.push_back(CreateConvexPolygon(splittedLine));
+        }
+        else if(type[type.size()-2] == 'O' && (type[type.size()-1] == 'R' || type[type.size()-1] == 'I'))
+        {
+            someShapes.push_back(CreateComplexShape(file,splittedLine));
+        }
+    }
+
+    if(complexType[complexType.size()-2] == 'O' && complexType[complexType.size()-1] == 'I')
+    {
+        shape = new Intersection(name,someShapes);
+    }
+    else if(complexType[complexType.size()-2] == 'O' && complexType[complexType.size()-1] == 'R')
+    {
+        shape = new Reunion(name,someShapes);
+    }
+
+    return shape;
+} //----- End of CreateComplexShape
+
+
+
+Shape* ShapeFileManager::CreateSegment(const deque<string> & params)
+// Algorithm :
+//
+{
+    string name;
+    int x1,x2,y1,y2;
+
+    name = params[1];
+
+    x1 = stoi(params[2]);
+    y1 = stoi(params[3]);
+    x2 = stoi(params[4]);
+    y2 = stoi(params[5]);
+
+    return new Segment(name,Point(x1,y1),Point(x2,y2));
+} //----- End of CreateSegment
+
+Shape* ShapeFileManager::CreateRectangle(const deque<string> & params)
+// Algorithm :
+//
+{
+    string name;
+    int x1,x2,y1,y2;
+
+    name = params[1];
+
+    x1 = stoi(params[2]);
+    y1 = stoi(params[3]);
+    x2 = stoi(params[4]);
+    y2 = stoi(params[5]);
+
+    return new Rectangle(name,Point(x1,y1),Point(x2,y2));
+} //----- End of CreateRectangle
+
+Shape* ShapeFileManager::CreateConvexPolygon(const deque<string> & params)
+// Algorithm :
+//
+{
+    string name;
+    int x,y;
+    int nbParams = params.size();
+
+    vector<Point> points;
+
+    name = params[1];
+    for(int i=2; i < nbParams; i+=2)
+    {
+        x = stoi(params[i]);
+        y = stoi(params[i+1]);
+        points.push_back(Point(x,y));
+    }
+
+
+    return new ConvexPolygon(name,points);
+} //----- End of CreateConvexPolygon
 
 //-------------------------------------------------------- Private methods

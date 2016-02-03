@@ -37,6 +37,22 @@ void ComplexShape::Move(int dx, int dy)
     }
 } //----- End of Move
 
+bool ComplexShape::IsValid() const
+// Algorithm :
+//
+{
+    bool result = true;
+    for(vector<Shape*>::const_iterator it = children.begin(); it != children.end(); it++)
+    {
+        if((*it)->IsValid())
+        {
+            result = false;
+            break;
+        }
+    }
+    return result;
+} //----- End of IsValid
+
 const vector<Shape*> & ComplexShape::GetChildren() const
 // Algorithm :
 //

@@ -99,9 +99,9 @@ private:
 protected:
 //--------------------------------------------------- Protected attributes
 
-vector<Shape*> createdShapes;
+vector<Shape*> createdShapes;  // Created Shapes
 
-bool created;
+bool created;                  // Statu of the command.
 
 private:
 //------------------------------------------------------ Pivate attributes

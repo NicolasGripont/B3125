@@ -98,8 +98,9 @@ private:
 protected:
 //--------------------------------------------------- Protected attributes
 
-vector<Shape*> deletedShapes;
-bool deleted;
+vector<Shape*> deletedShapes;   // Deleted shapes
+
+bool deleted;                   // Statu of the command.
 
 private:
 //------------------------------------------------------ Pivate attributes

@@ -33,65 +33,65 @@ public:
 //-------------------------------------------------------- Public methods
 
 void Move(int dx, int dy);
-// Manual :
-//
-// Contract :
+// Manual : modifies the coordonates of the point.
+// The point is now defined by (x+dx,y+dy)
+// Contract : None
 //
 
 int GetX() const;
-// Manual :
+// Manual : getter of the abcisse.
 //
-// Contract :
+// Contract : None
 //
 
 int GetY() const;
-// Manual :
+// Manual : getter of the ordonate.
 //
-// Contract :
+// Contract : None
 //
 
 int MaxX(Point p) const;
-// Manual :
+// Manual : returns the highest abcisse of the two points.
 //
-// Contract :
+// Contract : None
 //
 
 int MaxY(Point p) const;
-// Manual :
+// Manual : returns the highest ordonate of the two points.
 //
-// Contract :
+// Contract : None
 //
 
 int MinX(Point p) const;
-// Manual :
+// Manual : returns the minimum abcisse of the two points.
 //
-// Contract :
+// Contract : None
 //
 
 int MinY(Point p) const;
-// Manual :
+// Manual : returns the minimum ordonate of the two points.
 //
-// Contract :
+// Contract : None
 //
 
 //------------------------------------------------- Operators overloading 
 
 Point & operator = (const Point & onePoint);
-// Manual :
+// Manual : Overload the = operator.
 //
-// Contract : 
+// Contract : None.
 //
 
 bool operator == ( const Point & onePoint ) const;
-// Manual :
+// Manual : Overload the == operator.
 //
-// Contract :
+// Contract : None.
 //
 
 friend ostream & operator << (ostream & os, Point const & point);
-// Manual :
-//
-// Contract :
+// Manual : Overload the << operator.
+// shows : "point.x point.y"
+// Contract : None.
 //
 
 //--------------------------------------------- Constructors - destructor

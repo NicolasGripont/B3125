@@ -40,20 +40,20 @@ template class std::deque<string>;
 
 //---------------------------------------------------- Method declarations
 
-bool createSegment(const deque<string> & params);
-bool createRectangle(const deque<string> & params);
-bool createConvexPolygon(const deque<string> & params);
-bool createReunion(const deque<string> & params);
-bool createIntersection(const deque<string> & params);
-bool include(const deque<string> & params);
-bool deleteShapes(const deque<string> & params);
-bool moveShape(const deque<string> & params);
-bool showShapes(const deque<string> & params);
-bool undo(const deque<string> & params);
-bool redo(const deque<string> & params);
-bool load(const deque<string> & params);
-bool save(const deque<string> & params);
-bool clear(const deque<string> & params);
+void createSegment(const deque<string> & params);
+void createRectangle(const deque<string> & params);
+void createConvexPolygon(const deque<string> & params);
+void createReunion(const deque<string> & params);
+void createIntersection(const deque<string> & params);
+void include(const deque<string> & params);
+void deleteShapes(const deque<string> & params);
+void moveShape(const deque<string> & params);
+void showShapes(const deque<string> & params);
+void undo(const deque<string> & params);
+void redo(const deque<string> & params);
+void load(const deque<string> & params);
+void save(const deque<string> & params);
+void clear(const deque<string> & params);
 deque<string> splitCommand(string cmd);
 
 //----------------------------------------------------- Method definitions
@@ -144,7 +144,9 @@ int main()
     {
         cout << "no shape named 'segment'" << endl;
     }
-    ShapeManager::GetInstance().DeleteShape("segment");
+    vector<string> names;
+    names.push_back("segment");
+    ShapeManager::GetInstance().DeleteShape(names);
     if(ShapeManager::GetInstance().GetShape("segment") != nullptr)
     {
         cout << ShapeManager::GetInstance().GetShape("segment")->ToString() << endl;
@@ -164,6 +166,104 @@ int main()
     {
         cout << "no shape named 'segment'" << endl;
     }
+
+//    Point a(0,2);
+//    Point b(1,4);
+//    Point c(4,5);
+//    Point d(6,3);
+//    Point e(4,0);
+//    Point f(1,1);
+
+//    vector<Point> points2;
+//    points2.push_back(a);
+//    points2.push_back(b);
+//    points2.push_back(c);
+//    points2.push_back(d);
+//    points2.push_back(e);
+//    points2.push_back(f);
+
+//    ConvexPolygon cp("ConvPoly",points2);
+//    cout << cp << endl;
+//    if(cp.IsValid())
+//    {
+//        cout << "Valid" << endl;
+//    }
+//    else
+//    {
+//        cout << "Invalid" << endl;
+//    }
+//    if(cp.Include(Point(4,3)))
+//    {
+//        cout << "Included" << endl;
+//    }
+//    else
+//    {
+//        cout << "Not Included" << endl;
+//    }
+
+//    if(cp.Include(Point(0,0)))
+//    {
+//        cout << "Included" << endl;
+//    }
+//    else
+//    {
+//        cout << "Not Included" << endl;
+//    }
+
+//    Point a(0,2);
+//    Point b(1,4);
+//    Point c(4,5);
+//    Point d(6,3);
+//    Point e(4,0);
+//    Point f(1,1);
+//    Point g(4,3);
+
+//    vector<Point> points2;
+//    points2.push_back(a);
+//    points2.push_back(b);
+//    points2.push_back(c);
+//    points2.push_back(d);
+//    points2.push_back(e);
+//    points2.push_back(f);
+//    points2.push_back(g);
+
+//    ConvexPolygon cp("ConvPoly",points2);
+//    cout << cp << endl;
+//    if(cp.IsValid())
+//    {
+//        cout << "Valid" << endl;
+//    }
+//    else
+//    {
+//        cout << "Invalid" << endl;
+//    }
+
+
+
+    Point a(1,1);
+    Point b(3,4);
+    Point c(4,5);
+    Point d(6,7);
+
+    vector<Point> points2;
+    points2.push_back(a);
+    points2.push_back(b);
+    points2.push_back(c);
+    points2.push_back(d);
+
+
+    ConvexPolygon cp("ConvPoly",points2);
+    cout << cp << endl;
+    if(cp.IsValid())
+    {
+        cout << "Valid" << endl;
+    }
+    else
+    {
+        cout << "Invalid" << endl;
+    }
+
+    return 0;
 
 #endif
 
@@ -248,7 +348,7 @@ int main()
 }
 
 
-bool createSegment(const deque<string> & params)
+void createSegment(const deque<string> & params)
 {
     bool result = false;
 
@@ -271,10 +371,10 @@ bool createSegment(const deque<string> & params)
         }
     }
 
-    return result;
+
 }
 
-bool createRectangle(const deque<string> & params)
+void createRectangle(const deque<string> & params)
 {
     bool result = false;
 
@@ -297,10 +397,10 @@ bool createRectangle(const deque<string> & params)
         }
     }
 
-    return result;
+
 }
 
-bool createConvexPolygon(const deque<string> & params)
+void createConvexPolygon(const deque<string> & params)
 {
     bool result = false;
 
@@ -328,10 +428,10 @@ bool createConvexPolygon(const deque<string> & params)
         }
     }
 
-    return result;
+
 }
 
-bool createReunion(const deque<string> & params)
+void createReunion(const deque<string> & params)
 {
     bool result = false;
     string name;
@@ -349,10 +449,10 @@ bool createReunion(const deque<string> & params)
         result = ShapeManager::GetInstance().CreateReunion(name,names);
     }
 
-    return result;
+
 }
 
-bool createIntersection(const deque<string> & params)
+void createIntersection(const deque<string> & params)
 {
     bool result = false;
     string name;
@@ -370,10 +470,10 @@ bool createIntersection(const deque<string> & params)
         result = ShapeManager::GetInstance().CreateIntersection(name,names);
     }
 
-    return result;
+
 }
 
-bool include(const deque<string> & params)
+void include(const deque<string> & params)
 {
     bool result = false;
     string name;
@@ -387,10 +487,10 @@ bool include(const deque<string> & params)
         result = ShapeManager::GetInstance().Include(name,Point(x,y));
     }
 
-    return result;
+
 }
 
-bool deleteShapes(const deque<string> & params)
+void deleteShapes(const deque<string> & params)
 {
     bool result = false;
 
@@ -404,10 +504,10 @@ bool deleteShapes(const deque<string> & params)
         result = ShapeManager::GetInstance().DeleteShape(names);
     }
 
-    return result;
+
 }
 
-bool moveShape(const deque<string> & params)
+void moveShape(const deque<string> & params)
 {
     bool result = false;
     string name;
@@ -427,10 +527,10 @@ bool moveShape(const deque<string> & params)
         }
     }
 
-    return result;
+
 }
 
-bool showShapes(const deque<string> & params)
+void showShapes(const deque<string> & params)
 {
     bool result = false;
 
@@ -443,10 +543,10 @@ bool showShapes(const deque<string> & params)
         }
     }
 
-    return result;
+
 }
 
-bool undo(const deque<string> & params) // si parametre apres UNDO -> false, si pas de undo à exec -> true
+void undo(const deque<string> & params) // si parametre apres UNDO -> false, si pas de undo à exec -> true
 {
     bool result = false;
 
@@ -456,10 +556,10 @@ bool undo(const deque<string> & params) // si parametre apres UNDO -> false, si 
         result = true;
     }
 
-    return result;
+
 }
 
-bool redo(const deque<string> & params) // idem que undo
+void redo(const deque<string> & params) // idem que undo
 {
     bool result = false;
 
@@ -469,10 +569,10 @@ bool redo(const deque<string> & params) // idem que undo
         result = true;
     }
 
-    return result;
+
 }
 
-bool load(const deque<string> & params)
+void load(const deque<string> & params)
 {
     bool result = false;
 
@@ -482,10 +582,10 @@ bool load(const deque<string> & params)
         result = true;
     }
 
-    return result;
+
 }
 
-bool save(const deque<string> & params)
+void save(const deque<string> & params)
 {
     bool result = false;
 
@@ -495,10 +595,10 @@ bool save(const deque<string> & params)
         result = true;
     }
 
-    return result;
+
 }
 
-bool clear(const deque<string> & params)
+void clear(const deque<string> & params)
 {
     bool result = false;
 
@@ -508,7 +608,7 @@ bool clear(const deque<string> & params)
         result = true;
     }
 
-    return result;
+
 }
 
 deque<string> splitCommand(string cmd)

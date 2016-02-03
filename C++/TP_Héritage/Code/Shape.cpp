@@ -21,12 +21,26 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 
 //--------------------------------------------------------- Public methods
 
+bool Shape::IsValid() const
+// Algorithm :
+//
+{
+    return true;
+} //----- End of IsValid
+
 string Shape::GetName() const
 // Algorithm :
 //
 {
     return name;
 } //----- End of GetType
+
+void Shape::SetName(string n)
+// Algorithm :
+//
+{
+    name = n;
+} //----- End of SetType
 
 //------------------------------------------------- Operators overloading
 

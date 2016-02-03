@@ -20,8 +20,8 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 
 //------------------------------------------------------------------------
 // Role of the class <Segment>
-//
-//
+// Describes a segment defined by two points. The class allows the user to
+// move the segment, and to test if a point P is on the segment.
 //------------------------------------------------------------------------
 
 class Segment : public SimpleShape
@@ -32,41 +32,39 @@ public:
 //-------------------------------------------------------- Public methods
 
 virtual bool Include(const Point & p) const;
-// Manual :
+// Manual : tests if P is on the segment.
 //
-// Contract :
+// Contract : none
 //
 
 virtual string ToString() const;
-// Manual :
+// Manual : displays the segment's caracteristics.
 //
 // Contract :
 //
 
 virtual Shape* Clone() const;
-// Manual :
+// Manual : Clone the Segment, use the copy constructeur, allows to use
+// copy with polymorphism
 //
-// Contract :
-//
-
-int LigneEquation() const;
-// Manual :
-//
-// Contract :
+// Contract : None.
 //
 
-bool Intersection(Segment s);
-// Manual :
+int MatchingY(Point p) const;
+// Manual : finds the matching y on the segment of the abcisse of the
+// point P. This function is only defined to be used in the other
+// functions and to make the code easy to read.
 //
-// Contract :
+// Contract : None
 //
+
 
 //------------------------------------------------- Operators overloading 
 
 Segment & operator = (const Segment & oneSegment);
-// Manual :
+// Manual : Overload of = operator
 //
-// Contract : 
+// Contract : None
 //
 
 

@@ -207,7 +207,7 @@ list<Command*> undoStack;
 
 list<Command*> redoStack;
 
-static const int MAX_UNDO_REDO = 30 ;
+static const int MAX_UNDO_REDO = 100 ;
 
 private:
 //------------------------------------------------------ Pivate attributes

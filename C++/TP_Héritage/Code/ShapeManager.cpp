@@ -92,8 +92,17 @@ bool ShapeManager::CreateConvexPolygon(const string & name, const vector<Point> 
     if(GetShape(name) == nullptr)
     {
         vector<Shape*>createdShapes;
-        createdShapes.push_back(new ConvexPolygon(name,somePoints));
-        Execute(new AddShapesCommand(&shapes,createdShapes));
+        Shape* shape = new ConvexPolygon(name,somePoints);
+        if(shape->IsValid())
+        {
+            createdShapes.push_back(shape);
+            Execute(new AddShapesCommand(&shapes,createdShapes));
+        }
+        else
+        {
+            result = false;
+            delete shape;
+        }
     }
     return result;
 } //----- End of CreateConvexPolygon
@@ -209,12 +218,12 @@ bool ShapeManager::Include(const string & name, const Point & p) const
 // Algorithm :
 //
 {
-    bool result = true;
+    bool result = false;
     map<string,Shape*>::const_iterator it;
     it = shapes.find(name);
     if (it != shapes.end())
     {
-        it->second->Include(p);
+        result = it->second->Include(p);
     }
     return result;
 } //----- End of Redo

@@ -27,29 +27,50 @@ bool Segment::Include(const Point & p) const
 // Algorithm :
 //
 {
-    Point p1=points[0];
-    Point p2=points[1];
+    bool b = false;
+    Point p1 = points[0];
+    Point p2 = points[1];
     if( p == p1 || p == p2)
     {
-        return true;
+        b = true;
     }
     else
     {
-        int xmax= p1.MaxX(p2);
-        int ymax= p1.MaxY(p2);
-        int xmin=p1.MinX(p2);
-        int ymin= p1.MinY(p2);
-        if((xmin<=p.GetX() && p.GetX()<=xmax) && (ymin<=p.GetY() && p.GetY()<=ymax))
-        {
-            //linear equation :
-            int ypoint=LigneEquation();
-            if(p.GetY()==ypoint)
+        int xmax = p1.MaxX(p2);
+        int ymax = p1.MaxY(p2);
+        int xmin = p1.MinX(p2);
+        int ymin = p1.MinY(p2);
+        if( (xmin <= p.GetX() && p.GetX() <= xmax) && (ymin <= p.GetY() && p.GetY() <= ymax) )
             {
-                return true;
+            //linear equation :
+            int difx = points[0].GetX()-points[1].GetX();
+            if(difx == 0)
+            {
+                int x = points[0].GetX();
+                if(p.GetX() != x)
+                {
+                    b = false;
+                }
+                if(p.GetY()<ymin || p.GetY()>ymax)
+                {
+                    b = false;
+                }
+                else
+                {
+                    b = true;
+                }
             }
-        }
+            else
+            {
+                int yPoint = MatchingY(p);
+                if(yPoint == p.GetY())
+                {
+                    b = true;
+                }
+            }
+         }
     }
-    return false;
+    return b;
 } //----- End of Include
 
 string Segment::ToString() const
@@ -81,38 +102,13 @@ Shape* Segment::Clone() const
     return clone;
 } //----- End of Clone
 
-int Segment::LigneEquation() const
+int Segment::MatchingY(Point p) const
 {
-    float coef = (points[0].GetY()-points[1].GetY())/(points[0].GetX()-points[1].GetX());
-    float b= SimpleShape::points[0].GetY() - coef*SimpleShape::points[0].GetX();
-    //float ypoint=coef*P.getX() + b;
-    return (int)b;
+    float coef = (points[0].GetY() - points[1].GetY()) / (points[0].GetX() - points[1].GetX());
+    float b = points[0].GetY() - coef * points[0].GetX();
+    float ypoint = coef * p.GetX() + b;
+    return (int)ypoint;
 }
-
-
-bool Segment::Intersection(Segment s)
-// Algorithm :
-//
-{
-    float coef1 = (points[0].GetY()-points[1].GetY())/(points[0].GetX()-points[1].GetX());
-    float b1= points[0].GetY() - coef1*points[0].GetX();
-
-    float coef2 = (s.points[0].GetY()-s.points[1].GetY())/(s.points[0].GetX()-s.points[1].GetX());
-    float b2= s.points[0].GetY() - coef2*(s.points[0]).GetX();
-
-    int x=(int)((b2-b1)/(coef1-coef2));
-    int matchingY1=(int)coef1*x+b1;
-    int matchingY2=(int)coef2*x+b2;
-    //Point pSeg1(x,matchingY1);
-    //Point pSeg2(x, matchingY2);
-    if(matchingY1==matchingY2)
-    {
-        return true;
-    }
-    return false;
-} //----- End of Intersection
-
-
 
 //------------------------------------------------- Operators overloading
 

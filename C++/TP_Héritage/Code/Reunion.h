@@ -19,8 +19,8 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 
 //------------------------------------------------------------------------
 // Role of the class <Reunion>
-//
-//
+// Describes a Reunion of shape. The class allows the user to
+// move the Reunion, and to test if a point p is on the segment.
 //------------------------------------------------------------------------
 
 class Reunion : public ComplexShape
@@ -31,29 +31,30 @@ public:
 //-------------------------------------------------------- Public methods
 
 bool Include(const Point & p) const;
-// Manual :
+// Manual : tests if P is on the Reunion.
 //
-// Contract :
+// Contract : none
 //
 
 string ToString() const;
-// Manual :
+// Manual : displays the Reunion's caracteristics.
 //
 // Contract :
 //
 
 virtual Shape* Clone() const;
-// Manual :
+// Manual : Clone the Reunion, use the copy constructeur, allows to use
+// copy with polymorphism
 //
-// Contract :
+// Contract : None.
 //
 
 //------------------------------------------------- Operators overloading 
 
 Reunion & operator = (const Reunion & oneReunion);
-// Manual :
+// Manual : Overload of = operator
 //
-// Contract : 
+// Contract : None.
 //
 
 

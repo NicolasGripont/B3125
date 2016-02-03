@@ -20,8 +20,8 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 
 //------------------------------------------------------------------------
 // Role of the class <Intersection>
-//
-//
+// Describes a Intersection of shape. The class allows the user to
+// move the Reunion, and to test if a point p is on the segment.
 //------------------------------------------------------------------------
 
 class Intersection : public ComplexShape
@@ -32,29 +32,30 @@ public:
 //-------------------------------------------------------- Public methods
 
 bool Include(const Point & p) const;
-// Manual :
+// Manual : tests if P is on the Intersection.
 //
-// Contract :
+// Contract : none
 //
 
 string ToString() const;
-// Manual :
+// Manual : displays the Intersection's caracteristics.
 //
 // Contract :
 //
 
 virtual Shape* Clone() const;
-// Manual :
+// Manual : Clone the Intersection, use the copy constructeur, allows to use
+// copy with polymorphism
 //
-// Contract :
+// Contract : None.
 //
 
 //------------------------------------------------- Operators overloading 
 
 Intersection & operator = (const Intersection & oneIntersection);
-// Manual :
+// Manual : Overload of = operator
 //
-// Contract : 
+// Contract : None
 //
 
 

@@ -26,13 +26,13 @@ bool Rectangle::Include(const Point & p) const
 // Algorithm :
 //
 {
-    Point d1=points[0];
-    Point d2=points[1];
-    int xmax=d1.MaxX(d2);
-        int ymax=d1.MaxY(d2);
-        int xmin=d1.MinX(d2);
-        int ymin=d1.MinY(d2);
-    if((xmin<=p.GetX() && p.GetX()<=xmax) && (ymin<=p.GetY() && p.GetY()<=ymax))
+    Point d1 = points[0];
+    Point d2 = points[1];
+    int xmax = d1.MaxX(d2);
+    int ymax = d1.MaxY(d2);
+    int xmin = d1.MinX(d2);
+    int ymin = d1.MinY(d2);
+    if( (xmin <= p.GetX() && p.GetX() <= xmax) && (ymin <= p.GetY() && p.GetY() <= ymax) )
     {
         return true;
     }

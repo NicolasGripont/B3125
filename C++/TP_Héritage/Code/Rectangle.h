@@ -20,8 +20,9 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 
 //------------------------------------------------------------------------
 // Role of the class <Rectangle>
-//
-//
+// Describes a rectangle defined by its name and the two extrem points of
+// one diagonal. It allows the user to move, and to determine if a point
+// is inside of the rectangle.
 //------------------------------------------------------------------------
 
 class Rectangle : public SimpleShape
@@ -32,29 +33,30 @@ public:
 //-------------------------------------------------------- Public methods
 
 virtual bool Include(const Point & p) const;
-// Manual :
+// Manual : tests if p is inside the rectangle.
 //
-// Contract :
+// Contract : None.
 //
 
 virtual string ToString() const;
-// Manual :
+// Manual : displays the rectangle's caracteristics.
 //
-// Contract :
+// Contract : None
 //
 
 virtual Shape* Clone() const;
-// Manual :
+// Manual : Clone the Rectangle, use the copy constructeur, allows to
+// use copy with polymorphism
 //
-// Contract :
+// Contract : None.
 //
 
 //------------------------------------------------- Operators overloading 
 
 Rectangle & operator = (const Rectangle & oneRectangle);
-// Manual :
+// Manual : Overload of = operator.
 //
-// Contract : 
+// Contract : None.
 //
 
 

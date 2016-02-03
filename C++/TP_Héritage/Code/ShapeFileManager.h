@@ -53,18 +53,6 @@ static vector<Shape*> Load(const string & filePath);
 // Contract :
 //
 
-static deque<string> SplitLine(string line);
-// Manual :
-//
-// Contract :
-//
-
-static Shape* CreateComplexShape(ifstream & file, deque<string> params);
-// Manual :
-//
-// Contract :
-//
-
 static bool Save(const string & filePath, const map<string, Shape *> &shapes);
 // Manual :
 //
@@ -78,11 +66,6 @@ static bool Save(const string & filePath, const map<string, Shape *> &shapes);
 ////
 //// Contract :
 ////
-
-
-
-
-
 
 //---------------------------------------------------------------- PRIVATE
 
@@ -113,10 +96,34 @@ protected:
 //------------------------------------------------------ Protected methods
 
 static Shape* CreateSegment(const deque<string> & params);
+// Manual :
+//
+// Contract :
+//
+
 static Shape* CreateRectangle(const deque<string> & params);
+// Manual :
+//
+// Contract :
+//
+
 static Shape* CreateConvexPolygon(const deque<string> & params);
-//Shape* CreateSegment(const deque<string> & params);
-//Shape* CreateSegment(const deque<string> & params);
+// Manual :
+//
+// Contract :
+//
+
+static Shape* CreateComplexShape(ifstream & file, deque<string> params);
+// Manual :
+//
+// Contract :
+//
+
+static deque<string> SplitLine(string line);
+// Manual :
+//
+// Contract :
+//
 
 private:
 //-------------------------------------------------------- Private methods

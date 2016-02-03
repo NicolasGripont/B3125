@@ -26,8 +26,8 @@ template class std::vector<Point>;
 #endif
 //------------------------------------------------------------------------
 // Role of the class <SimpleShape>
-//
-//
+// Abstract class that describes a shape of one component.
+// It allows the user to move the shape to a specific new place.
 //------------------------------------------------------------------------
 
 class SimpleShape : public Shape
@@ -39,23 +39,23 @@ public:
 
 virtual void Move(int dx, int dy);
 // Manual :
-//
-// Contract :
+// Moves the shape to a new place determined by the coordonates (x+dx,y+dy).
+// Contract : None.
 //
 
 const vector<Point> & GetPoints() const;
 // Manual :
-//
-// Contract :
+// Getter of the points defining the shape.
+// Contract : None.
 //
 
 
 //------------------------------------------------- Operators overloading 
 
 SimpleShape & operator = (const SimpleShape & oneSimpleShape);
-// Manual :
+// Manual : Overload of = operator.
 //
-// Contract : 
+// Contract : None.
 //
 
 
@@ -97,7 +97,7 @@ private:
 protected:
 //--------------------------------------------------- Protected attributes
 
-vector<Point> points;
+vector<Point> points;   // vector of points of the simple shape
 
 private:
 //------------------------------------------------------ Pivate attributes

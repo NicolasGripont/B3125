@@ -39,14 +39,12 @@ virtual void Move(int dx, int dy) = 0;
 //------------------------------------------------- Operators overloading 
 
 Moveable & operator = (const Moveable & unMoveable);
-// Manual :
+// Manual : Forbidden.
 //
-// Contract :
+// Contract : None.
 //
-
 
 //--------------------------------------------- Constructors - destructor
-
 Moveable(const Moveable & unMoveable);
 // Manual : Copy constructor.
 //
@@ -65,10 +63,12 @@ virtual ~Moveable();
 // Contract : None.
 //
 
+
 //---------------------------------------------------------------- PRIVATE
 
 protected:
 //------------------------------------------------------ Protected methods
+
 
 
 private:

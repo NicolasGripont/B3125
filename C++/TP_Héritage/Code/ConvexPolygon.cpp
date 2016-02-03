@@ -12,10 +12,20 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 
 //---------------------------------------------------------- Sytem include
 #include <iostream>
+#include <stack>
+#include <cstdio>
+#include <algorithm>
 using namespace std;
 
 //------------------------------------------------------ Personnal include
 #include "ConvexPolygon.h"
+
+//------------------------------------------------------------------ Types
+
+#if ! defined ( StackPoint )
+#define StackPoint
+template class std::stack<Point>;
+#endif
 
 //-------------------------------------------------------------- Constants
 
@@ -27,37 +37,38 @@ bool ConvexPolygon::Include(const Point & p) const
 // Algorithm :
 //
 {
-//    int i, j=0, k, cpt=0, fmin=points[0].GetX();
-//    for(i=1;i<nbrPoints-1; i++)
-//    {
-//        int min=points[i].MinX(points[i+1]);
-//        if (min<fmin){ fmin=min; }
-//    }
-//    Point outsidePoint(fmin-10, P.GetY());//to be on the horizontal axis.
-//    Segment stest(P, outsidePoint, "segmentest");
-//    //construction of the polygon's segments
-//    vector<Segment> vs;
-//    while(j<nbrPoints-1)
-//    {
-//        Segment seg(points[j],points[j+1],"polygon_segment_n");
-//        vs.push_back(seg);
-//        j++;
-//    }
-//    Segment fseg(points[j],points[0],"polygon_last_seg");
-//    vs.push_back(fseg);
-//    //find out how many intersections we've got
-//    for(k=0; k<vs.size(); k++)
-//    {
-//        if(stest.Intersection(vs[k]))
-//        {
-//            cpt++;
-//        }
-//    }
-//    if(cpt==1)
-//    {
-//        return true;
-//    }
-    return false;
+    bool result = true;
+
+    int size = points.size();
+    int vect = 0, newVect;
+
+    Point a, b;
+    int X1, Y1, X2, Y2;
+
+    for( int i = 0; i < size; i++ )
+    {
+        a = points[i];
+        b = points[(i+1)%size];
+
+        X1 = a.GetX() - p.GetX();
+        Y1 = a.GetY() - p.GetY();
+        X2 = p.GetX() - b.GetX();
+        Y2 = p.GetY() - b.GetY();
+
+        newVect = X1 * Y2 - Y1 * X2;
+
+        if(newVect != 0)
+        {
+            if(vect/newVect < 0)
+            {
+                result = false;
+                break;
+            }
+            vect = newVect;
+        }
+    }
+
+    return result;
 } //----- End of Include
 
 string ConvexPolygon::ToString() const
@@ -81,6 +92,48 @@ string ConvexPolygon::ToString() const
 
     return s;
 } //----- End of ToString
+
+
+Point ConvexPolygon::pivot(0,0);
+
+bool ConvexPolygon::IsValid() const
+// Algorithm :
+//
+{
+    bool result = true;
+
+    int size = points.size();
+    int vect = 0, newVect;
+
+    Point a, b, c;
+    int X1, Y1, X2, Y2;
+
+    for( int i = 0; i < size; i++ )
+    {
+        a = points[i];
+        b = points[(i+1)%size];
+        c = points[(i+2)%size];
+
+        X1 = a.GetX() - b.GetX();
+        Y1 = a.GetY() - b.GetY();
+        X2 = b.GetX() - c.GetX();
+        Y2 = b.GetY() - c.GetY();
+
+        newVect = X1 * Y2 - Y1 * X2;
+
+        if(newVect != 0)
+        {
+            if(vect/newVect < 0)
+            {
+                result = false;
+                break;
+            }
+            vect = newVect;
+        }
+    }
+
+    return result;
+} //----- End of IsValid
 
 Shape* ConvexPolygon::Clone() const
 // Algorithm :

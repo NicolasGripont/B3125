@@ -6,3 +6,5 @@ TODO :
 - ajouter contrat (notamment commandes) et commenter
 - faire les testes de non régression
 - finir compte rendu, cahier de charges, compte rendu performance
+- si fichier de save existe déjà, écrasement des données (réécriture), contrat : fichier correcte si existe
+- revoir type de retour bool en int si plusieurs error possible

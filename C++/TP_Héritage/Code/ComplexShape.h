@@ -31,8 +31,8 @@ template class std::vector<string>;
 #endif
 //------------------------------------------------------------------------
 // Role of the class <ComplexShape>
-//
-//
+// Abstract class that describes a shape composed of multiple shapes.
+// It allows the user to move the shape to a specific new place, ...
 //------------------------------------------------------------------------
 
 class ComplexShape : public Shape
@@ -44,22 +44,28 @@ public:
 
 virtual void Move(int dx, int dy);
 // Manual :
+// Moves the shape to a new place determined by the coordonates (x+dx,y+dy).
+// Contract : None.
 //
-// Contract :
+
+virtual bool IsValid() const;
+// Manual : Tests if the ComplexShape is valid.
+//
+// Contract : None.
 //
 
 const vector<Shape *> & GetChildren() const;
-// Manual :
+// Manual : Getter on children (shapes).
 //
-// Contract :
+// Contract : None.
 //
 
 //------------------------------------------------- Operators overloading 
 
 ComplexShape & operator = (const ComplexShape & unComplexShape);
-// Manual :
+// Manual : Overload of = operator.
 //
-// Contract : 
+// Contract : None.
 //
 
 
@@ -95,7 +101,7 @@ private:
 protected:
 //--------------------------------------------------- Protected attributes
 
-vector<Shape*> children;
+vector<Shape*> children;    // children, shapes that form the ComplexShape
 
 private:
 //------------------------------------------------------ Pivate attributes
