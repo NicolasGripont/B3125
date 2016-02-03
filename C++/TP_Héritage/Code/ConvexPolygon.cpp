@@ -12,20 +12,12 @@ e-mail    : nicolas.gripont@insa-lyon.fr , rim.el-idrissi-mokdad@insa-lyon.fr
 
 //---------------------------------------------------------- Sytem include
 #include <iostream>
-#include <stack>
-#include <cstdio>
-#include <algorithm>
 using namespace std;
 
 //------------------------------------------------------ Personnal include
 #include "ConvexPolygon.h"
 
 //------------------------------------------------------------------ Types
-
-#if ! defined ( StackPoint )
-#define StackPoint
-template class std::stack<Point>;
-#endif
 
 //-------------------------------------------------------------- Constants
 
@@ -94,7 +86,6 @@ string ConvexPolygon::ToString() const
 } //----- End of ToString
 
 
-Point ConvexPolygon::pivot(0,0);
 
 bool ConvexPolygon::IsValid() const
 // Algorithm :
@@ -135,7 +126,7 @@ bool ConvexPolygon::IsValid() const
     return result;
 } //----- End of IsValid
 
-Shape* ConvexPolygon::Clone() const
+ConvexPolygon* ConvexPolygon::Clone() const
 // Algorithm :
 //
 {

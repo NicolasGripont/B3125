@@ -68,7 +68,7 @@ string Reunion::ToString() const
     return s;
 } //----- End of ToString
 
-Shape* Reunion::Clone() const
+Reunion* Reunion::Clone() const
 // Algorithm :
 //
 {

@@ -8,3 +8,7 @@ TODO :
 - finir compte rendu, cahier de charges, compte rendu performance
 - si fichier de save existe déjà, écrasement des données (réécriture), contrat : fichier correcte si existe
 - revoir type de retour bool en int si plusieurs error possible
+— contrat formes complexes: les formes données doivent être valides
+- possibilité de mettre plusieurs fois le même nom dans DELETE
+- tester : DELETE rect rect
+- contrat chargement fichier dans shapemanager (voir try catch pour ne pas en mettre)

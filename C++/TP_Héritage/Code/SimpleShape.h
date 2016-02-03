@@ -20,10 +20,10 @@ using namespace std;
 //-------------------------------------------------------------- Constants
 
 //------------------------------------------------------------------ Types
-#if ! defined ( VectorPoint )
-#define VectorPoint
-template class std::vector<Point>;
-#endif
+//#if ! defined ( VectorPoint )
+//#define VectorPoint
+//template class std::vector<Point>;
+//#endif
 //------------------------------------------------------------------------
 // Role of the class <SimpleShape>
 // Abstract class that describes a shape of one component.

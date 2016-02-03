@@ -32,11 +32,11 @@ using namespace std;
 
 //--------------------------------------------------------- Public methods
 
-vector<Shape*> ShapeFileManager::Load(const string & filePath)
+bool ShapeFileManager::Load(const string & filePath,vector<Shape*> & shapes)
 // Algorithm :
 //
 {
-    vector<Shape*> shapes;
+    bool result = true;
     string line;
     deque<string> splittedLine;
     string type;
@@ -72,8 +72,12 @@ vector<Shape*> ShapeFileManager::Load(const string & filePath)
         }
         file.close();
     }
+    else
+    {
+        result = false;
+    }
 
-    return shapes;
+    return result;
 } //----- End of Load
 
 
@@ -82,7 +86,7 @@ bool ShapeFileManager::Save(const string & filePath, const map<string,Shape*> & 
 // Algorithm :
 //
 {
-    bool result = false;
+    bool result = true;
 
     ofstream file(filePath,ios::out | ios::trunc);
     if(file)
@@ -94,6 +98,10 @@ bool ShapeFileManager::Save(const string & filePath, const map<string,Shape*> & 
             file << *(it->second) <<endl;
         }
         file.close();
+    }
+    else
+    {
+        result = false;
     }
 
     return result;
@@ -188,7 +196,7 @@ Shape* ShapeFileManager::CreateComplexShape(ifstream & file, deque<string> param
         {
             someShapes.push_back(CreateRectangle(splittedLine));
         }
-        else if(type[type.size()-2] == 'C' && type[type.size()-1] == 'C')
+        else if(type[type.size()-2] == 'P' && type[type.size()-1] == 'C')
         {
             someShapes.push_back(CreateConvexPolygon(splittedLine));
         }

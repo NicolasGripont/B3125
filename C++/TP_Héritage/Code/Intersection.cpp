@@ -17,11 +17,6 @@ using namespace std;
 //------------------------------------------------------ Personnal include
 
 #include "Intersection.h"
-#include "Segment.h"
-#include "Rectangle.h"
-#include "ConvexPolygon.h"
-#include "Reunion.h"
-#include "Intersection.h"
 
 //-------------------------------------------------------------- Constants
 
@@ -33,13 +28,17 @@ bool Intersection::Include(const Point & p) const
 // Algorithm :
 //
 {
-    bool result = true;
-    for(vector<Shape*>::const_iterator it = children.begin(); it != children.end(); it++)
+    bool result = false;
+    if(children.size() > 0)
     {
-        if(!(*it)->Include(p))
+        result = true;
+        for(vector<Shape*>::const_iterator it = children.begin(); it != children.end(); it++)
         {
-            result = false;
-            break;
+            if(!(*it)->Include(p))
+            {
+                result = false;
+                break;
+            }
         }
     }
     return result;
@@ -68,7 +67,7 @@ string Intersection::ToString() const
     return s;
 } //----- End of ToString
 
-Shape* Intersection::Clone() const
+Intersection* Intersection::Clone() const
 // Algorithm :
 //
 {

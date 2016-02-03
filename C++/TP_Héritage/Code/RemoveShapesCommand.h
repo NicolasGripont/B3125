@@ -20,14 +20,7 @@ using namespace std;
 //-------------------------------------------------------------- Constants
 
 //------------------------------------------------------------------ Types
-#if ! defined ( VectorString )
-#define VectorString
-template class std::vector<string>;
-#endif
-#if ! defined ( VectorShapePtr )
-#define VectorShapePtr
-template class std::vector<Shape*>;
-#endif
+
 //------------------------------------------------------------------- enum
 
 //------------------------------------------------------------------------

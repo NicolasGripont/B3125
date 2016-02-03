@@ -28,48 +28,59 @@ class UnitTesting
 public:
 //-------------------------------------------------------- Public methods
 
-static void Test();
+static void TestSegmentConstructor();
 // Manual :
 //
 // Contract : None.
 //
 
-//static void Test();
-//// Manual :
-////
-//// Contract : None.
-////
+static void TestSegmentInclude();
+// Manual :
+//
+// Contract : None.
+//
 
-//static void Test();
-//// Manual :
-////
-//// Contract : None.
-////
+static void TestRectangleConstructor();
+// Manual :
+//
+// Contract : None.
+//
 
-//static void Test();
-//// Manual :
-////
-//// Contract : None.
-////
+static void TestRectangleInclude();
+// Manual :
+//
+// Contract : None.
+//
 
-//static void Test();
-//// Manual :
-////
-//// Contract : None.
-////
+static void TestConvexPolygonConstructor();
+// Manual :
+//
+// Contract : None.
+//
 
-//static void Test();
-//// Manual :
-////
-//// Contract : None.
-////
+static void TestConvexPolygonIsValid();
+// Manual :
+//
+// Contract : None.
+//
 
-//static void Test();
-//// Manual :
-////
-//// Contract : None.
-////
+static void TestConvexPolygonInclude();
+// Manual :
+//
+// Contract : None.
+//
 
+static void TestReunionConstructor();
+// Manual :
+//
+// Contract : None.
+//
+
+static void TestReunionInclude();
+// Manual :
+//
+// Contract : None.
+//
 //static void Test();
 //// Manual :
 ////

@@ -42,7 +42,7 @@ string ToString() const;
 // Contract :
 //
 
-virtual Shape* Clone() const;
+virtual Reunion *Clone() const;
 // Manual : Clone the Reunion, use the copy constructeur, allows to use
 // copy with polymorphism
 //

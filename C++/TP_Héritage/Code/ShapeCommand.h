@@ -21,10 +21,6 @@ using namespace std;
 
 //------------------------------------------------------------------ Types
 
-#if ! defined ( MapStringShapePtr )
-#define MapStringShapePtr
-template class std::map<string,Shape*>;
-#endif
 
 //------------------------------------------------------------------------
 // Role of the class <ShapeCommand>

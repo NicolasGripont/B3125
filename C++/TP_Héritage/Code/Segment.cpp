@@ -28,48 +28,23 @@ bool Segment::Include(const Point & p) const
 //
 {
     bool b = false;
-    Point p1 = points[0];
-    Point p2 = points[1];
-    if( p == p1 || p == p2)
+    int dx1 = p.GetX() - points[0].GetX();
+    int dx2 = p.GetX() - points[1].GetX();
+    int dy1 = p.GetY() - points[0].GetY();
+    int dy2 = p.GetY() - points[1].GetY();
+
+    int vProd = dx1 * dy2 - dx2 * dy1;
+
+    int xMax = points[0].MaxX(points[1]);
+    int yMax = points[0].MaxY(points[1]);
+    int xMin = points[0].MinX(points[1]);
+    int yMin = points[0].MinY(points[1]);
+
+    if(vProd == 0 && p.GetX() >= xMin && p.GetX() <= xMax && p.GetY() >= yMin && p.GetY() <= yMax )
     {
         b = true;
     }
-    else
-    {
-        int xmax = p1.MaxX(p2);
-        int ymax = p1.MaxY(p2);
-        int xmin = p1.MinX(p2);
-        int ymin = p1.MinY(p2);
-        if( (xmin <= p.GetX() && p.GetX() <= xmax) && (ymin <= p.GetY() && p.GetY() <= ymax) )
-            {
-            //linear equation :
-            int difx = points[0].GetX()-points[1].GetX();
-            if(difx == 0)
-            {
-                int x = points[0].GetX();
-                if(p.GetX() != x)
-                {
-                    b = false;
-                }
-                if(p.GetY()<ymin || p.GetY()>ymax)
-                {
-                    b = false;
-                }
-                else
-                {
-                    b = true;
-                }
-            }
-            else
-            {
-                int yPoint = MatchingY(p);
-                if(yPoint == p.GetY())
-                {
-                    b = true;
-                }
-            }
-         }
-    }
+
     return b;
 } //----- End of Include
 
@@ -94,7 +69,7 @@ string Segment::ToString() const
     return s;
 } //----- End of ToString
 
-Shape* Segment::Clone() const
+Segment *Segment::Clone() const
 // Algorithm :
 //
 {
@@ -102,13 +77,6 @@ Shape* Segment::Clone() const
     return clone;
 } //----- End of Clone
 
-int Segment::MatchingY(Point p) const
-{
-    float coef = (points[0].GetY() - points[1].GetY()) / (points[0].GetX() - points[1].GetX());
-    float b = points[0].GetY() - coef * points[0].GetX();
-    float ypoint = coef * p.GetX() + b;
-    return (int)ypoint;
-}
 
 //------------------------------------------------- Operators overloading
 

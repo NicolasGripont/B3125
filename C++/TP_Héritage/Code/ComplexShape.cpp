@@ -44,7 +44,7 @@ bool ComplexShape::IsValid() const
     bool result = true;
     for(vector<Shape*>::const_iterator it = children.begin(); it != children.end(); it++)
     {
-        if((*it)->IsValid())
+        if(!(*it)->IsValid())
         {
             result = false;
             break;

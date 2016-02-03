@@ -51,7 +51,7 @@ bool IsValid() const;
 //
 // Contract : All the points of the polygon must be ordered.
 //
-virtual Shape* Clone() const;
+virtual ConvexPolygon *Clone() const;
 // Manual : Clone the ConvexPolygon, use the copy constructeur, allows
 // to use copy with polymorphism
 //
@@ -95,25 +95,6 @@ protected:
 
 private:
 //-------------------------------------------------------- Private methods
-static int ccw(Point a, Point b, Point c);
-// Manual :
-//
-// Contract :
-//
-
-static int sqrDist(Point a, Point b);
-// Manual :
-//
-// Contract :
-//
-
-static Point pivot;
-
-static bool POLAR_ORDER(Point a, Point b);
-// Manual :
-//
-// Contract :
-//
 
 protected:
 //--------------------------------------------------- Protected attributes

@@ -88,6 +88,12 @@ bool operator == ( const Point & onePoint ) const;
 // Contract : None.
 //
 
+bool operator != ( const Point & onePoint ) const;
+// Manual : Overload the != operator.
+//
+// Contract : None.
+//
+
 friend ostream & operator << (ostream & os, Point const & point);
 // Manual : Overload the << operator.
 // shows : "point.x point.y"

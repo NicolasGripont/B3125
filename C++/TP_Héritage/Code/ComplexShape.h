@@ -20,15 +20,6 @@ using namespace std;
 
 //------------------------------------------------------------------ Types
 
-#if ! defined ( VectorShapePtr )
-#define VectorShapePtr
-template class std::vector<Shape*>;
-#endif
-
-#if ! defined ( VectorString )
-#define VectorString
-template class std::vector<string>;
-#endif
 //------------------------------------------------------------------------
 // Role of the class <ComplexShape>
 // Abstract class that describes a shape composed of multiple shapes.

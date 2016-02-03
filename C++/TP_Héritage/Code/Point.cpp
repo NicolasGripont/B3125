@@ -109,6 +109,13 @@ bool Point::operator == ( const Point & onePoint ) const
     return false;
 } //----- end of operator ==
 
+bool Point::operator != ( const Point & onePoint ) const
+// Algorithm :
+//
+{
+    return !(*this == onePoint);
+} //----- end of operator ==
+
 ostream & operator << (ostream & os, const Point & point)
 // Algorithm :
 //

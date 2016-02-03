@@ -22,21 +22,9 @@ using namespace std;
 //-------------------------------------------------------------- Constants
 
 //------------------------------------------------------------------ Types
-#if ! defined ( MapStringShapePtr )
-#define MapStringShapePtr
-template class std::map<string,Shape*>;
-#endif
-#if ! defined ( DequeString )
-#define DequeString
-template class std::deque<string>;
-#endif
-#if ! defined ( VectorShapePtr )
-#define VectorShapePtr
-template class std::vector<Shape*>;
-#endif
+
 //------------------------------------------------------------------------
 // Role of the class <ShapeFileManager>
-//
 //
 //------------------------------------------------------------------------
 
@@ -47,16 +35,17 @@ class ShapeFileManager
 public:
 //-------------------------------------------------------- Public methods
 
-static vector<Shape*> Load(const string & filePath);
-// Manual :
+static bool Load(const string & filePath, vector<Shape *> & shapes);
+// Manual : Load the shapes saved in the file filePath. It adds the shapes to
+// the vector<Shape*> shapes given in parameters.
 //
-// Contract :
+// Contract : File must be well written.
 //
 
 static bool Save(const string & filePath, const map<string, Shape *> &shapes);
 // Manual :
 //
-// Contract :
+// Contract : None.
 //
 
 //------------------------------------------------- Operators overloading 

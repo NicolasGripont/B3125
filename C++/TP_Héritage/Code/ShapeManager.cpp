@@ -36,16 +36,22 @@ using namespace std;
 //--------------------------------------------------------- Public methods
 
 ShapeManager& ShapeManager::GetInstance()
+// Algorithm :
+//
 {
     return instance;
 } //----- End of GetInstance
 
 const map<string,Shape*> & ShapeManager::GetShapes() const
+// Algorithm :
+//
 {
     return shapes;
 } //----- End of GetShapes
 
 const Shape* ShapeManager::GetShape(const string & name) const
+// Algorithm :
+//
 {
     map<string,Shape*>::const_iterator it;
     it = shapes.find(name);
@@ -56,39 +62,71 @@ const Shape* ShapeManager::GetShape(const string & name) const
     return it->second;
 } //----- End of GetShape
 
-bool ShapeManager::CreateRectangle(const string & name, const Point & p1, const Point & p2)
+int ShapeManager::CreateRectangle(const string & name, const Point & p1, const Point & p2)
+// Algorithm :
+//
 {
-    bool result = true;
+    int result = 0;
     if(GetShape(name) == nullptr)
     {
         vector<Point> somePoints;
         somePoints.push_back(p1);
         somePoints.push_back(p2);
         vector<Shape*>createdShapes;
-        createdShapes.push_back(new Rectangle(name,p1,p2));
-        Execute(new AddShapesCommand(&shapes,createdShapes));
+        Shape* shape = new Rectangle(name,p1,p2);
+        if(shape->IsValid())
+        {
+            createdShapes.push_back(shape);
+            Execute(new AddShapesCommand(&shapes,createdShapes));
+        }
+        else
+        {
+            delete shape;
+            result = 2;
+        }
+    }
+    else
+    {
+        result = 1;
     }
     return result;
 } //----- End of CreateRectangle
 
-bool ShapeManager::CreateSegment(const string & name, const Point & p1, const Point & p2)
+int ShapeManager::CreateSegment(const string & name, const Point & p1, const Point & p2)
+// Algorithm :
+//
 {
-    bool result = true;
+    bool result = 0;
     if(GetShape(name) == nullptr)
     {
         vector<Point> somePoints;
         somePoints.push_back(p1);
         somePoints.push_back(p2);
         vector<Shape*>createdShapes;
-        createdShapes.push_back(new Segment(name,p1,p2));
-        Execute(new AddShapesCommand(&shapes,createdShapes));
+        Shape* shape = new Segment(name,p1,p2);
+        if(shape->IsValid())
+        {
+            createdShapes.push_back(shape);
+            Execute(new AddShapesCommand(&shapes,createdShapes));
+        }
+        else
+        {
+            delete shape;
+            result = 2;
+        }
+    }
+    else
+    {
+        result = 1;
     }
     return result;
 } //----- End of CreateSegment
 
-bool ShapeManager::CreateConvexPolygon(const string & name, const vector<Point> & somePoints)
+int ShapeManager::CreateConvexPolygon(const string & name, const vector<Point> & somePoints)
+// Algorithm :
+//
 {
-    bool result = true;
+    bool result = 0;
     if(GetShape(name) == nullptr)
     {
         vector<Shape*>createdShapes;
@@ -100,65 +138,113 @@ bool ShapeManager::CreateConvexPolygon(const string & name, const vector<Point> 
         }
         else
         {
-            result = false;
             delete shape;
+            result = 2;
         }
+    }
+    else
+    {
+        result = 1;
     }
     return result;
 } //----- End of CreateConvexPolygon
 
-bool ShapeManager::CreateIntersection(const string & name,const vector<string> & someShapeNames)
+int ShapeManager::CreateIntersection(const string & name,const vector<string> & someShapeNames)
+// Algorithm :
+//
 {
-    bool result = true;
+    bool result = 0;
     map<string,Shape*>::iterator itm;
     vector<Shape*> someShapes;
-
-    for(vector<string>::const_iterator it = someShapeNames.begin(); it != someShapeNames.end(); it++)
-    {
-        itm = shapes.find(*it);
-        if (itm != shapes.end())
-        {
-            someShapes.push_back(itm->second);
-        }
-    }
-
     if(GetShape(name) == nullptr)
     {
-        vector<Shape*>createdShapes;
-        createdShapes.push_back(new Intersection(name,someShapes));
-        Execute(new AddShapesCommand(&shapes,createdShapes));
-    }
+        for(vector<string>::const_iterator it = someShapeNames.begin(); it != someShapeNames.end(); it++)
+        {
+            itm = shapes.find(*it);
+            if (itm != shapes.end())
+            {
+                someShapes.push_back(itm->second);
+            }
+        }
 
+        if(someShapeNames.size() == someShapes.size())
+        {
+
+            vector<Shape*>createdShapes;
+            Shape* shape = new Intersection(name,someShapes);
+            if(shape->IsValid())
+            {
+                createdShapes.push_back(shape);
+                Execute(new AddShapesCommand(&shapes,createdShapes));
+            }
+            else
+            {
+                delete shape;
+                result = 2;
+            }
+        }
+        else
+        {
+            result = 3;
+        }
+    }
+    else
+    {
+        result = 1;
+    }
     return result;
 } //----- End of CreateIntersection
 
-bool ShapeManager::CreateReunion(const string & name, const vector<string> & someShapeNames)
+int ShapeManager::CreateReunion(const string & name, const vector<string> & someShapeNames)
+// Algorithm :
+//
 {
-    bool result = true;
+    bool result = 0;
     map<string,Shape*>::iterator itm;
     vector<Shape*> someShapes;
-    for(vector<string>::const_iterator it = someShapeNames.begin(); it != someShapeNames.end(); it++)
-    {
-        itm = shapes.find(*it);
-        if (itm != shapes.end())
-        {
-            someShapes.push_back(itm->second);
-        }
-    }
-
     if(GetShape(name) == nullptr)
     {
-        vector<Shape*>createdShapes;
-        createdShapes.push_back(new Reunion(name,someShapes));
-        Execute(new AddShapesCommand(&shapes,createdShapes));
-    }
+        for(vector<string>::const_iterator it = someShapeNames.begin(); it != someShapeNames.end(); it++)
+        {
+            itm = shapes.find(*it);
+            if (itm != shapes.end())
+            {
+                someShapes.push_back(itm->second);
+            }
+        }
+        if(someShapeNames.size() == someShapes.size())
+        {
 
+            vector<Shape*>createdShapes;
+            Shape* shape = new Reunion(name,someShapes);
+            if(shape->IsValid())
+            {
+                createdShapes.push_back(shape);
+                Execute(new AddShapesCommand(&shapes,createdShapes));
+            }
+            else
+            {
+                delete shape;
+                result = 2;
+            }
+        }
+        else
+        {
+            result = 3;
+        }
+    }
+    else
+    {
+        result = 1;
+    }
     return result;
 } //----- End of CreateReunion
 
-bool ShapeManager::DeleteShape(const vector<string> & names)
+int ShapeManager::DeleteShape(const vector<string> & names)
+// Algorithm :
+//
 {
-    bool result = true;
+    int result = 0;
     vector<Shape*> someShapes;
     map<string,Shape*>::iterator itm;
 
@@ -169,21 +255,34 @@ bool ShapeManager::DeleteShape(const vector<string> & names)
         {
             someShapes.push_back(itm->second);
         }
+        else
+        {
+            result = 1;
+        }
     }
-
-    Execute(new RemoveShapesCommand(&shapes,someShapes));
-
+    if(result == 0)
+    {
+        Execute(new RemoveShapesCommand(&shapes,someShapes));
+    }
     return result;
 } //----- End of DeleteShape
 
-void ShapeManager::MoveShape(const string & name, int dx, int dy)
+int ShapeManager::MoveShape(const string & name, int dx, int dy)
+// Algorithm :
+//
 {
+    int result = 0;
     map<string,Shape*>::iterator it;
     it = shapes.find(name);
     if (it != shapes.end())
     {
         Execute(new MoveShapeCommand(&shapes,name,dx,dy));
     }
+    else
+    {
+        result = 1;
+    }
+    return result;
 } //----- End of MoveShape
 
 void ShapeManager::Undo()
@@ -214,51 +313,67 @@ void ShapeManager::Redo()
     }
 } //----- End of Redo
 
-bool ShapeManager::Include(const string & name, const Point & p) const
+int ShapeManager::Include(const string & name, const Point & p) const
 // Algorithm :
 //
 {
-    bool result = false;
+    int result = 0;
     map<string,Shape*>::const_iterator it;
     it = shapes.find(name);
     if (it != shapes.end())
     {
-        result = it->second->Include(p);
+        if(!it->second->Include(p))
+        {
+            result = 1;
+        }
+    }
+    else
+    {
+        result = 2;
     }
     return result;
 } //----- End of Redo
 
-bool ShapeManager::Clear()
+void ShapeManager::Clear()
+// Algorithm :
+//
 {
-    bool result = true;
     vector<Shape*> someShapes;
 
-    for( map<string,Shape*>::iterator it = shapes.begin(); it != shapes.end(); it++)
+    if(shapes.size())
     {
-        someShapes.push_back(it->second);
-    }
-
-    Execute(new RemoveShapesCommand(&shapes,someShapes));
-
-    return result;
-} //----- End of DeleteShape
-
-bool ShapeManager::Load(const string & filePath)
-{
-    bool result = true;
-
-    vector<Shape*> someShapes = ShapeFileManager::Load(filePath);
-
-    for(vector<Shape*>::iterator it = someShapes.begin(); it != someShapes.end(); it++)
-    {
-        if(shapes.find((*it)->GetName()) != shapes.end())
+        for( map<string,Shape*>::iterator it = shapes.begin(); it != shapes.end(); it++)
         {
-            result = false;
-            break;
+            someShapes.push_back(it->second);
+        }
+
+        Execute(new RemoveShapesCommand(&shapes,someShapes));
+    }
+} //----- End of Clear
+
+int ShapeManager::Load(const string & filePath)
+// Algorithm :
+//
+{
+    int result = 0;
+
+    vector<Shape*> someShapes;
+    if(!ShapeFileManager::Load(filePath,someShapes))
+    {
+        result = 2;
+    }
+    else
+    {
+        for(vector<Shape*>::iterator it = someShapes.begin(); it != someShapes.end(); it++)
+        {
+            if(GetShape((*it)->GetName()) != nullptr)
+            {
+                result = 1;
+                break;
+            }
         }
     }
-
-    if(result)
+    if(result == 0)
     {
         Execute(new AddShapesCommand(&shapes,someShapes));
     }
@@ -269,16 +384,17 @@ bool ShapeManager::Load(const string & filePath)
             delete *it;
         }
     }
-
     return result;
 } //----- End of Load
 
 
 bool ShapeManager::Save(const string & filePath) const
+// Algorithm :
+//
 {
     bool result = false;
 
-    ShapeFileManager::Save(filePath,shapes);
+    result = ShapeFileManager::Save(filePath,shapes);
 
     return result;
 } //----- End of Save
@@ -329,7 +445,6 @@ ShapeManager::~ShapeManager()
     {
         delete *it;
     }
-
     for(list<Command*>::iterator it = redoStack.begin(); it != redoStack.end(); it++)
     {
         delete *it;

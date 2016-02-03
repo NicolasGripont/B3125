@@ -44,7 +44,7 @@ virtual string ToString() const;
 // Contract : None
 //
 
-virtual Shape* Clone() const;
+virtual Rectangle* Clone() const;
 // Manual : Clone the Rectangle, use the copy constructeur, allows to
 // use copy with polymorphism
 //

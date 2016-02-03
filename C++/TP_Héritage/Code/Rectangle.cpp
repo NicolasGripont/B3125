@@ -32,7 +32,7 @@ bool Rectangle::Include(const Point & p) const
     int ymax = d1.MaxY(d2);
     int xmin = d1.MinX(d2);
     int ymin = d1.MinY(d2);
-    if( (xmin <= p.GetX() && p.GetX() <= xmax) && (ymin <= p.GetY() && p.GetY() <= ymax) )
+    if(xmin <= p.GetX() && p.GetX() <= xmax && ymin <= p.GetY() && p.GetY() <= ymax)
     {
         return true;
     }
@@ -60,7 +60,7 @@ string Rectangle::ToString() const
     return s;
 } //----- End of ToString
 
-Shape* Rectangle::Clone() const
+Rectangle* Rectangle::Clone() const
 // Algorithm :
 //
 {

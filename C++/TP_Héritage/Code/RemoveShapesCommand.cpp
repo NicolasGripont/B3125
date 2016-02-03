@@ -47,9 +47,14 @@ void RemoveShapesCommand::Undo()
 //
 {
     deleted = false;
+    map<string,Shape*>::iterator itm;
     for(vector<Shape*>::iterator it = deletedShapes.begin(); it != deletedShapes.end(); it++)
     {
-          shapes->insert(make_pair((*it)->GetName(),*it));
+        itm = shapes->find((*it)->GetName());
+        if (itm != shapes->end())
+        {
+            shapes->insert(make_pair((*it)->GetName(),*it));
+        }
     }
 } //----- End of Undo
 

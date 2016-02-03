@@ -43,19 +43,11 @@ virtual string ToString() const;
 // Contract :
 //
 
-virtual Shape* Clone() const;
+virtual Segment* Clone() const;
 // Manual : Clone the Segment, use the copy constructeur, allows to use
 // copy with polymorphism
 //
 // Contract : None.
-//
-
-int MatchingY(Point p) const;
-// Manual : finds the matching y on the segment of the abcisse of the
-// point P. This function is only defined to be used in the other
-// functions and to make the code easy to read.
-//
-// Contract : None
 //
 
 
