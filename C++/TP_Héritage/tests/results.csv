@@ -1,0 +1,17 @@
+Légende : ;0 = Echec, 1 = Succés,2 = Ignoré;;;;;
+ ;;;;;;
+Test ID;Description;Return code validation;Out result;StdErr result;File creation result;Global result
+TestClear1;Test la creation supression (clear) et affichage.;1;1;1;2;1
+TestConvexPolygon1;Test creation et hits polygones convexes.;1;1;1;2;1
+TestIntersection1;Test creation et hits Intersection of simple shape and intersection.;1;1;1;2;1
+TestList1;Test de lister formes.;1;1;1;2;1
+TestLoadSave1;Test Save et Load.;1;1;1;1;1
+TestMoodle1;Test Moodle 1;1;1;1;2;1
+TestMoodle2;Test Moodle 2;1;1;1;2;1
+TestMoodle3;Test Moodle 3;1;1;1;2;1
+TestRectangle1;Test creation et hits rectangles.;1;1;1;2;1
+TestReunion1;Test creation et hits Reunion of simple shape and Reunion.;1;1;1;2;1
+TestReunionIntersection1;Test creation et hits Reunion of simple shapes and complex shapes.;1;1;1;2;1
+TestSegement1;Test creation et hits segments.;1;1;1;2;1
+TestUndoRedoDeleteClear1;Test Undo Redo avec create, clear et delete.;1;1;1;2;1
+TestUndoRedoMove1;Test Undo Redo avec Move.;1;1;1;2;1

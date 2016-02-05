@@ -1,0 +1,17 @@
+S seg1 1 1 7 5
+R rect1 2 1 11 5
+OR or1 seg1 rect1
+OR or1 seg1 seg1
+PC pc1 0 0 4 8 8 -1
+OR or2 or1 pc1
+OR or3 or1
+OR or3 seg1 seg
+HIT or1 4 3
+HIT or2 4 3
+HIT or3 4 3
+HIT or2 9 4
+HIT or1 11
+DELETE or1
+DELETE or1
+OR or1 seg1 seg1
+EXIT

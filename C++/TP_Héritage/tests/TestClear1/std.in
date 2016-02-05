@@ -1,0 +1,9 @@
+S seg1 1 1 7 5
+R rect1 2 1 11 5
+OR or1 seg1 rect1
+PC pc1 0 0 4 8 8 -1
+OI oi2 or1 pc1
+LIST
+CLEAR
+LIST
+EXIT

@@ -1,0 +1,20 @@
+S seg1 1 1 7 5
+R rect1 2 1 11 5
+OR or1 seg1 rect1
+PC pc1 0 0 4 8 8 -1
+OI oi1 or1 pc1
+SAVE figures.txt
+LOAD figures1.txt
+CLEAR
+LOAD figures1.txt
+LIST
+CLEAR
+SAVE vide.txt
+LIST
+LOAD figures1.txt
+LIST
+CLEAR
+LIST
+LOAD figures2SameNames.txt
+LOAD figuresWithError.txt
+EXIT

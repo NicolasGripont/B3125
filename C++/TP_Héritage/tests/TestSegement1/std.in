@@ -1,0 +1,16 @@
+S seg1 1 1 7 5
+S seg1 2 3 4 5
+S seg2 2 3 2 3
+S seg3 -2 -4 2 10
+S seg4 -2 -4 2 10 11
+S seg4 -2 
+HIT seg1 4 3 
+HIT seg1 1 1
+HIT seg1 7 5
+HIT seg2 2 3
+HIT seg1 0 0
+HIT seg2 1 1
+HIT seg3 0 3
+DELETE seg1
+S seg1 1 2 3 4
+EXIT

@@ -1,0 +1,12 @@
+R rect1 11 8 4 5
+R rect1 1 2 3 4
+R rect2 -5 -6 -1 0
+HIT rect1 5 8
+HIT rect1 10 9
+HIT rect2 -5 -6
+HIT rect2 -3 -2
+DELETE rect1
+R rect1 2 4 6 8
+R rect3 2
+R rect3 3 4 5 6 7 
+EXIT

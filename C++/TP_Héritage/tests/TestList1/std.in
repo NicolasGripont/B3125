@@ -1,0 +1,17 @@
+S seg1 1 1 7 5
+LIST
+R rect1 2 1 11 5
+LIST
+OR or1 seg1 rect1
+LIST
+OR or1 seg1 seg1
+LIST
+PC pc1 0 0 4 8 8 -1
+LIST
+OI oi2 or1 pc1
+LIST
+OR or3 or1
+LIST
+OR or3 seg1 seg
+LIST
+EXIT

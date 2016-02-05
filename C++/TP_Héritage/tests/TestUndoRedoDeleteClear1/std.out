@@ -1,0 +1,99 @@
+OK
+OK
+OK
+S seg1 1 1 7 5
+OK
+R rect1 2 1 11 5
+S seg1 1 1 7 5
+OK
+S seg1 1 1 7 5
+OK
+OK
+OK
+S seg1 1 1 7 5
+OK
+R rect1 2 1 11 5
+S seg1 1 1 7 5
+OK
+OK
+OK
+PC pc1 0 0 4 8 8 -1
+OI oi2 2
+	OR or1 2
+		S seg1 1 1 7 5
+		R rect1 2 1 11 5
+	PC pc1 0 0 4 8 8 -1
+R rect1 2 1 11 5
+OR or1 2
+	S seg1 1 1 7 5
+	R rect1 2 1 11 5
+S seg1 1 1 7 5
+OK
+OK
+S seg1 1 1 7 5
+OR or1 2
+	S seg1 1 1 7 5
+	R rect1 2 1 11 5
+R rect1 2 1 11 5
+OI oi2 2
+	OR or1 2
+		S seg1 1 1 7 5
+		R rect1 2 1 11 5
+	PC pc1 0 0 4 8 8 -1
+PC pc1 0 0 4 8 8 -1
+OK
+S seg1 1 1 7 5
+OR or1 2
+	S seg1 1 1 7 5
+	R rect1 2 1 11 5
+R rect1 2 1 11 5
+PC pc1 0 0 4 8 8 -1
+OK
+S seg1 1 1 7 5
+OR or1 2
+	S seg1 1 1 7 5
+	R rect1 2 1 11 5
+OI oi2 2
+	OR or1 2
+		S seg1 1 1 7 5
+		R rect1 2 1 11 5
+	PC pc1 0 0 4 8 8 -1
+R rect1 2 1 11 5
+PC pc1 0 0 4 8 8 -1
+OK
+S seg1 1 1 7 5
+OR or1 2
+	S seg1 1 1 7 5
+	R rect1 2 1 11 5
+R rect1 2 1 11 5
+PC pc1 0 0 4 8 8 -1
+OK
+S seg1 1 1 7 5
+OR or1 2
+	S seg1 1 1 7 5
+	R rect1 2 1 11 5
+R rect1 2 1 11 5
+PC pc1 0 0 4 8 8 -1
+OK
+S seg1 1 1 7 5
+R rect1 2 1 11 5
+PC pc1 0 0 4 8 8 -1
+OK
+OR or1 2
+	S seg1 1 1 7 5
+	R rect1 2 1 11 5
+S seg1 1 1 7 5
+R rect1 2 1 11 5
+PC pc1 0 0 4 8 8 -1
+OK
+OR or1 2
+	S seg1 1 1 7 5
+	R rect1 2 1 11 5
+S seg1 1 1 7 5
+OI oi2 2
+	OR or1 2
+		S seg1 1 1 7 5
+		R rect1 2 1 11 5
+	PC pc1 0 0 4 8 8 -1
+R rect1 2 1 11 5
+PC pc1 0 0 4 8 8 -1

@@ -1,0 +1,16 @@
+Test ID;Description;Nombre de figures;Secondes et microsecondes
+Test_Add100;Test performance de 100 ajouts.;112;0 s et 1628 μs
+Test_Add1000;Test performance de 1000 ajouts.;1012;0 s et 15130 μs
+Test_Add10000;Test performance de 10000 ajouts.;10012;0 s et 149759 μs
+Test_Add100000;Test performance de 100000 ajouts.;100012;1 s et 541595 μs
+Test_Add1000000;Test performance de 1000000 ajouts.;1000012;16 s et 165709 μs
+Test_Load100;Test performance de chargement de 100 figures.;112;0 s et 23608 μs
+Test_Load1000;Test performance de chargement de 1000 figures.;1012;0 s et 185421 μs
+Test_Load10000;Test performance de chargement de 10000 figures.;10012;1 s et 761167 μs
+Test_Load100000;Test performance de chargement de 100000 figures.;100012;17 s et 372839 μs
+Test_Load1000000;Test performance de chargement de 1000000 figures.;1000012;198 s et 5229 μs
+Test_Save100;Test performance de 100 ajouts et sauvegarde.;112;0 s et 6784 μs
+Test_Save1000;Test performance de 1000 ajouts et sauvegarde.;1012;0 s et 64525 μs
+Test_Save10000;Test performance de 10000 ajouts et sauvegarde.;10012;0 s et 746873 μs
+Test_Save100000;Test performance de 100000 ajouts et sauvegarde.;100012;6 s et 602291 μs
+Test_Save1000000;Test performance de 1000000 ajouts et sauvegarde.;1000012;66 s et 93663 μs

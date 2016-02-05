@@ -1,0 +1,1 @@
+./../../B3125 < stdCreateAdd.in > /dev/null ; echo "SAVE save.txt" >> add.txt ; echo "EXIT" >> add.txt ; ./../../B3125 < add.txt ; rm add.txt save.txt

@@ -1,0 +1,112 @@
+R rect1 1 2 3 4
+S segt1 1 2 3 4
+OR ort0 rect1 segt1
+OI oit0 rect1 segt1
+OR ort1 ort0 ort0
+OI oit1 oit0 oit0
+OR ort2 ort1 ort1
+OI oit2 oit1 oit1
+OR ort3 ort2 ort2
+OI oit3 oit2 oit2
+OR ort4 ort3 ort3
+OI oit4 oit3 oit3
+S seg0 1 2 3 4
+R rec0 1 2 3 4
+PC pc0 1 2 3 4 10 11
+OR or0 ort4 ort4
+OI oi0 oit4 oit4
+S seg1 1 2 3 4
+R rec1 1 2 3 4
+PC pc1 1 2 3 4 10 11
+OR or1 ort4 ort4
+OI oi1 oit4 oit4
+S seg2 1 2 3 4
+R rec2 1 2 3 4
+PC pc2 1 2 3 4 10 11
+OR or2 ort4 ort4
+OI oi2 oit4 oit4
+S seg3 1 2 3 4
+R rec3 1 2 3 4
+PC pc3 1 2 3 4 10 11
+OR or3 ort4 ort4
+OI oi3 oit4 oit4
+S seg4 1 2 3 4
+R rec4 1 2 3 4
+PC pc4 1 2 3 4 10 11
+OR or4 ort4 ort4
+OI oi4 oit4 oit4
+S seg5 1 2 3 4
+R rec5 1 2 3 4
+PC pc5 1 2 3 4 10 11
+OR or5 ort4 ort4
+OI oi5 oit4 oit4
+S seg6 1 2 3 4
+R rec6 1 2 3 4
+PC pc6 1 2 3 4 10 11
+OR or6 ort4 ort4
+OI oi6 oit4 oit4
+S seg7 1 2 3 4
+R rec7 1 2 3 4
+PC pc7 1 2 3 4 10 11
+OR or7 ort4 ort4
+OI oi7 oit4 oit4
+S seg8 1 2 3 4
+R rec8 1 2 3 4
+PC pc8 1 2 3 4 10 11
+OR or8 ort4 ort4
+OI oi8 oit4 oit4
+S seg9 1 2 3 4
+R rec9 1 2 3 4
+PC pc9 1 2 3 4 10 11
+OR or9 ort4 ort4
+OI oi9 oit4 oit4
+S seg10 1 2 3 4
+R rec10 1 2 3 4
+PC pc10 1 2 3 4 10 11
+OR or10 ort4 ort4
+OI oi10 oit4 oit4
+S seg11 1 2 3 4
+R rec11 1 2 3 4
+PC pc11 1 2 3 4 10 11
+OR or11 ort4 ort4
+OI oi11 oit4 oit4
+S seg12 1 2 3 4
+R rec12 1 2 3 4
+PC pc12 1 2 3 4 10 11
+OR or12 ort4 ort4
+OI oi12 oit4 oit4
+S seg13 1 2 3 4
+R rec13 1 2 3 4
+PC pc13 1 2 3 4 10 11
+OR or13 ort4 ort4
+OI oi13 oit4 oit4
+S seg14 1 2 3 4
+R rec14 1 2 3 4
+PC pc14 1 2 3 4 10 11
+OR or14 ort4 ort4
+OI oi14 oit4 oit4
+S seg15 1 2 3 4
+R rec15 1 2 3 4
+PC pc15 1 2 3 4 10 11
+OR or15 ort4 ort4
+OI oi15 oit4 oit4
+S seg16 1 2 3 4
+R rec16 1 2 3 4
+PC pc16 1 2 3 4 10 11
+OR or16 ort4 ort4
+OI oi16 oit4 oit4
+S seg17 1 2 3 4
+R rec17 1 2 3 4
+PC pc17 1 2 3 4 10 11
+OR or17 ort4 ort4
+OI oi17 oit4 oit4
+S seg18 1 2 3 4
+R rec18 1 2 3 4
+PC pc18 1 2 3 4 10 11
+OR or18 ort4 ort4
+OI oi18 oit4 oit4
+S seg19 1 2 3 4
+R rec19 1 2 3 4
+PC pc19 1 2 3 4 10 11
+OR or19 ort4 ort4
+OI oi19 oit4 oit4

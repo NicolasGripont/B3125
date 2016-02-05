@@ -1,0 +1,11 @@
+OI oi1 2
+	OR or1 2
+		S seg1 1 1 7 5
+		R rect1 2 1 11 5
+	PC pc1 0 0 4 8 8 -1
+OR or1 2
+	S seg1 1 1 7 5
+	R rect1 2 1 11 5
+PC pc1 0 0 4 8 8 -1
+R oi1 2 1 11 5
+S seg1 1 1 7 5

@@ -1,0 +1,17 @@
+S seg1 1 1 7 5
+R rect1 2 1 11 5
+OI oi1 seg1 rect1
+OI oi1 seg1 seg1
+PC pc1 0 0 4 8 8 -1
+OI oi2 oi1 pc1
+OI oi3 oi1
+OI oi3 seg1 seg
+HIT oi1 4 3
+HIT oi2 4 3
+HIT oi3 4 3
+HIT oi2 9 4
+HIT oi1 11
+DELETE oi1
+DELETE oi1
+OI oi1 seg1 seg1
+EXIT
