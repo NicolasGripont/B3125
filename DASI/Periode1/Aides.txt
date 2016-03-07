@@ -14,3 +14,5 @@ Sous Netbeans :
 6 - Développer et tester
 7 - Importer les données
 8 - Continuer le projet 
+
+Calcul lat et long dans les services, après la création de l'objet java, maj de l'objet java.
