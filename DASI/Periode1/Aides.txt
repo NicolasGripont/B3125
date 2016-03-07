@@ -1,0 +1,16 @@
+Sous Netbeans : 
+1 - Creer un projet MAVEN (cf TD)
+2 - Architecture à mettre en place
+	- vue => Main.main() 
+	- metier.service (serviceMetier, ServiceTechnique -> (mail, geolocalisation, Trajet : durée/distance))
+	- metier.modele
+	- dao
+	- util
+3 - Intégrer Client/Adhérent dont DAO et JpaUtil
+4 - Développer et TESTER dans le main()
+	=> Créer un Client/Adhérent
+	=> Consulter la liste
+5 - Intégrer les deux autres entités fournies
+6 - Développer et tester
+7 - Importer les données
+8 - Continuer le projet 
