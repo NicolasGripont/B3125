@@ -16,6 +16,7 @@ public class Client implements Serializable {
     private String nom;
     private String prenom;
     private String mail;
+    private String motDePasse;
     private String adresse;
     private Double longitude;
     private Double latitude;
@@ -23,11 +24,12 @@ public class Client implements Serializable {
     public Client() {
     }
 
-    public Client(String nom, String prenom, String adresse, String mail) {
+    public Client(String nom, String prenom, String adresse, String mail, String motDePasse) {
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
         this.adresse = adresse;
+        this.motDePasse = motDePasse;
     }
 
     public Long getId() {
@@ -46,6 +48,10 @@ public class Client implements Serializable {
         return mail;
     }
 
+    public String getMotDePasse() {
+        return motDePasse;
+    }
+    
     public String getAdresse() {
         return adresse;
     }
@@ -70,6 +76,10 @@ public class Client implements Serializable {
         this.mail = mail;
     }
 
+    public void setMotDePasse(String motDePasse) {
+        this.motDePasse = motDePasse;
+    }
+    
     public void setAdresse(String adresse) {
         this.adresse = adresse;
     }
@@ -81,7 +91,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", mail=" + mail + ", adresse=" + adresse + ", longitude=" + longitude + ", latitude=" + latitude + '}';
+        return "Client{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", mail=" + mail + ", motDePasse=" + motDePasse + ", adresse=" + adresse + ", longitude=" + longitude + ", latitude=" + latitude + '}';
     }
 
 }

@@ -2,8 +2,8 @@ Sous Netbeans :
 1 - Creer un projet MAVEN (cf TD)
 2 - Architecture à mettre en place
 	- vue => Main.main() 
-	- metier.service (serviceMetier, ServiceTechnique -> (mail, geolocalisation, Trajet : durée/distance))
-	- metier.modele
+	- metier.service (serviceMetier => issus des icars, ServiceTechnique -> (mail, geolocalisation, Trajet : durée/distance)) 
+	- metier.modeles
 	- dao
 	- util
 3 - Intégrer Client/Adhérent dont DAO et JpaUtil
