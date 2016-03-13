@@ -1,0 +1,36 @@
+MAIL LIVREUR : 
+
+Sujet : Livraison n°<XXX> à effectuer
+
+corps :
+
+Bonjour <livreur>,
+
+	Merci d'effectuer cette livraison dès maintenant, tout en respectant le code de la route ;-)
+
+Le chef
+
+Détails de la livraison :
+
+
+Commande :
+
+
+TOTAL :
+
+
+MAIL INSCRIPTION
+
+Sujet : Bienvenue chez Gustat'IF
+
+corps :
+
+Bonjour <prenom>,
+
+	Nous vous confirmons votre inscription au service Gustat'IF. Votre numéro de client est : <noClient>.
+
+si echec : 
+
+Bonjour <prenom>,
+
+	Votre inscription au service Gustat'IF a malencontreusement échoué... Merci de recommencer ultérieurement.
