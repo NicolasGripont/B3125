@@ -27,7 +27,7 @@ public abstract class Livreur implements Serializable {
     protected String adresse;
     protected Double longitude;
     protected Double latitude;
-    protected float chargeMax;
+    protected Float chargeMax;
     
     public String getMail() {
         return mail;
@@ -49,6 +49,10 @@ public abstract class Livreur implements Serializable {
         return latitude;
     }
     
+    public Float getChargeMax() {
+        return chargeMax;
+    }
+    
     public void setMail(String mail) {
         this.mail = mail;
     }
@@ -66,8 +70,12 @@ public abstract class Livreur implements Serializable {
         this.latitude = latLng.lat;
     }
     
+    public void setChargeMax(Float chargeMax) {
+        this.chargeMax = chargeMax;
+    }
+    
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", mail=" + mail + ", motDePasse=" + motDePasse + ", adresse=" + adresse + ", longitude=" + longitude + ", latitude=" + latitude + '}';
+        return "Client{" + "id=" + id + ", mail=" + mail + ", motDePasse=" + motDePasse + ", adresse=" + adresse + ", longitude=" + longitude + ", latitude=" + latitude + ", chargeMax=" + chargeMax + '}';
     }
 }

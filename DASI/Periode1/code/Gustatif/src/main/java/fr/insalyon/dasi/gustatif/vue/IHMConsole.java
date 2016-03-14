@@ -7,7 +7,12 @@ package fr.insalyon.dasi.gustatif.vue;
 
 import fr.insalyon.dasi.gustatif.dao.ClientDao;
 import fr.insalyon.dasi.gustatif.dao.JpaUtil;
+import fr.insalyon.dasi.gustatif.dao.ProduitDao;
+import fr.insalyon.dasi.gustatif.dao.RestaurantDao;
 import fr.insalyon.dasi.gustatif.metier.modele.Client;
+import fr.insalyon.dasi.gustatif.metier.modele.Produit;
+import fr.insalyon.dasi.gustatif.metier.modele.Restaurant;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,8 +27,8 @@ public class IHMConsole {
     // TODO code application logic here    public static void main(String[] args) {
     // TODO code application logic here
         
-        testClient();
-        
+//        testClient();
+//        testRestaurant();
 
     } 
 
@@ -52,4 +57,46 @@ public class IHMConsole {
         }
     }
     
+    public static void testRestaurant(){
+        try{
+            
+            Restaurant r1 = new Restaurant("Le boeuf d'argent", "Plats traditionnels...", "12 rue Einstein, 69000 Lyon");
+            Produit p1 = new Produit("Andouillette", "decs andouillette", new Float(16.0),new Float(127.0));
+            Produit p2 = new Produit("Opéra", "decs opéra", new Float(7.0),new Float(445.0));
+            Produit p3 = new Produit("Ile flottante", "decs ile", new Float(7.0),new Float(223.0));
+
+          
+            RestaurantDao rd = new RestaurantDao();
+            ProduitDao pd = new ProduitDao();
+            
+            
+            System.out.println(r1);
+
+            
+            JpaUtil.creerEntityManager();
+            JpaUtil.ouvrirTransaction();
+            
+            pd.create(p1);
+            pd.create(p2);
+            pd.create(p3);
+            
+            List<Produit> p = pd.findAll();
+            
+            r1.addProduit(p.get(0));
+            r1.addProduit(p.get(1));
+            r1.addProduit(p.get(2));
+            
+            rd.create(r1);
+            
+            JpaUtil.validerTransaction();
+            
+            Restaurant r2 = rd.findById(new Long(4));
+            
+            System.out.println(r2);   
+            
+            JpaUtil.fermerEntityManager();
+        } catch (Throwable ex) {
+            Logger.getLogger(IHMConsole.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

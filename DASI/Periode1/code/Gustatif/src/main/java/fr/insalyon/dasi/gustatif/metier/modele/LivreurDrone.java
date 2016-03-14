@@ -11,7 +11,7 @@ package fr.insalyon.dasi.gustatif.metier.modele;
  */
 public class LivreurDrone extends Livreur{
     
-    private float vitesseMoyenneDeVol;
+    private Float vitesseMoyenneDeVol;
     
     public LivreurDrone(){
     }
@@ -20,7 +20,7 @@ public class LivreurDrone extends Livreur{
         return vitesseMoyenneDeVol;
     }
     
-    public void setVitesseMoyenneDeVol(float vitesseMoyenneDeVol) {
+    public void setVitesseMoyenneDeVol(Float vitesseMoyenneDeVol) {
         this.vitesseMoyenneDeVol = vitesseMoyenneDeVol;
     }
     
