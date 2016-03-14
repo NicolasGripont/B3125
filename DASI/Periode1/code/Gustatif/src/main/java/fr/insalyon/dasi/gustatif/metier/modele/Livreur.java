@@ -7,27 +7,47 @@ package fr.insalyon.dasi.gustatif.metier.modele;
 
 import com.google.maps.model.LatLng;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author Nico
  */
 @Entity
+@Inheritance (strategy = InheritanceType.JOINED)
 public abstract class Livreur implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Long id;
-    protected String mail;
-    protected String motDePasse;
-    protected String adresse;
-    protected Double longitude;
-    protected Double latitude;
-    protected Float chargeMax;
+    private Long id;
+    private String mail;
+    private String motDePasse;
+    private String adresse;
+    private Double longitude;
+    private Double latitude;
+    private Float chargeMax;
+    @OneToMany(mappedBy = "livreur")
+    private List<Commande> commandes = new ArrayList<>();
+    
+    public Livreur(){
+    }
+
+    public Livreur(String mail, String motDePasse, String adresse, Float chargeMax) {
+        this.mail = mail;
+        this.motDePasse = motDePasse;
+        this.adresse = adresse;
+        this.chargeMax = chargeMax;
+    }
+
+    
     
     public String getMail() {
         return mail;
@@ -74,8 +94,12 @@ public abstract class Livreur implements Serializable {
         this.chargeMax = chargeMax;
     }
     
+    public void addCommande(Commande commande) {
+        this.commandes.add(commande);
+    }
+    
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", mail=" + mail + ", motDePasse=" + motDePasse + ", adresse=" + adresse + ", longitude=" + longitude + ", latitude=" + latitude + ", chargeMax=" + chargeMax + '}';
+        return "Livreur{" + "id=" + id + ", mail=" + mail + ", motDePasse=" + motDePasse + ", adresse=" + adresse + ", longitude=" + longitude + ", latitude=" + latitude + ", chargeMax=" + chargeMax + ", commandes=[" + commandes + "]" + '}';
     }
 }

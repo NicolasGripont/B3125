@@ -5,10 +5,13 @@
  */
 package fr.insalyon.dasi.gustatif.metier.modele;
 
+import javax.persistence.Entity;
+
 /**
  *
  * @author Nico
  */
+@Entity
 public class LivreurVelo extends Livreur{
     
     private String nom;
@@ -17,6 +20,14 @@ public class LivreurVelo extends Livreur{
     
     public LivreurVelo() {   
     }
+
+    public LivreurVelo(String nom, String prenom, String mail, String motDePasse, String adresse, Float chargeMax) {
+        super(mail, motDePasse, adresse, chargeMax);
+        this.nom = nom;
+        this.prenom = prenom;
+    }
+    
+    
     
     public String getNom() {
         return nom;

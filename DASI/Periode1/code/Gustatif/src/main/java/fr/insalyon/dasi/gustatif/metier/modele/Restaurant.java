@@ -22,17 +22,15 @@ public class Restaurant implements Serializable {
     private Double latitude;
 
     @OneToMany
-    private List<Produit> produits;
+    private final List<Produit> produits = new ArrayList<>();
     
     public Restaurant() {
-        produits = new ArrayList<>();
     }
 
     public Restaurant(String denomination, String description, String adresse) {
         this.denomination = denomination;
         this.description = description;
         this.adresse = adresse;
-        produits = new ArrayList<>();
     }
 
     public Long getId() {

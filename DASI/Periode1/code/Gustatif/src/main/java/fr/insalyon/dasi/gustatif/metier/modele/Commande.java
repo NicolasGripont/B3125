@@ -6,11 +6,15 @@
 package fr.insalyon.dasi.gustatif.metier.modele;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -28,21 +32,26 @@ public class Commande implements Serializable{
     private Date dateDebut;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateFin;
-
+    @ManyToOne
+    private Restaurant restaurant;
+    @ManyToOne
+    private Client client;
+    @ManyToMany
+    private List<LigneDeCommande> lignesDeCommande = new ArrayList<>();
+    @ManyToOne
+    private Livreur livreur;
+    
+    
     public Commande() {
     }
 
-    public Commande(String numeroCommande, Date dateDebut) {
+    public Commande(String numeroCommande, Restaurant restaurant, Client client, Date dateDebut) {
         this.numeroCommande = numeroCommande;
+        this.restaurant = restaurant;
+        this.client = client;
         this.dateDebut = dateDebut;
     }
     
-    
-    public Commande(String numeroCommande, Date dateDebut, Date dateFin) {
-        this.numeroCommande = numeroCommande;
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
-    }
     
     public String getNumeroCommande() {
         return numeroCommande;
@@ -54,6 +63,18 @@ public class Commande implements Serializable{
 
     public Date getDateFin() {
         return dateFin;
+    }
+    
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+    
+    public Client getClient() {
+        return client;
+    }
+
+    public Livreur getLivreur() {
+        return livreur;
     }
     
     public void setNumeroCommande(String numeroCommande) {
@@ -68,8 +89,24 @@ public class Commande implements Serializable{
         this.dateFin = dateFin;
     }
     
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+    
+    public void setClient(Client client) {
+        this.client = client;
+    }
+    
+    public void setLivreur(Livreur livreur) {
+        this.livreur = livreur;
+    }
+    
+    public void addLigneDeCommande(Produit produit, Float quantite) {
+        this.lignesDeCommande.add(new LigneDeCommande(produit,quantite));
+    }
+    
     @Override
     public String toString() {
-        return "Commande{" + "numeroCommande=" + numeroCommande + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + '}';
+        return "Commande{" + "numeroCommande=" + numeroCommande + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + "client=[" + client + "], restaurant=[" + restaurant + "], lignesDeCommande=[" + lignesDeCommande + "], livreur=[" + livreur + "]"+'}';
     }
 }

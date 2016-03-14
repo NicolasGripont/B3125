@@ -5,6 +5,11 @@
     <class>fr.insalyon.dasi.gustatif.metier.modele.Client</class>
     <class>fr.insalyon.dasi.gustatif.metier.modele.Produit</class>
     <class>fr.insalyon.dasi.gustatif.metier.modele.Restaurant</class>
+    <class>fr.insalyon.dasi.gustatif.metier.modele.Commande</class>
+    <class>fr.insalyon.dasi.gustatif.metier.modele.LigneDeCommande</class>
+    <class>fr.insalyon.dasi.gustatif.metier.modele.Livreur</class>
+    <class>fr.insalyon.dasi.gustatif.metier.modele.LivreurDrone</class>
+    <class>fr.insalyon.dasi.gustatif.metier.modele.LivreurVelo</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/DASI-Database"/>
       <property name="javax.persistence.jdbc.user" value="ngripont"/>

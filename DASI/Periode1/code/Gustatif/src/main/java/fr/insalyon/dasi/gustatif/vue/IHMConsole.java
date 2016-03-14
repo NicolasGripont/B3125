@@ -28,8 +28,9 @@ public class IHMConsole {
     // TODO code application logic here
         
 //        testClient();
-//        testRestaurant();
-
+        testRestaurant();
+        testLivreur();
+       
     } 
 
     public static void testClient(){
@@ -98,5 +99,9 @@ public class IHMConsole {
         } catch (Throwable ex) {
             Logger.getLogger(IHMConsole.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static void testLivreur() {
+        
     }
 }
