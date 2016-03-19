@@ -24,6 +24,8 @@ public class MailSender {
     final String username;
     final String password;
        
+    
+    
     public MailSender(String username, String password)
     {
         this.username = username;

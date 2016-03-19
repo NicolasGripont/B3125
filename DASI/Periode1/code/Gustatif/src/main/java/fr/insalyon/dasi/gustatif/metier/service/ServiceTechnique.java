@@ -11,4 +11,9 @@ package fr.insalyon.dasi.gustatif.metier.service;
  */
 public class ServiceTechnique {
     
+    
+    public static void envoyerUnMail() {
+        
+    }
+    
 }

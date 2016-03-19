@@ -39,10 +39,10 @@ public class Test {
     // TODO code application logic here    public static void main(String[] args) {
     // TODO code application logic here
         
-//        testClient();
+        testClient();
 //        testRestaurant();
 //        testLivreurVelo();
-        testCommande();
+//        testCommande();
     } 
 
     public static void testClient(){
@@ -63,6 +63,10 @@ public class Test {
             Client c2 = cd.findByMailAndPassword("n.gripont@gmail.com", "mdp");
             
             System.out.println(c2);   
+            
+            Client c3 = cd.findByMail("n.gripont@gmail.com");
+            
+            System.out.println(c3);
             
             JpaUtil.fermerEntityManager();
         } catch (Throwable ex) {
@@ -98,6 +102,9 @@ public class Test {
             r1.addProduit(p.get(0));
             r1.addProduit(p.get(1));
             r1.addProduit(p.get(2));
+//            r1.addProduit(p1);
+//            r1.addProduit(p2);
+//            r1.addProduit(p3);
             
             rd.create(r1);
             
