@@ -1,6 +1,7 @@
 package fr.insalyon.dasi.gustatif.dao;
 
 import fr.insalyon.dasi.gustatif.metier.modele.LigneDeCommande;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -53,9 +54,10 @@ public class LigneDeCommandeDao {
 //    public List<LigneDeCommande> findByCommandeID(Long commandId) throws Throwable {
 //        EntityManager em = JpaUtil.obtenirEntityManager();
 //        List<LigneDeCommande> lignesDeCommande = null;
-//        LigneDeCommande l = null;
+//        List<LigneDeCommande> tmp = new ArrayList<>();
+//
 //        try {
-//            //Query q1 = em.createQuery("SELECT rp FROM Restaurant_Produit rp");
+////            Query q = em.createQuery("SELECT l FROM LigneDeCommande l");
 //            Query q = em.createQuery("SELECT l FROM LigneDeCommande l, Commande_LigneDeCommande cl WHERE l.id = cl.LignesDeCommande_id");
 //            lignesDeCommande = (List<LigneDeCommande>) q.getResultList();
 //        }

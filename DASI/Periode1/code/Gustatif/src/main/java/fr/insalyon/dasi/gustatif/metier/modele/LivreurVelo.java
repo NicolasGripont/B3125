@@ -47,6 +47,6 @@ public class LivreurVelo extends Livreur{
     
     @Override
     public String toString() {
-        return "LivreurDrone{" + super.toString() + ", nom=" + nom + ", prenom=" + prenom + '}';
+        return "LivreurVelo{" + super.toString() + ", nom=" + nom + ", prenom=" + prenom + '}';
     }
 }

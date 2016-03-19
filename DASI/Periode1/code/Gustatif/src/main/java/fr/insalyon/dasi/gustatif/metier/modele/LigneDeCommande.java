@@ -24,12 +24,13 @@ public class LigneDeCommande implements Serializable {
     private Long id;
     @ManyToOne
     private Produit produit;
-    private Float quantite;
+    private Integer quantite;
+
     
     public LigneDeCommande() {
     }
     
-    public LigneDeCommande(Produit produit, Float quantite) {
+    public LigneDeCommande(Produit produit, Integer quantite) {
         this.produit = produit;
         this.quantite = quantite;
     }
@@ -38,7 +39,7 @@ public class LigneDeCommande implements Serializable {
         return produit;
     }
 
-    public Float getQuantite() {
+    public Integer getQuantite() {
         return quantite;
     }
     
@@ -74,7 +75,7 @@ public class LigneDeCommande implements Serializable {
         this.produit = produit;
     }
 
-    public void setQuantite(Float quantite) {
+    public void setQuantite(Integer quantite) {
         this.quantite = quantite;
     }
 

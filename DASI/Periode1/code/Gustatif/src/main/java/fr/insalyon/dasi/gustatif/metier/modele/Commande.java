@@ -9,12 +9,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
 /**
@@ -36,16 +37,18 @@ public class Commande implements Serializable{
     private Restaurant restaurant;
     @ManyToOne
     private Client client;
-    @ManyToMany
-    private List<LigneDeCommande> lignesDeCommande = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<LigneDeCommande> lignesDeCommande;
     @ManyToOne
     private Livreur livreur;
     
     
     public Commande() {
+        this.lignesDeCommande = new ArrayList<>();
     }
 
     public Commande(String numeroCommande, Restaurant restaurant, Client client, Date dateDebut) {
+        this.lignesDeCommande = new ArrayList<>();
         this.numeroCommande = numeroCommande;
         this.restaurant = restaurant;
         this.client = client;
@@ -101,12 +104,12 @@ public class Commande implements Serializable{
         this.livreur = livreur;
     }
     
-    public void addLigneDeCommande(Produit produit, Float quantite) {
+    public void addLigneDeCommande(Produit produit, Integer quantite) {
         this.lignesDeCommande.add(new LigneDeCommande(produit,quantite));
     }
     
     @Override
     public String toString() {
-        return "Commande{" + "numeroCommande=" + numeroCommande + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + "client=[" + client + "], restaurant=[" + restaurant + "], lignesDeCommande=[" + lignesDeCommande + "], livreur=[" + livreur + "]"+'}';
+        return "Commande{ id=" + id + ", numeroCommande=" + numeroCommande + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", client=[" + client + "], restaurant=[" + restaurant + "], lignesDeCommande=[" + lignesDeCommande + "], livreur=[" + livreur.getMail() + "]"+'}';
     }
 }
