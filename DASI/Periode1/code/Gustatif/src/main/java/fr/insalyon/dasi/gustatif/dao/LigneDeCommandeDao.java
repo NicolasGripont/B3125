@@ -1,7 +1,7 @@
 package fr.insalyon.dasi.gustatif.dao;
 
+import fr.insalyon.dasi.gustatif.metier.modele.Commande;
 import fr.insalyon.dasi.gustatif.metier.modele.LigneDeCommande;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -51,21 +51,26 @@ public class LigneDeCommandeDao {
         return ligneDeCommande;
     }
     
-//    public List<LigneDeCommande> findByCommandeID(Long commandId) throws Throwable {
-//        EntityManager em = JpaUtil.obtenirEntityManager();
-//        List<LigneDeCommande> lignesDeCommande = null;
-//        List<LigneDeCommande> tmp = new ArrayList<>();
-//
-//        try {
-////            Query q = em.createQuery("SELECT l FROM LigneDeCommande l");
-//            Query q = em.createQuery("SELECT l FROM LigneDeCommande l, Commande_LigneDeCommande cl WHERE l.id = cl.LignesDeCommande_id");
-//            lignesDeCommande = (List<LigneDeCommande>) q.getResultList();
-//        }
-//        catch(Exception e) {
-//            throw e;
-//        }
-//        return lignesDeCommande;
-//    }
+    public List<LigneDeCommande> findByCommandeID(Long commandeId) throws Throwable {
+        EntityManager em = JpaUtil.obtenirEntityManager();
+        List<LigneDeCommande> lignesDeCommande = null;
+        
+        try {
+            Commande c = em.find(Commande.class, commandeId);
+            if(c != null)
+            {
+                lignesDeCommande = c.getLignesDeCommande();
+                if(lignesDeCommande.isEmpty())
+                {
+                    lignesDeCommande = null;
+                }
+            }
+        }
+        catch(Exception e) {
+            throw e;
+        }
+        return lignesDeCommande;
+    }
     
     public List<LigneDeCommande> findAll() throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();

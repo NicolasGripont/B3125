@@ -35,12 +35,14 @@ public abstract class Livreur implements Serializable {
     private Double latitude;
     private Float chargeMax;
     @OneToMany(mappedBy = "livreur")
-    private List<Commande> commandes = new ArrayList<>();
+    private List<Commande> commandes;
     
     public Livreur(){
+        this.commandes = new ArrayList<>();
     }
 
     public Livreur(String mail, String motDePasse, String adresse, Float chargeMax) {
+        this.commandes = new ArrayList<>();
         this.mail = mail;
         this.motDePasse = motDePasse;
         this.adresse = adresse;

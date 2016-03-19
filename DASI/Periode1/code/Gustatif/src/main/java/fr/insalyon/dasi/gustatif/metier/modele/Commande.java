@@ -79,6 +79,10 @@ public class Commande implements Serializable{
     public Livreur getLivreur() {
         return livreur;
     }
+
+    public List<LigneDeCommande> getLignesDeCommande() {
+        return lignesDeCommande;
+    }
     
     public void setNumeroCommande(String numeroCommande) {
         this.numeroCommande = numeroCommande;
