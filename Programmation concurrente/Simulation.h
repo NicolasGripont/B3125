@@ -28,7 +28,7 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 //---------------------------------------------------- Fonctions publiques
 
 
-void GestionClavier();
+void GestionClavier(int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid_FDE_GB, int msgid_FDS_GB);
 // Mode d'emploi :
 //
 // Contrat :

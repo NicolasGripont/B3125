@@ -47,16 +47,14 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 
 
 
-
-
 int main ( int argc, char** argv)
 // Algorithme :
 //
 {
     pid_t pidGestionClavier;
     int statutGestionClavier;
-    int msgid_FileDemandeEntree_ProfBlaisePacal;
-    int msgid_FileDemandeEntree_AutreBlaisePacal;
+    int msgid_FileDemandeEntree_Prof_BlaisePacal;
+    int msgid_FileDemandeEntree_Autre_BlaisePacal;
     int msgid_FileDemandeEntree_GastonBerger;
     int msgid_FileDemandeSortie_GastonBerger;
 
@@ -64,15 +62,15 @@ int main ( int argc, char** argv)
 
     //creation des ressources
     InitialiserApplication(TypeTerminal::XTERM);
-    msgid_FileDemandeEntree_ProfBlaisePacal = msgget(ftok(".",0),IPC_CREAT | 0660); // test errno?
-    msgid_FileDemandeEntree_AutreBlaisePacal = msgget(ftok(".",1),IPC_CREAT | 0660);
-    msgid_FileDemandeEntree_GastonBerger = msgget(ftok(".",2),IPC_CREAT | 0660);
-    msgid_FileDemandeSortie_GastonBerger = msgget(ftok(".",2),IPC_CREAT | 0660);
+    msgid_FileDemandeEntree_Prof_BlaisePacal = msgget(ftok(PARKING_EXE,0),IPC_CREAT | 0660); // test errno?
+    msgid_FileDemandeEntree_Autre_BlaisePacal = msgget(ftok(PARKING_EXE,1),IPC_CREAT | 0660);
+    msgid_FileDemandeEntree_GastonBerger = msgget(ftok(PARKING_EXE,2),IPC_CREAT | 0660);
+    msgid_FileDemandeSortie_GastonBerger = msgget(ftok(PARKING_EXE,3),IPC_CREAT | 0660);
 
     if( (pidGestionClavier = fork()) == 0 )
     {
         //Fils
-        GestionClavier();
+        GestionClavier(msgid_FileDemandeEntree_Prof_BlaisePacal,msgid_FileDemandeEntree_Autre_BlaisePacal,msgid_FileDemandeEntree_GastonBerger,msgid_FileDemandeSortie_GastonBerger);
     }
     else
     {
@@ -81,8 +79,8 @@ int main ( int argc, char** argv)
 
         //liberation des ressources
         TerminerApplication();
-        msgctl(msgid_FileDemandeEntree_ProfBlaisePacal,IPC_RMID,0);
-        msgctl(msgid_FileDemandeEntree_AutreBlaisePacal,IPC_RMID,0);
+        msgctl(msgid_FileDemandeEntree_Prof_BlaisePacal,IPC_RMID,0);
+        msgctl(msgid_FileDemandeEntree_Autre_BlaisePacal,IPC_RMID,0);
         msgctl(msgid_FileDemandeEntree_GastonBerger,IPC_RMID,0);
         msgctl(msgid_FileDemandeSortie_GastonBerger,IPC_RMID,0);
 
@@ -92,10 +90,3 @@ int main ( int argc, char** argv)
 
 } //----- fin de main
 
-
-//file:
-//envoyer msg
-//    msgsnd(msgid_FileDemandeEntree_ProfBlaisePacal,&snd,sizeof(MessageDemandeEntree),0);
-
-//recevoir msg
-//    msgrcv(msgid_FileDemandeEntree_ProfBlaisePacal,&rcv,sizeof(MessageDemandeEntree),0,0);

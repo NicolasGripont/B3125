@@ -19,6 +19,7 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //--------------------------------------------------- Interfaces utilisees
+#include "Outils.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -33,6 +34,12 @@ typedef struct messsageDemandeEntree {
     TypeUsager typeUsager;
     int numeroVoiture;
 } MessageDemandeEntree;
+
+typedef struct messsageDemandeSortie {
+    long type = 1;
+    int numeroPlace;
+} MessageDemandeSortie;
+
 
 
 
