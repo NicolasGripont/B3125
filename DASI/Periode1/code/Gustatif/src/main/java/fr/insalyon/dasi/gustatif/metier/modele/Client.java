@@ -2,6 +2,7 @@ package fr.insalyon.dasi.gustatif.metier.modele;
 
 import com.google.maps.model.LatLng;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ public class Client implements Serializable {
     private Long id;
     private String nom;
     private String prenom;
+    @Column(unique=true)
     private String mail;
     private String motDePasse;
     private String adresse;

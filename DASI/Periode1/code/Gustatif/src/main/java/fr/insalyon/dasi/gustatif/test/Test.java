@@ -49,7 +49,8 @@ public class Test {
         try{
             
             Client c1 = new Client("Nicolas", "Gripont","195 avenue Roger Salengro, 69100 Villeurbanne", "n.gripont@gmail.com","mdp");
-            
+            Client c4 = new Client("Nicolas", "Gripont","195 avenue Roger Salengro, 69100 Villeurbanne", "n.gripont@gmail.com","mdp");
+
             ClientDao cd = new ClientDao();
 
             System.out.println(c1);
@@ -67,6 +68,11 @@ public class Test {
             Client c3 = cd.findByMail("n.gripont@gmail.com");
             
             System.out.println(c3);
+            
+            JpaUtil.ouvrirTransaction();
+            cd.create(c4);
+            JpaUtil.validerTransaction();//error car unique sur mail
+            System.out.println(c4);
             
             JpaUtil.fermerEntityManager();
         } catch (Throwable ex) {
