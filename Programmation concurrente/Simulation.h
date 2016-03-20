@@ -40,5 +40,11 @@ void Commande(char code, unsigned int valeur);
 // Contrat :
 //
 
+int GetNumeroVoiture();
+// Mode d'emploi :
+//
+// Contrat :
+//
+
 #endif // SIMULATION_H
 

@@ -57,7 +57,25 @@ void GestionClavier(int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid_FDE_GB, in
     {
         Menu();
     }
+
 } //----- fin de GestionClavier
+
+int GetNumeroVoiture()
+{
+    static int numeroVoiture = 0; // variable remanente, initialisée au premier appel
+
+    if(numeroVoiture == 999)
+    {
+        numeroVoiture = 1;
+    }
+    else
+    {
+        numeroVoiture ++;
+    }
+
+    return numeroVoiture;
+}
+
 
 void Commande(char code, unsigned int valeur)
 // Algorithme :
@@ -68,15 +86,40 @@ void Commande(char code, unsigned int valeur)
     case 'E':
         exit(0);
         break;
+    case 'p':
+    case 'P':
+        switch (valeur) {
+        case 1: // Blaise Pascal
+            break;
+        case 2: // Gaston Berger
+            break;
+        default:
+            break;
+        }
+        break;
+    case 'a':
+    case 'A':
+        switch (valeur) {
+        case 1: // Blaise Pascal
+            break;
+        case 2: // Gaston Berger
+            break;
+        default:
+            break;
+        }
+        break;
+    case 's':
+    case 'S':
+        //valeur = numPlace (entre 1 et 8, déjà traité dans Menu())
+        break;
     default:
-        //afficher message
         break;
     }
 } //----- fin de GestionClavier
 
 
 
-//file:
+//file d'attente:
 //envoyer msg
 //    msgsnd(msgid_FileDemandeEntree_ProfBlaisePacal,&snd,sizeof(MessageDemandeEntree),0);
 

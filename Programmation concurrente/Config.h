@@ -24,15 +24,20 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 //------------------------------------------------------------- Constantes
 
 #define PARKING_EXE  "./Parking" //Fichier utilisé pour créer la clé publique
-
+#define TEMPO 1                  // Temps en seconde pour garer une voiture
 
 
 //------------------------------------------------------------------ Types
+typedef struct voiture
+{
+    TypeUsager typeUsager;
+    int numeroVoiture;
+    time_t arrivee;
+} Voiture;
 
 typedef struct messsageDemandeEntree {
     long type = 1;
-    TypeUsager typeUsager;
-    int numeroVoiture;
+    Voiture voiture;
 } MessageDemandeEntree;
 
 typedef struct messsageDemandeSortie {
