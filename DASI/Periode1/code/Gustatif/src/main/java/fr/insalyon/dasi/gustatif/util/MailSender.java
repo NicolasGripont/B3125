@@ -23,16 +23,20 @@ public class MailSender {
    
     final String username;
     final String password;
-       
-    
+
+    public String getUsername() {
+        return username;
+    }     
     
     public MailSender(String username, String password)
     {
         this.username = username;
         this.password = password;
     }
-    public void sendMail(String recipientMail, String subject, String body)
+    public boolean sendMail(String recipientMail, String subject, String body)
     {    
+        boolean result = false;
+        
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -55,9 +59,11 @@ public class MailSender {
             message.setText(body);
 
             Transport.send(message);
+            result = true;
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
+        return result;
     }
 }

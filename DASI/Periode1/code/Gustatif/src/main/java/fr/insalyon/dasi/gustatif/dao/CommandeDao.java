@@ -6,6 +6,7 @@
 package fr.insalyon.dasi.gustatif.dao;
 
 import fr.insalyon.dasi.gustatif.metier.modele.Commande;
+import fr.insalyon.dasi.gustatif.metier.modele.Livreur;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -54,6 +55,40 @@ public class CommandeDao {
         List<Commande> commandes = null;
         try {
             Query q = em.createQuery("SELECT c FROM Commande c");
+            commandes = (List<Commande>) q.getResultList();
+        }
+        catch(Exception e) {
+            throw e;
+        }     
+        return commandes;
+    }
+    
+    public List<Commande> findByLivreurID(Long livreurId) throws Throwable {
+        EntityManager em = JpaUtil.obtenirEntityManager();
+        List<Commande> commandes = null;
+        
+        try {
+            Livreur l = em.find(Livreur.class, livreurId);
+            if(l != null)
+            {
+                commandes = l.getCommandes();
+                if(commandes.isEmpty())
+                {
+                    commandes = null;
+                }
+            }
+        }
+        catch(Exception e) {
+            throw e;
+        }
+        return commandes;
+    }
+    
+    public List<Commande> findAllNotEnded() throws Throwable {
+        EntityManager em = JpaUtil.obtenirEntityManager();
+        List<Commande> commandes = null;
+        try {
+            Query q = em.createQuery("SELECT c FROM Commande c WHERE c.dateFin IS NULL");
             commandes = (List<Commande>) q.getResultList();
         }
         catch(Exception e) {

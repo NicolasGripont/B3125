@@ -69,9 +69,9 @@ public class Test {
             
             System.out.println(c3);
             
-            JpaUtil.ouvrirTransaction();
-            cd.create(c4);
-            JpaUtil.validerTransaction();//error car unique sur mail
+//            JpaUtil.ouvrirTransaction();
+//            cd.create(c4);
+//            JpaUtil.validerTransaction();//error car unique sur mail
             System.out.println(c4);
             
             JpaUtil.fermerEntityManager();

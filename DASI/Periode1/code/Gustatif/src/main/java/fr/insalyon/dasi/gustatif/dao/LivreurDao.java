@@ -53,7 +53,10 @@ public class LivreurDao {
         List<Livreur> livreurs = null;
         Livreur c = null;
         try {
-            Query q = em.createQuery("SELECT l FROM Livreur l WHERE l.mail = '" + mail + "' AND l.motDePasse = '" + password + "'");
+//            Query q = em.createQuery("SELECT l FROM Livreur l WHERE l.mail = '" + mail + "' AND l.motDePasse = '" + password + "'");
+            Query q = em.createQuery("SELECT l FROM Livreur l WHERE l.mail = :mail AND l.motDePasse = :password");
+            q.setParameter("mail", mail);
+            q.setParameter("password", password);
             livreurs = (List<Livreur>) q.getResultList();
         }
         catch(Exception e) {
@@ -71,6 +74,35 @@ public class LivreurDao {
         List<Livreur> livreurs = null;
         try {
             Query q = em.createQuery("SELECT l FROM Livreur l");
+            livreurs = (List<Livreur>) q.getResultList();
+        }
+        catch(Exception e) {
+            throw e;
+        }     
+        return livreurs;
+    }
+    
+    public List<Livreur> findAllDisponible() throws Throwable
+    {
+        EntityManager em = JpaUtil.obtenirEntityManager();
+        List<Livreur> livreurs = null;
+        try {
+            Query q = em.createQuery("SELECT l FROM Livreur l WHERE l.disponible = TRUE");
+            livreurs = (List<Livreur>) q.getResultList();
+        }
+        catch(Exception e) {
+            throw e;
+        }     
+        return livreurs;
+    }
+    
+    public List<Livreur> findAllDisponible(Float commandeWeight) throws Throwable
+    {
+        EntityManager em = JpaUtil.obtenirEntityManager();
+        List<Livreur> livreurs = null;
+        try {
+            Query q = em.createQuery("SELECT l FROM Livreur l WHERE l.disponible = TRUE AND l.chargeMax >= :commandeWeight");
+            q.setParameter("commandeWeight", commandeWeight);
             livreurs = (List<Livreur>) q.getResultList();
         }
         catch(Exception e) {

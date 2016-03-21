@@ -9,6 +9,7 @@ import com.google.maps.model.LatLng;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 /**
  *
@@ -33,8 +35,11 @@ public abstract class Livreur implements Serializable {
     private String adresse;
     private Double longitude;
     private Double latitude;
+//    @Column(nullable = false)
     private Float chargeMax;
+    private Boolean disponible;
     @OneToMany(mappedBy = "livreur")
+    @OrderBy("dateDebut DESC")
     private List<Commande> commandes;
     
     public Livreur(){
@@ -47,9 +52,8 @@ public abstract class Livreur implements Serializable {
         this.motDePasse = motDePasse;
         this.adresse = adresse;
         this.chargeMax = chargeMax;
+        this.disponible = true;
     }
-
-    
     
     public String getMail() {
         return mail;
@@ -74,6 +78,14 @@ public abstract class Livreur implements Serializable {
     public Float getChargeMax() {
         return chargeMax;
     }
+
+    public List<Commande> getCommandes() {
+        return commandes;
+    }
+
+    public Boolean getDisponible() {
+        return disponible;
+    }
     
     public void setMail(String mail) {
         this.mail = mail;
@@ -94,6 +106,10 @@ public abstract class Livreur implements Serializable {
     
     public void setChargeMax(Float chargeMax) {
         this.chargeMax = chargeMax;
+    }
+
+    public void setDisponible(Boolean disponible) {
+        this.disponible = disponible;
     }
     
     public void addCommande(Commande commande) {

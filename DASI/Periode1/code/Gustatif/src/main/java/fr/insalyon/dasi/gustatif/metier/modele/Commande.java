@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +29,7 @@ public class Commande implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique=true)
     private String numeroCommande;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateDebut;
@@ -78,6 +80,24 @@ public class Commande implements Serializable{
 
     public Livreur getLivreur() {
         return livreur;
+    }
+    
+    public Float getPoids() {
+        Float poids = new Float(0.f);
+        for(LigneDeCommande l : lignesDeCommande)
+        {
+            poids += l.getPoids();
+        }
+        return poids;
+    }
+    
+    public Float getPrix() {
+        Float prix = new Float(0.f);
+        for(LigneDeCommande l : lignesDeCommande)
+        {
+            prix += l.getPrix();
+        }
+        return prix;
     }
 
     public List<LigneDeCommande> getLignesDeCommande() {
