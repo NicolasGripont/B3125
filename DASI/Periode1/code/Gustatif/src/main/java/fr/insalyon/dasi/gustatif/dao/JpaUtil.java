@@ -107,8 +107,10 @@ public class JpaUtil {
         try {
             EntityManager em = threadLocalEntityManager.get();
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            Logger.getLogger(JpaUtil.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        catch (Exception ex) {
+            //Logger.getLogger(JpaUtil.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
     }
 

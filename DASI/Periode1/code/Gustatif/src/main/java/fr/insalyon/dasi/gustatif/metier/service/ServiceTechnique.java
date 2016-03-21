@@ -19,14 +19,15 @@ public class ServiceTechnique {
     }
     
     public void sendFakeMail(String recipientMail, String subject, String body) {
+        System.out.println("");
         System.out.println("********* Mail envoyé **********");
         System.out.println("From : gustatif.b3125@gmail.com");
         System.out.println("To : " + recipientMail);
         System.out.println("Subject : " + subject);
         System.out.println(body);
         System.out.println("********************************");
+        System.out.println("");
     }
     
-//    public void 
     
 }

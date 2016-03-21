@@ -25,6 +25,7 @@ import fr.insalyon.dasi.gustatif.util.GeoTest;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.RollbackException;
 
 /**
  *
@@ -61,10 +62,12 @@ public class ServiceMetier {
                 JpaUtil.validerTransaction();
                 
                 result = true;
+            } catch (RollbackException e) {
+
             } catch (Exception e) {
-                System.out.println(e);
+                //System.out.println(e);
             } catch (Throwable ex) {
-                Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
             }
             JpaUtil.fermerEntityManager();
         }
@@ -88,7 +91,7 @@ public class ServiceMetier {
                 + "       Votre inscription au service Gustat'IF a malencontreusement échoué... Merci de recommencer ultérieurement.";
         }
         serviceTechnique.sendFakeMail(recipient, subject, body);
-        serviceTechnique.sendRealMail(recipient, subject, body);
+        //serviceTechnique.sendRealMail(recipient, subject, body);
        
         return result;
     }
