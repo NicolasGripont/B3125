@@ -20,6 +20,7 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 #include <stdio.h>
 #include <sys/shm.h>
 #include <sys/sem.h>
+#include <signal.h>
 //------------------------------------------------------ Include personnel
 #include "Mere.h"
 #include "Outils.h"
@@ -67,32 +68,49 @@ int main ( int argc, char** argv)
     int* nbVoituresGarees;
 
     int mutex_Requetes;
+    int semSyc_Requetes;
     int shmId_Requetes;
     Voiture* requetes;
 
+    struct sigaction action;
 
     //creation des ressources
     InitialiserApplication(TYPE_TERMINAL);
+
+    //boites aux lettres
     msgid_FileDemandeEntree_Prof_BlaisePacal = msgget(ftok(PARKING_EXE,0),IPC_CREAT | DROITS_BOITE_AU_LETTRE); // test errno?
     msgid_FileDemandeEntree_Autre_BlaisePacal = msgget(ftok(PARKING_EXE,1),IPC_CREAT | DROITS_BOITE_AU_LETTRE);
     msgid_FileDemandeEntree_GastonBerger = msgget(ftok(PARKING_EXE,2),IPC_CREAT | DROITS_BOITE_AU_LETTRE);
     msgid_FileDemandeSortie_GastonBerger = msgget(ftok(PARKING_EXE,3),IPC_CREAT | DROITS_BOITE_AU_LETTRE);
 
-
+    //semaphores
     mutex_NbVoituresGarees = semget(ftok(PARKING_EXE,4),1,IPC_CREAT | DROITS_SEMAPHORE);
     semctl(mutex_NbVoituresGarees,0,SETVAL,1);
-    shmId_NbVoituresGarees = shmget(ftok(PARKING_EXE,5),sizeof(int), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
+
+    mutex_Requetes = semget(ftok(PARKING_EXE,5),1,IPC_CREAT | DROITS_SEMAPHORE);
+    semctl(mutex_Requetes,0,SETVAL,1);
+
+    semSyc_Requetes = semget(ftok(PARKING_EXE,6),3,IPC_CREAT | DROITS_SEMAPHORE);
+    semctl(mutex_Requetes,3,SETALL,1);
+
+    //Memoires partagées
+    shmId_NbVoituresGarees = shmget(ftok(PARKING_EXE,7),sizeof(int), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
     nbVoituresGarees = (int*) shmat(shmId_NbVoituresGarees,NULL,0);
     *nbVoituresGarees = 0;
 
-    mutex_Requetes = semget(ftok(PARKING_EXE,6),1,IPC_CREAT | DROITS_SEMAPHORE);
-    semctl(mutex_Requetes,0,SETVAL,1);
-    shmId_Requetes = shmget(ftok(PARKING_EXE,7),NB_BARRIERES_ENTREE*sizeof(Voiture), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
+    shmId_Requetes = shmget(ftok(PARKING_EXE,8),NB_BARRIERES_ENTREE*sizeof(Voiture), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
     requetes = (Voiture*) shmat(shmId_Requetes,NULL,0);
     for(int i=0; i < (int) NB_BARRIERES_ENTREE ; i++){
         requetes[i] = {TypeUsager::AUCUN,0,0};
     }
 
+
+    //masquage signauc SIGUSR1 et SIGUSR2
+    action.sa_handler = SIG_IGN;
+    sigemptyset(&action.sa_mask);
+    action.sa_flags = 0;
+    sigaction(SIGUSR1, &action, NULL);
+    sigaction(SIGUSR2, &action, NULL);
 
 
     if( (pidGestionClavier = fork()) == 0 )
@@ -107,13 +125,17 @@ int main ( int argc, char** argv)
 
         //liberation des ressources
         TerminerApplication();
+        //boites aux lettres
         msgctl(msgid_FileDemandeEntree_Prof_BlaisePacal,IPC_RMID,0);
         msgctl(msgid_FileDemandeEntree_Autre_BlaisePacal,IPC_RMID,0);
         msgctl(msgid_FileDemandeEntree_GastonBerger,IPC_RMID,0);
         msgctl(msgid_FileDemandeSortie_GastonBerger,IPC_RMID,0);
+        //memoires partages
         shmctl(shmId_NbVoituresGarees, IPC_RMID, 0);
         shmctl(shmId_Requetes, IPC_RMID, 0);
+        //semaphores
         semctl(mutex_NbVoituresGarees, IPC_RMID, 0);
+        semctl(semSyc_Requetes, IPC_RMID, 0);
         semctl(mutex_Requetes, IPC_RMID, 0);
         exit(0);
     }
