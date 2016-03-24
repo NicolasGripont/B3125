@@ -22,6 +22,7 @@ import fr.insalyon.dasi.gustatif.metier.modele.Livreur;
 import fr.insalyon.dasi.gustatif.metier.modele.LivreurVelo;
 import fr.insalyon.dasi.gustatif.metier.modele.LivreurDrone;
 import fr.insalyon.dasi.gustatif.util.GeoTest;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -297,12 +298,21 @@ public class ServiceMetier {
         boolean result = false;
         
         try {
-            //Chercher un livreur
-            //Envoyer un mail
+            
             JpaUtil.ouvrirTransaction();
-            commandeDao.create(commande);
-            JpaUtil.validerTransaction();
-            result = true;
+            
+            Livreur livreur = chooseLivreur(commande);
+            if(livreur != null){
+                commande.setDateDebut(new Date());
+                commandeDao.create(commande);
+                livreur.addCommande(commande);
+                livreur.setDisponible(false);
+                livreurDao.update(livreur);
+                JpaUtil.validerTransaction();
+                result = true;
+            } else {
+                JpaUtil.annulerTransaction();
+            }
         } catch (Exception e) {
             System.out.println(e);
             JpaUtil.annulerTransaction();
@@ -312,7 +322,9 @@ public class ServiceMetier {
         }
         
         JpaUtil.fermerEntityManager();
-        
+                    
+        //Envoyer un mail
+
         return result;
     }    
     
@@ -505,5 +517,38 @@ public class ServiceMetier {
         return livreurs;
     }
             
+    
+   private Livreur chooseLivreur( Commande commande ) throws Throwable {
+        Livreur livreurChoisi = null;
+        double temps;
+        double tempsFinal;
+        
+        List<Livreur> livreurs = livreurDao.findAllDisponible(commande.getPoids());
+        if(livreurs.size() > 0) {
+            livreurChoisi = livreurs.get(0);
+            if(livreurChoisi instanceof LivreurVelo){
+                tempsFinal = GeoTest.getTripDurationByBicycleInMinute(livreurChoisi.getLatLng(), commande.getClient().getLatLng());
+            } else if (livreurChoisi instanceof LivreurDrone){
+                tempsFinal = (GeoTest.getFlightDistanceInKm(livreurChoisi.getLatLng(), commande.getClient().getLatLng()) / ((LivreurDrone)livreurChoisi).getVitesseMoyenneDeVolEnKmH()) * 60;
+            } else {
+                return null;
+            }
+            for (int i=1; i < livreurs.size(); i++) {
+                if(livreurs.get(i) instanceof LivreurVelo){
+                    temps = GeoTest.getTripDurationByBicycleInMinute(livreurs.get(i).getLatLng(), commande.getClient().getLatLng());
+                } else if (livreurs.get(i) instanceof LivreurDrone){
+                    temps = (GeoTest.getFlightDistanceInKm(livreurs.get(i).getLatLng(), commande.getClient().getLatLng()) / ((LivreurDrone)livreurs.get(i)).getVitesseMoyenneDeVolEnKmH()) * 60;
+                } else {
+                    return null;
+                }
+                if(temps < tempsFinal) {
+                    tempsFinal = temps;
+                    livreurChoisi = livreurs.get(i);
+                }
+            }
+        }
+        
+        return livreurChoisi;
+    }
     
 }

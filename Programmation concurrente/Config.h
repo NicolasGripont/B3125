@@ -31,8 +31,7 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 #define DROITS_SEMAPHORE 0660
 
 //------------------------------------------------------------------ Types
-typedef struct voiture
-{
+typedef struct voiture {
     TypeUsager typeUsager;
     int numeroVoiture;
     time_t arrivee;

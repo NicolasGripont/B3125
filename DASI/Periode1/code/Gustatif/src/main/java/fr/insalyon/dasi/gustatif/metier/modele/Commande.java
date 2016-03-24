@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -93,17 +92,17 @@ public class Commande implements Serializable{
         return livreur;
     }
     
-    public Float getPoids() {
-        Float poids = new Float(0.f);
+    public Double getPoids() {
+        Double poids = new Double(0.F);
         for(LigneDeCommande l : lignesDeCommande)
         {
-            poids += l.getPoids();
+            poids += l.getPoidsEnGrammes();
         }
         return poids;
     }
     
-    public Float getPrix() {
-        Float prix = new Float(0.f);
+    public Double getPrix() {
+        Double prix = new Double(0.F);
         for(LigneDeCommande l : lignesDeCommande)
         {
             prix += l.getPrix();

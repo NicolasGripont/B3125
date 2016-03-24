@@ -47,32 +47,32 @@ public class LigneDeCommande implements Serializable {
         return quantite;
     }
     
-    public Float getPrix() {
+    public Double getPrix() {
         if(produit != null) {
-            return new Float(quantite * produit.getPrix());
+            return new Double(quantite * produit.getPrix());
         }
-        return new Float(0.f);
+        return new Double(0.f);
     }
     
-    public Float getPoids() {
+    public Double getPoidsEnGrammes() {
         if(produit != null) {
-            return new Float(quantite * produit.getPoids());
+            return new Double(quantite * produit.getPoids());
         }
-        return new Float(0.f);
+        return new Double(0.F);
     }
     
-    public Float getPrixUnitaire() {
+    public Double getPrixUnitaire() {
         if(produit != null) {
-            return new Float(produit.getPrix());
+            return new Double(produit.getPrix());
         }
-        return new Float(0.f);
+        return new Double(0.F);
     }
     
-    public Float getPoidsUnitaire() {
+    public Double getPoidsUnitaireEnGrammes() {
         if(produit != null) {
-            return new Float(produit.getPoids());
+            return new Double(produit.getPoids());
         }
-        return new Float(0.f);
+        return new Double(0.F);
     }
     
     public void setProduit(Produit produit) {

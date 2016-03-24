@@ -19,6 +19,7 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //--------------------------------------------------- Interfaces utilisees
+#include "Outils.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -28,7 +29,13 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 //---------------------------------------------------- Fonctions publiques
 
 
-void Entree();
+void Entree(TypeBarriere type, int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid_FDE_GB, int mutex_R, int semSyc_R, int shmId_R, int mutex_NVG, int shmId_NBV);
+// Mode d'emploi :
+//
+// Contrat :
+//
+
+void fin(int numSignal);
 // Mode d'emploi :
 //
 // Contrat :

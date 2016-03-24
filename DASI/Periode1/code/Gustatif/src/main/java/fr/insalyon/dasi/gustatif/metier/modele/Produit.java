@@ -14,17 +14,17 @@ public class Produit implements Serializable {
     private Long id;
     private String denomination;
     private String description;
-    private Float prix;
-    private Float poids;
+    private Double prix;
+    private Double poidsEnGrammes;
 
     public Produit() {
     }
 
-    public Produit(String denomination, String description, Float prix, Float poids) {
+    public Produit(String denomination, String description, Double prix, Double poidsEnGrammes) {
         this.denomination = denomination;
         this.description = description;
         this.prix = prix;
-        this.poids = poids;
+        this.poidsEnGrammes = poidsEnGrammes;
     }
 
     public Long getId() {
@@ -39,15 +39,15 @@ public class Produit implements Serializable {
         return description;
     }
 
-    public Float getPoids() {
-        return poids;
+    public Double getPoids() {
+        return poidsEnGrammes;
     }
 
-    public Float getPrix() {
+    public Double getPrix() {
         return prix;
     }
 
-    public void setPrix(Float prix) {
+    public void setPrix(Double prix) {
         this.prix = prix;
     }
 
@@ -59,13 +59,13 @@ public class Produit implements Serializable {
         this.description = description;
     }
 
-    public void setPoids(Float poids) {
-        this.poids = poids;
+    public void setPoids(Double poidsEnGrammes) {
+        this.poidsEnGrammes = poidsEnGrammes;
     }
 
     @Override
     public String toString() {
-        return "Produit{" + "id=" + id + ", denomination=" + denomination + ", description=" + description + ", prix=" + prix + ", poids=" + poids + '}';
+        return "Produit{" + "id=" + id + ", denomination=" + denomination + ", description=" + description + ", prix=" + prix + ", poids=" + poidsEnGrammes + '}';
     }
    
     

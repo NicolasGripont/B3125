@@ -14,28 +14,28 @@ import javax.persistence.Entity;
 @Entity
 public class LivreurDrone extends Livreur{
     
-    private Float vitesseMoyenneDeVol;
-
+    private Double vitesseMoyenneDeVolEnKmH; // en km/h
+    
     public LivreurDrone() {
     }
 
-    public LivreurDrone(Float vitesseMoyenneDeVol, String mail, String motDePasse, String adresse, Float chargeMax) {
-        super(mail, motDePasse, adresse, chargeMax);
-        this.vitesseMoyenneDeVol = vitesseMoyenneDeVol;
+    public LivreurDrone(Double vitesseMoyenneDeVolEnKmH, String mail, String motDePasse, String adresse, Double chargeMaxEnGrammes) {
+        super(mail, motDePasse, adresse, chargeMaxEnGrammes);
+        this.vitesseMoyenneDeVolEnKmH = vitesseMoyenneDeVolEnKmH;
     }
     
     
     
-    public float getVitesseMoyenneDeVol() {
-        return vitesseMoyenneDeVol;
+    public Double getVitesseMoyenneDeVolEnKmH() {
+        return vitesseMoyenneDeVolEnKmH;
     }
     
-    public void setVitesseMoyenneDeVol(Float vitesseMoyenneDeVol) {
-        this.vitesseMoyenneDeVol = vitesseMoyenneDeVol;
+    public void setVitesseMoyenneDeVolEnKmH(Double vitesseMoyenneDeVolEnKmH) {
+        this.vitesseMoyenneDeVolEnKmH = vitesseMoyenneDeVolEnKmH;
     }
     
     @Override
     public String toString() {
-        return "LivreurDrone{" + super.toString() + ", vitesseMoyenneDeVol=" + vitesseMoyenneDeVol + '}';
+        return "LivreurDrone{" + super.toString() + ", vitesseMoyenneDeVolEnKmH=" + vitesseMoyenneDeVolEnKmH + '}';
     }
 }

@@ -139,7 +139,7 @@ public class IHMConsole {
         do {            
             System.out.println("Récapitulatif commande : prix = " + commande.getPrix() + ", poids = " + commande.getPoids());
             for (LigneDeCommande ligneDeCommande : commande.getLignesDeCommande()) {
-                System.out.println("\t " + ligneDeCommande.getProduit().getDenomination() + " : prix unitaire = " + ligneDeCommande.getPrixUnitaire() + " poids unitaire = " + ligneDeCommande.getPoidsUnitaire() + " quantité = " + ligneDeCommande.getQuantite());
+                System.out.println("\t " + ligneDeCommande.getProduit().getDenomination() + " : prix unitaire = " + ligneDeCommande.getPrixUnitaire() + " poids unitaire = " + ligneDeCommande.getPoidsUnitaireEnGrammes() + " quantité = " + ligneDeCommande.getQuantite());
             }
             System.out.println("Ajouter un produit : p, valider : v, annuler/retour : a, quitter q");
             

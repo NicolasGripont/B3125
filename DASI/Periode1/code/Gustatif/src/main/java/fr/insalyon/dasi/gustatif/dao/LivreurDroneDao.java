@@ -30,4 +30,31 @@ public class LivreurDroneDao extends LivreurDao {
         return livreurs;
     }
     
+    public List<LivreurDrone> findAllLivreursDronesDisponibles() throws Throwable {
+        EntityManager em = JpaUtil.obtenirEntityManager();
+        List<LivreurDrone> livreurs = null;
+        try {
+            Query q = em.createQuery("SELECT l FROM LivreurDrone l WHERE l.disponible = TRUE");
+            livreurs = (List<LivreurDrone>) q.getResultList();
+        }
+        catch(Exception e) {
+            throw e;
+        }     
+        return livreurs;
+    }
+    
+    public List<LivreurDrone> findAllLivreursDronesDisponibles(Double commandeWeight) throws Throwable
+    {
+        EntityManager em = JpaUtil.obtenirEntityManager();
+        List<LivreurDrone> livreurs = null;
+        try {
+            Query q = em.createQuery("SELECT l FROM LivreurDrone l WHERE l.disponible = TRUE AND l.chargeMax >= :commandeWeight");
+            q.setParameter("commandeWeight", commandeWeight);
+            livreurs = (List<LivreurDrone>) q.getResultList();
+        }
+        catch(Exception e) {
+            throw e;
+        }     
+        return livreurs;
+    }
 }

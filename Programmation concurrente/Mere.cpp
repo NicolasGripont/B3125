@@ -27,6 +27,8 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 #include "Simulation.h"
 #include "Config.h"
 #include "Heure.h"
+#include "Entree.h"
+#include "Sortie.h"
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -59,6 +61,14 @@ int main ( int argc, char** argv)
     int statut_GestionClavier;
     pid_t pid_Heure;
     int statut_Heure;
+    pid_t pid_EntreeGastonBerger;
+    int statut_EntreeGastonBerger;
+    pid_t pid_EntreeBlaisePascalProf;
+    int statut_EntreeBlaisePascalProf;
+    pid_t pid_EntreeBlaisePascalAutre;
+    int statut_EntreeBlaisePascalAutre;
+    pid_t pid_Sortie;
+    int statut_Sortie;
 
     int msgid_FileDemandeEntree_Prof_BlaisePacal;
     int msgid_FileDemandeEntree_Autre_BlaisePacal;
@@ -103,7 +113,8 @@ int main ( int argc, char** argv)
 
     shmId_Requetes = shmget(ftok(PARKING_EXE,8),NB_BARRIERES_ENTREE*sizeof(Voiture), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
     requetes = (Voiture*) shmat(shmId_Requetes,NULL,0);
-    for(int i=0; i < (int) NB_BARRIERES_ENTREE ; i++){
+    for(int i=0; i < (int) NB_BARRIERES_ENTREE ; i++)
+    {
         requetes[i] = {TypeUsager::AUCUN,0,0};
     }
 
@@ -123,33 +134,39 @@ int main ( int argc, char** argv)
     }
     else
     {
-        //Mere
+        if( (pid_EntreeBlaisePascalProf = fork()) == 0 )
+        {
+            Entree(TypeBarriere::PROF_BLAISE_PASCAL,msgid_FileDemandeEntree_Prof_BlaisePacal,msgid_FileDemandeEntree_Autre_BlaisePacal,msgid_FileDemandeEntree_GastonBerger,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_NbVoituresGarees,shmId_NbVoituresGarees);
+        }
+        else
+        {
+            pid_Heure = ActiverHeure();
 
-        pid_Heure = ActiverHeure();
+            //Phase Moteur
+            waitpid(pid_GestionClavier,&statut_GestionClavier,0);
 
-        //Phase Moteur
-        waitpid(pid_GestionClavier,&statut_GestionClavier,0);
+            //Phase Destruction
+            kill(pid_Heure,SIGUSR2);//test valeur retour -1 error
+            waitpid(pid_Heure,&statut_Heure,0);
+            kill(pid_EntreeBlaisePascalProf,SIGUSR2);//test valeur retour -1 error
+            waitpid(pid_EntreeBlaisePascalProf,&statut_EntreeBlaisePascalProf,0);
 
-        //Phase Destruction
-        kill(pid_Heure,SIGUSR2);//test valeur retour -1 error
-        waitpid(pid_Heure,&statut_Heure,0);
-
-        //liberation des ressources
-        TerminerApplication();
-        //boites aux lettres
-        msgctl(msgid_FileDemandeEntree_Prof_BlaisePacal,IPC_RMID,0);
-        msgctl(msgid_FileDemandeEntree_Autre_BlaisePacal,IPC_RMID,0);
-        msgctl(msgid_FileDemandeEntree_GastonBerger,IPC_RMID,0);
-        msgctl(msgid_FileDemandeSortie_GastonBerger,IPC_RMID,0);
-        //memoires partages
-        shmctl(shmId_NbVoituresGarees, IPC_RMID, 0);
-        shmctl(shmId_Requetes, IPC_RMID, 0);
-        //semaphores
-        semctl(mutex_NbVoituresGarees, IPC_RMID, 0);
-        semctl(semSyc_Requetes, IPC_RMID, 0);
-        semctl(mutex_Requetes, IPC_RMID, 0);
-        exit(0);
-
+            //liberation des ressources
+            TerminerApplication();
+            //boites aux lettres
+            msgctl(msgid_FileDemandeEntree_Prof_BlaisePacal,IPC_RMID,0);
+            msgctl(msgid_FileDemandeEntree_Autre_BlaisePacal,IPC_RMID,0);
+            msgctl(msgid_FileDemandeEntree_GastonBerger,IPC_RMID,0);
+            msgctl(msgid_FileDemandeSortie_GastonBerger,IPC_RMID,0);
+            //memoires partages
+            shmctl(shmId_NbVoituresGarees, IPC_RMID, 0);
+            shmctl(shmId_Requetes, IPC_RMID, 0);
+            //semaphores
+            semctl(mutex_NbVoituresGarees, IPC_RMID, 0);
+            semctl(semSyc_Requetes, IPC_RMID, 0);
+            semctl(mutex_Requetes, IPC_RMID, 0);
+            exit(0);
+        }
     }
 
 

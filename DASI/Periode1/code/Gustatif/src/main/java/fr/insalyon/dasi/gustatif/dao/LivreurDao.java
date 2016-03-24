@@ -96,12 +96,12 @@ public class LivreurDao {
         return livreurs;
     }
     
-    public List<Livreur> findAllDisponible(Float commandeWeight) throws Throwable
+    public List<Livreur> findAllDisponible(Double commandeWeight) throws Throwable
     {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<Livreur> livreurs = null;
         try {
-            Query q = em.createQuery("SELECT l FROM Livreur l WHERE l.disponible = TRUE AND l.chargeMax >= :commandeWeight");
+            Query q = em.createQuery("SELECT l FROM Livreur l WHERE l.disponible = TRUE AND l.chargeMaxEnGrammes >= :commandeWeight");
             q.setParameter("commandeWeight", commandeWeight);
             livreurs = (List<Livreur>) q.getResultList();
         }

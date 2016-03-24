@@ -36,7 +36,7 @@ public abstract class Livreur implements Serializable {
     private Double longitude;
     private Double latitude;
 //    @Column(nullable = false)
-    private Float chargeMax;
+    private Double chargeMaxEnGrammes;
     private Boolean disponible;
     @OneToMany(mappedBy = "livreur")
     @OrderBy("dateDebut DESC")
@@ -46,12 +46,12 @@ public abstract class Livreur implements Serializable {
         this.commandes = new ArrayList<>();
     }
 
-    public Livreur(String mail, String motDePasse, String adresse, Float chargeMax) {
+    public Livreur(String mail, String motDePasse, String adresse, Double chargeMaxEnGrammes) {
         this.commandes = new ArrayList<>();
         this.mail = mail;
         this.motDePasse = motDePasse;
         this.adresse = adresse;
-        this.chargeMax = chargeMax;
+        this.chargeMaxEnGrammes = chargeMaxEnGrammes;
         this.disponible = true;
     }
     
@@ -79,8 +79,12 @@ public abstract class Livreur implements Serializable {
         return latitude;
     }
     
-    public Float getChargeMax() {
-        return chargeMax;
+    public LatLng getLatLng() {
+        return new LatLng(latitude, longitude);
+    }
+    
+    public Double getChargeMaxEnGrammes() {
+        return chargeMaxEnGrammes;
     }
 
     public List<Commande> getCommandes() {
@@ -108,8 +112,8 @@ public abstract class Livreur implements Serializable {
         this.latitude = latLng.lat;
     }
     
-    public void setChargeMax(Float chargeMax) {
-        this.chargeMax = chargeMax;
+    public void setChargeMaxEnGrammes(Double chargeMaxEnGrammes) {
+        this.chargeMaxEnGrammes = chargeMaxEnGrammes;
     }
 
     public void setDisponible(Boolean disponible) {
@@ -122,6 +126,6 @@ public abstract class Livreur implements Serializable {
     
     @Override
     public String toString() {
-        return "Livreur{" + "id=" + id + ", mail=" + mail + ", motDePasse=" + motDePasse + ", adresse=" + adresse + ", longitude=" + longitude + ", latitude=" + latitude + ", chargeMax=" + chargeMax + ", commandes=[" + commandes + "]" + '}';
+        return "Livreur{" + "id=" + id + ", mail=" + mail + ", motDePasse=" + motDePasse + ", adresse=" + adresse + ", longitude=" + longitude + ", latitude=" + latitude + ", chargeMaxEnGrammes=" + chargeMaxEnGrammes + ", disponible " + disponible +", commandes=[" + commandes + "]" + '}';
     }
 }

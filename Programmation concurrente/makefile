@@ -6,7 +6,7 @@ COMP = g++
 RM = rm
 EDL = g++
 ECHO = echo
-INT = Mere.h Simulation.h
+INT = Mere.h Simulation.h Entree.h Sortie.h
 REAL = $(INT:.h=.cpp)
 OBJ = $(INT:.h=.o)
 OUTPUT = -o
@@ -42,5 +42,7 @@ $(CLEAN) :
 $(SOS) :
 	./$(BACKUPFILE) $(MAKEFILE) $(INT) $(REAL) $(RESSOURCES) $(BACKUPFILE)
 
-Mere.o : Mere.h Simulation.h $(MAKEFILE)
+Mere.o : Mere.h Simulation.h Entree.h Sortie.h $(MAKEFILE)
 Simulation.o : Simulation.h $(MAKEFILE)
+Entree.o : Entree.h $(MAKEFILE)
+Sortie.o : Sortie.h $(MAKEFILE)

@@ -12,7 +12,8 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 /////////////////////////////////////////////////////////////////  INCLUDE
 //-------------------------------------------------------- Include systeme
 #include <stdlib.h>
-
+#include <time.h>
+#include <sys/msg.h>
 //------------------------------------------------------ Include personnel
 #include "Simulation.h"
 #include "Menu.h"
@@ -92,6 +93,11 @@ void Commande(char code, unsigned int valeur)
     case 'P':
         switch (valeur) {
         case 1: // Blaise Pascal
+            Voiture voiture;
+            voiture.arrivee = time(NULL);
+            voiture.numeroVoiture = GetNumeroVoiture();
+            voiture.typeUsager = TypeUsager::PROF;
+            msgsnd(msgid_FileDemandeEntree_Prof_BlaisePacal,&voiture,sizeof(Voiture),0);
             break;
         case 2: // Gaston Berger
             break;
@@ -124,6 +130,3 @@ void Commande(char code, unsigned int valeur)
 //file d'attente:
 //envoyer msg
 //    msgsnd(msgid_FileDemandeEntree_ProfBlaisePacal,&snd,sizeof(MessageDemandeEntree),0);
-
-//recevoir msg
-//    msgrcv(msgid_FileDemandeEntree_ProfBlaisePacal,&rcv,sizeof(MessageDemandeEntree),0,0);

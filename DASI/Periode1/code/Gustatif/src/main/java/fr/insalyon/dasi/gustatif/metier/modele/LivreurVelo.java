@@ -21,8 +21,8 @@ public class LivreurVelo extends Livreur{
     public LivreurVelo() {   
     }
 
-    public LivreurVelo(String nom, String prenom, String mail, String motDePasse, String adresse, Float chargeMax) {
-        super(mail, motDePasse, adresse, chargeMax);
+    public LivreurVelo(String nom, String prenom, String mail, String motDePasse, String adresse, Double chargeMaxEnGrammes) {
+        super(mail, motDePasse, adresse, chargeMaxEnGrammes);
         this.nom = nom;
         this.prenom = prenom;
     }

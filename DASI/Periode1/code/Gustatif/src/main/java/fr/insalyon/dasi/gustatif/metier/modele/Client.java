@@ -66,6 +66,10 @@ public class Client implements Serializable {
         return latitude;
     }
 
+    public LatLng getLatLng() {
+        return new LatLng(latitude, longitude);
+    }
+    
     public void setNom(String nom) {
         this.nom = nom;
     }
