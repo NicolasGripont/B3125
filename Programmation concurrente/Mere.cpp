@@ -26,6 +26,7 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 #include "Outils.h"
 #include "Simulation.h"
 #include "Config.h"
+#include "Heure.h"
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -54,9 +55,10 @@ int main ( int argc, char** argv)
 // Algorithme :
 //
 {
-
-    pid_t pidGestionClavier;
-    int statutGestionClavier;
+    pid_t pid_GestionClavier;
+    int statut_GestionClavier;
+    pid_t pid_Heure;
+    int statut_Heure;
 
     int msgid_FileDemandeEntree_Prof_BlaisePacal;
     int msgid_FileDemandeEntree_Autre_BlaisePacal;
@@ -75,10 +77,11 @@ int main ( int argc, char** argv)
     struct sigaction action;
 
     //creation des ressources
+    // /!\ TODO : tester erreur (-1) pour chaque allocation de ressource
     InitialiserApplication(TYPE_TERMINAL);
 
     //boites aux lettres
-    msgid_FileDemandeEntree_Prof_BlaisePacal = msgget(ftok(PARKING_EXE,0),IPC_CREAT | DROITS_BOITE_AU_LETTRE); // test errno?
+    msgid_FileDemandeEntree_Prof_BlaisePacal = msgget(ftok(PARKING_EXE,0),IPC_CREAT | DROITS_BOITE_AU_LETTRE);
     msgid_FileDemandeEntree_Autre_BlaisePacal = msgget(ftok(PARKING_EXE,1),IPC_CREAT | DROITS_BOITE_AU_LETTRE);
     msgid_FileDemandeEntree_GastonBerger = msgget(ftok(PARKING_EXE,2),IPC_CREAT | DROITS_BOITE_AU_LETTRE);
     msgid_FileDemandeSortie_GastonBerger = msgget(ftok(PARKING_EXE,3),IPC_CREAT | DROITS_BOITE_AU_LETTRE);
@@ -113,7 +116,7 @@ int main ( int argc, char** argv)
     sigaction(SIGUSR2, &action, NULL);
 
 
-    if( (pidGestionClavier = fork()) == 0 )
+    if( (pid_GestionClavier = fork()) == 0 )
     {
         //Fils
         GestionClavier(msgid_FileDemandeEntree_Prof_BlaisePacal,msgid_FileDemandeEntree_Autre_BlaisePacal,msgid_FileDemandeEntree_GastonBerger,msgid_FileDemandeSortie_GastonBerger);
@@ -121,7 +124,15 @@ int main ( int argc, char** argv)
     else
     {
         //Mere
-        waitpid(pidGestionClavier,&statutGestionClavier,0);
+
+        pid_Heure = ActiverHeure();
+
+        //Phase Moteur
+        waitpid(pid_GestionClavier,&statut_GestionClavier,0);
+
+        //Phase Destruction
+        kill(pid_Heure,SIGUSR2);//test valeur retour -1 error
+        waitpid(pid_Heure,&statut_Heure,0);
 
         //liberation des ressources
         TerminerApplication();
@@ -138,6 +149,7 @@ int main ( int argc, char** argv)
         semctl(semSyc_Requetes, IPC_RMID, 0);
         semctl(mutex_Requetes, IPC_RMID, 0);
         exit(0);
+
     }
 
 
