@@ -179,7 +179,7 @@ public class Test {
             Produit p3 = new Produit("Ile flottante", "decs ile", new Float(7.0),new Float(223.0));
             ProduitDao pd = new ProduitDao();
             
-            Commande cmd = new Commande("C00001", r1, c1, Date.from(Instant.now()));
+            Commande cmd = new Commande(/*"C00001",*/ r1, c1, Date.from(Instant.now()));
             CommandeDao cmdd = new CommandeDao();
 //            LigneDeCommande ldc1 = new LigneDeCommande(p1, new Integer(2));
 //            LigneDeCommande ldc2 = new LigneDeCommande(p3, new Integer(3));

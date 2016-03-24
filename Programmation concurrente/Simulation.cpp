@@ -61,6 +61,8 @@ void GestionClavier(int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid_FDE_GB, in
 } //----- fin de GestionClavier
 
 int GetNumeroVoiture()
+// Algorithme :
+//
 {
     static int numeroVoiture = 0; // variable remanente, initialisée au premier appel
 
@@ -74,7 +76,7 @@ int GetNumeroVoiture()
     }
 
     return numeroVoiture;
-}
+} //----- fin de GestionClavier
 
 
 void Commande(char code, unsigned int valeur)

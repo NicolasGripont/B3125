@@ -25,7 +25,10 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 
 #define PARKING_EXE  "./Parking" //Fichier utilisé pour créer la clé publique
 #define TEMPO 1                  // Temps en seconde pour garer une voiture
-
+#define TYPE_TERMINAL TypeTerminal::XTERM
+#define DROITS_BOITE_AU_LETTRE 0660
+#define DROITS_MEMOIRE_PARTAGEE 0660
+#define DROITS_SEMAPHORE 0660
 
 //------------------------------------------------------------------ Types
 typedef struct voiture
@@ -45,10 +48,7 @@ typedef struct messsageDemandeSortie {
     int numeroPlace;
 } MessageDemandeSortie;
 
-typedef struct memoirePartageeStruct{
-    int nbVoituresGarees = 0;
-    Voiture requetes[3];
-} MemoirePartagee;
+
 
 
 //////////////////////////////////////////////////////////////////  PUBLIC

@@ -55,6 +55,10 @@ public abstract class Livreur implements Serializable {
         this.disponible = true;
     }
     
+    public Long getId() {
+        return id;
+    }
+    
     public String getMail() {
         return mail;
     }

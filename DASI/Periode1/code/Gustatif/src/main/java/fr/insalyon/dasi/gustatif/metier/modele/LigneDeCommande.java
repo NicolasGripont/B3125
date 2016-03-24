@@ -34,7 +34,11 @@ public class LigneDeCommande implements Serializable {
         this.produit = produit;
         this.quantite = quantite;
     }
-
+    
+    public Long getId() {
+        return id;
+    }
+    
     public Produit getProduit() {
         return produit;
     }
