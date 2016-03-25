@@ -40,7 +40,7 @@ void Commande(char code, unsigned int valeur);
 // Contrat :
 //
 
-int GetNumeroVoiture();
+unsigned int GetNumeroVoiture();
 // Mode d'emploi :
 //
 // Contrat :

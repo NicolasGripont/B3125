@@ -33,19 +33,20 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 //------------------------------------------------------------------ Types
 typedef struct voiture {
     TypeUsager typeUsager;
-    int numeroVoiture;
+    unsigned int numeroVoiture;
     time_t arrivee;
 } Voiture;
 
 typedef struct messsageDemandeEntree {
-    long type = 1;
+    long type;
     Voiture voiture;
 } MessageDemandeEntree;
 
 typedef struct messsageDemandeSortie {
-    long type = 1;
+    long type;
     int numeroPlace;
 } MessageDemandeSortie;
+
 
 
 

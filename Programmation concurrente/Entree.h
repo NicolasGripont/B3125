@@ -35,6 +35,12 @@ void Entree(TypeBarriere type, int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid
 // Contrat :
 //
 
+void finVoiturier(int numSignal);
+// Mode d'emploi :
+//
+// Contrat :
+//
+
 void fin(int numSignal);
 // Mode d'emploi :
 //

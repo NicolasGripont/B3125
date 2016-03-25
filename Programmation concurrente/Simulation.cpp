@@ -61,11 +61,11 @@ void GestionClavier(int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid_FDE_GB, in
 
 } //----- fin de GestionClavier
 
-int GetNumeroVoiture()
+unsigned int GetNumeroVoiture()
 // Algorithme :
 //
 {
-    static int numeroVoiture = 0; // variable remanente, initialisée au premier appel
+    static unsigned int numeroVoiture = 0; // variable remanente, initialisée au premier appel
 
     if(numeroVoiture == 999)
     {
@@ -93,11 +93,12 @@ void Commande(char code, unsigned int valeur)
     case 'P':
         switch (valeur) {
         case 1: // Blaise Pascal
-            Voiture voiture;
-            voiture.arrivee = time(NULL);
-            voiture.numeroVoiture = GetNumeroVoiture();
-            voiture.typeUsager = TypeUsager::PROF;
-            msgsnd(msgid_FileDemandeEntree_Prof_BlaisePacal,&voiture,sizeof(Voiture),0);
+            MessageDemandeEntree demande;
+            demande.voiture.arrivee = time(NULL);
+            demande.voiture.numeroVoiture = GetNumeroVoiture();
+            demande.voiture.typeUsager = TypeUsager::PROF;
+            demande.type = 1;
+            msgsnd(msgid_FileDemandeEntree_Prof_BlaisePacal,&demande,sizeof(MessageDemandeEntree),0);
             break;
         case 2: // Gaston Berger
             break;
