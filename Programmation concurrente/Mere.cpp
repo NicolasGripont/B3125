@@ -75,9 +75,9 @@ int main ( int argc, char** argv)
     int msgid_FileDemandeEntree_GastonBerger;
     int msgid_FileDemandeSortie_GastonBerger;
 
-    int mutex_NbVoituresGarees;
-    int shmId_NbVoituresGarees;
-    int* nbVoituresGarees;
+    int mutex_MemoirePartageeVoitures;
+    int shmId_MemoirePartageeVoitures;
+    MemoirePartageeVoitures* memoirePartageeVoitures;
 
     int mutex_Requetes;
     int semSyc_Requetes;
@@ -97,8 +97,8 @@ int main ( int argc, char** argv)
     msgid_FileDemandeSortie_GastonBerger = msgget(ftok(PARKING_EXE,3),IPC_CREAT | DROITS_BOITE_AU_LETTRE);
 
     //semaphores
-    mutex_NbVoituresGarees = semget(ftok(PARKING_EXE,4),1,IPC_CREAT | DROITS_SEMAPHORE);
-    semctl(mutex_NbVoituresGarees,0,SETVAL,1);
+    mutex_MemoirePartageeVoitures = semget(ftok(PARKING_EXE,4),1,IPC_CREAT | DROITS_SEMAPHORE);
+    semctl(mutex_MemoirePartageeVoitures,0,SETVAL,1);
 
     mutex_Requetes = semget(ftok(PARKING_EXE,5),1,IPC_CREAT | DROITS_SEMAPHORE);
     semctl(mutex_Requetes,0,SETVAL,1);
@@ -107,9 +107,13 @@ int main ( int argc, char** argv)
     semctl(mutex_Requetes,3,SETALL,1);
 
     //Memoires partagées
-    shmId_NbVoituresGarees = shmget(ftok(PARKING_EXE,7),sizeof(int), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
-    nbVoituresGarees = (int*) shmat(shmId_NbVoituresGarees,NULL,0);
-    *nbVoituresGarees = 0;
+    shmId_MemoirePartageeVoitures = shmget(ftok(PARKING_EXE,7),sizeof(MemoirePartageeVoitures), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
+    memoirePartageeVoitures = (MemoirePartageeVoitures*) shmat(shmId_MemoirePartageeVoitures,NULL,0);
+    memoirePartageeVoitures->nbVoituresGarees = 0;
+    for(int i=0; i < (int) NB_PLACES ; i++)
+    {
+        memoirePartageeVoitures->voitures[i] = {TypeUsager::AUCUN,0,0};
+    }
 
     shmId_Requetes = shmget(ftok(PARKING_EXE,8),NB_BARRIERES_ENTREE*sizeof(Voiture), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
     requetes = (Voiture*) shmat(shmId_Requetes,NULL,0);
@@ -136,7 +140,7 @@ int main ( int argc, char** argv)
     {
         if( (pid_EntreeBlaisePascalProf = fork()) == 0 )
         {
-            Entree(TypeBarriere::PROF_BLAISE_PASCAL,msgid_FileDemandeEntree_Prof_BlaisePacal,msgid_FileDemandeEntree_Autre_BlaisePacal,msgid_FileDemandeEntree_GastonBerger,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_NbVoituresGarees,shmId_NbVoituresGarees);
+            Entree(TypeBarriere::PROF_BLAISE_PASCAL,msgid_FileDemandeEntree_Prof_BlaisePacal,msgid_FileDemandeEntree_Autre_BlaisePacal,msgid_FileDemandeEntree_GastonBerger,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
         }
         else
         {
@@ -159,10 +163,10 @@ int main ( int argc, char** argv)
             msgctl(msgid_FileDemandeEntree_GastonBerger,IPC_RMID,0);
             msgctl(msgid_FileDemandeSortie_GastonBerger,IPC_RMID,0);
             //memoires partages
-            shmctl(shmId_NbVoituresGarees, IPC_RMID, 0);
+            shmctl(shmId_MemoirePartageeVoitures, IPC_RMID, 0);
             shmctl(shmId_Requetes, IPC_RMID, 0);
             //semaphores
-            semctl(mutex_NbVoituresGarees, IPC_RMID, 0);
+            semctl(mutex_MemoirePartageeVoitures, IPC_RMID, 0);
             semctl(semSyc_Requetes, IPC_RMID, 0);
             semctl(mutex_Requetes, IPC_RMID, 0);
             exit(0);

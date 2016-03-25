@@ -51,16 +51,16 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 static int msgid_FileDemandeEntree_Prof_BlaisePacal;
 static int msgid_FileDemandeEntree_Autre_BlaisePacal;
 static int msgid_FileDemandeEntree_GastonBerger;
-static int mutex_NbVoituresGarees;
-static int shmId_NbVoituresGarees;
+static int mutex_MemoirePartageeVoitures;
+static int shmId_MemoirePartageeVoitures;
 static int mutex_Requetes;
 static int semSyc_Requetes;
 static int shmId_Requetes;
-static int* nbVoituresGarees;
+static MemoirePartageeVoitures* memoirePartageeVoitures;
 static Voiture* requetes;
 static map<pid_t,Voiture> voituriers;
 
-void Entree(TypeBarriere type, int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid_FDE_GB, int mutex_R, int semSyc_R, int shmId_R, int mutex_NVG, int shmId_NBV)
+void Entree(TypeBarriere type, int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid_FDE_GB, int mutex_R, int semSyc_R, int shmId_R, int mutex_MPV, int shmId_MPV)
 // Algorithme :
 //
 {
@@ -69,13 +69,13 @@ void Entree(TypeBarriere type, int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid
     msgid_FileDemandeEntree_Prof_BlaisePacal = msgid_FDE_P_BP;
     msgid_FileDemandeEntree_Autre_BlaisePacal = msgid_FDE_A_BP;
     msgid_FileDemandeEntree_GastonBerger = msgid_FDE_GB;
-    mutex_NbVoituresGarees = mutex_NVG;
-    shmId_NbVoituresGarees = shmId_NBV;
+    mutex_MemoirePartageeVoitures = mutex_MPV;
+    shmId_MemoirePartageeVoitures = shmId_MPV;
     mutex_Requetes = mutex_R;
     semSyc_Requetes = semSyc_R;
     shmId_Requetes = shmId_R;
 
-    nbVoituresGarees = (int*) shmat(shmId_NbVoituresGarees,NULL,0);
+    memoirePartageeVoitures = (MemoirePartageeVoitures*) shmat(shmId_MemoirePartageeVoitures,NULL,0);
     requetes = (Voiture*) shmat(shmId_Requetes,NULL,0);
 
     struct sigaction actionFin;
@@ -154,7 +154,7 @@ void fin(int numSignal)
             waitpid(it->first,NULL,0);
         }
 
-        shmdt(nbVoituresGarees);
+        shmdt(memoirePartageeVoitures);
         shmdt(requetes);
 
         exit(0);

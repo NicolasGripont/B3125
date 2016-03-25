@@ -48,7 +48,10 @@ typedef struct messsageDemandeSortie {
 } MessageDemandeSortie;
 
 
-
+typedef struct memoirePartageeVoitures {
+    int nbVoituresGarees;
+    Voiture voitures[NB_PLACES];
+} MemoirePartageeVoitures;
 
 
 //////////////////////////////////////////////////////////////////  PUBLIC
