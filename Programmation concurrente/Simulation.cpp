@@ -67,16 +67,7 @@ unsigned int GetNumeroVoiture()
 {
     static unsigned int numeroVoiture = 0; // variable remanente, initialisée au premier appel
 
-    if(numeroVoiture == 999)
-    {
-        numeroVoiture = 1;
-    }
-    else
-    {
-        numeroVoiture ++;
-    }
-
-    return numeroVoiture;
+    return (numeroVoiture = (numeroVoiture % 999 + 1));
 } //----- fin de GestionClavier
 
 
@@ -84,6 +75,9 @@ void Commande(char code, unsigned int valeur)
 // Algorithme :
 //
 {
+    MessageDemandeEntree demandeEntree;
+    MessageDemandeSortie demandeSortie;
+
     switch (code) {
     case 'e':
     case 'E':
@@ -91,16 +85,17 @@ void Commande(char code, unsigned int valeur)
         break;
     case 'p':
     case 'P':
+        demandeEntree.voiture.arrivee = time(NULL);
+        demandeEntree.voiture.numero = GetNumeroVoiture();
+        demandeEntree.voiture.typeUsager = TypeUsager::PROF;
+        demandeEntree.type = 1;
+
         switch (valeur) {
         case 1: // Blaise Pascal
-            MessageDemandeEntree demande;
-            demande.voiture.arrivee = time(NULL);
-            demande.voiture.numeroVoiture = GetNumeroVoiture();
-            demande.voiture.typeUsager = TypeUsager::PROF;
-            demande.type = 1;
-            msgsnd(msgid_FileDemandeEntree_Prof_BlaisePacal,&demande,sizeof(MessageDemandeEntree),0);
+            msgsnd(msgid_FileDemandeEntree_Prof_BlaisePacal,&demandeEntree,sizeof(MessageDemandeEntree),0);
             break;
         case 2: // Gaston Berger
+            msgsnd(msgid_FileDemandeEntree_GastonBerger,&demandeEntree,sizeof(MessageDemandeEntree),0);
             break;
         default:
             break;
@@ -108,18 +103,28 @@ void Commande(char code, unsigned int valeur)
         break;
     case 'a':
     case 'A':
+        demandeEntree.voiture.arrivee = time(NULL);
+        demandeEntree.voiture.numero = GetNumeroVoiture();
+        demandeEntree.voiture.typeUsager = TypeUsager::AUTRE;
+        demandeEntree.type = 1;
+
         switch (valeur) {
         case 1: // Blaise Pascal
+            msgsnd(msgid_FileDemandeEntree_Autre_BlaisePacal,&demandeEntree,sizeof(MessageDemandeEntree),0);
             break;
         case 2: // Gaston Berger
+            msgsnd(msgid_FileDemandeEntree_GastonBerger,&demandeEntree,sizeof(MessageDemandeEntree),0);
             break;
         default:
             break;
         }
         break;
+        break;
     case 's':
     case 'S':
-        //valeur = numPlace (entre 1 et 8, déjà traité dans Menu())
+        demandeSortie.numeroPlace = valeur;
+        demandeSortie.type = 1;
+        msgsnd(msgid_FileDemandeSortie_GastonBerger,&demandeSortie,sizeof(MessageDemandeSortie),0);
         break;
     default:
         break;

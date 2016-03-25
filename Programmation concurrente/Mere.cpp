@@ -100,11 +100,11 @@ int main ( int argc, char** argv)
     mutex_MemoirePartageeVoitures = semget(ftok(PARKING_EXE,4),1,IPC_CREAT | DROITS_SEMAPHORE);
     semctl(mutex_MemoirePartageeVoitures,0,SETVAL,1);
 
-    mutex_MemoirePartageeVoitures = semget(ftok(PARKING_EXE,5),1,IPC_CREAT | DROITS_SEMAPHORE);
-    semctl(mutex_MemoirePartageeVoitures,0,SETVAL,1);
+    mutex_Requetes = semget(ftok(PARKING_EXE,5),1,IPC_CREAT | DROITS_SEMAPHORE);
+    semctl(mutex_Requetes,0,SETVAL,1);
 
     semSyc_Requetes = semget(ftok(PARKING_EXE,6),3,IPC_CREAT | DROITS_SEMAPHORE);
-    semctl(mutex_Requetes,3,SETALL,1);
+    semctl(semSyc_Requetes,3,SETALL,0);
 
     //Memoires partagées
     shmId_MemoirePartageeVoitures = shmget(ftok(PARKING_EXE,7),sizeof(MemoirePartageeVoitures), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
@@ -138,7 +138,15 @@ int main ( int argc, char** argv)
     }
     else if( (pid_EntreeBlaisePascalProf = fork()) == 0 )
     {
-        Entree(TypeBarriere::PROF_BLAISE_PASCAL,INDICE_ENTREE_BLAISE_PASCALE_PROF,msgid_FileDemandeEntree_Prof_BlaisePacal,msgid_FileDemandeEntree_Autre_BlaisePacal,msgid_FileDemandeEntree_GastonBerger,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
+        Entree(TypeBarriere::PROF_BLAISE_PASCAL,INDICE_ENTREE_BLAISE_PASCALE_PROF,msgid_FileDemandeEntree_Prof_BlaisePacal,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
+    }
+    else if( (pid_EntreeBlaisePascalAutre = fork()) == 0 )
+    {
+        Entree(TypeBarriere::AUTRE_BLAISE_PASCAL,INDICE_ENTREE_BLAISE_PASCALE_AUTRE,msgid_FileDemandeEntree_Autre_BlaisePacal,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
+    }
+    else if( (pid_EntreeGastonBerger = fork()) == 0 )
+    {
+        Entree(TypeBarriere::ENTREE_GASTON_BERGER,INDICE_ENTREE_GASTON_BERGER,msgid_FileDemandeEntree_GastonBerger,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
     }
     else
     {
@@ -149,9 +157,15 @@ int main ( int argc, char** argv)
 
         //Phase Destruction
         kill(pid_Heure,SIGUSR2);//test valeur retour -1 error
-        waitpid(pid_Heure,&statut_Heure,0);
         kill(pid_EntreeBlaisePascalProf,SIGUSR2);//test valeur retour -1 error
+        kill(pid_EntreeBlaisePascalAutre,SIGUSR2);//test valeur retour -1 error
+        kill(pid_EntreeGastonBerger,SIGUSR2);//test valeur retour -1 error
+
+
+        waitpid(pid_Heure,&statut_Heure,0);
         waitpid(pid_EntreeBlaisePascalProf,&statut_EntreeBlaisePascalProf,0);
+        waitpid(pid_EntreeBlaisePascalAutre,&statut_EntreeBlaisePascalAutre,0);
+        waitpid(pid_EntreeGastonBerger,&statut_EntreeGastonBerger,0);
 
         //liberation des ressources
         TerminerApplication();
