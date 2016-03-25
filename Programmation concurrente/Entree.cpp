@@ -60,7 +60,7 @@ static MemoirePartageeVoitures* memoirePartageeVoitures;
 static Voiture* requetes;
 static map<pid_t,Voiture> voituriers;
 
-void Entree(TypeBarriere type, int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid_FDE_GB, int mutex_R, int semSyc_R, int shmId_R, int mutex_MPV, int shmId_MPV)
+void Entree(TypeBarriere type, int indiceBarriere, int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid_FDE_GB, int mutex_R, int semSyc_R, int shmId_R, int mutex_MPV, int shmId_MPV)
 // Algorithme :
 //
 {
@@ -74,6 +74,7 @@ void Entree(TypeBarriere type, int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid
     mutex_Requetes = mutex_R;
     semSyc_Requetes = semSyc_R;
     shmId_Requetes = shmId_R;
+
 
     memoirePartageeVoitures = (MemoirePartageeVoitures*) shmat(shmId_MemoirePartageeVoitures,NULL,0);
     requetes = (Voiture*) shmat(shmId_Requetes,NULL,0);
@@ -94,19 +95,24 @@ void Entree(TypeBarriere type, int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid
 
     for(;;)
     {
+        while(msgrcv(msgid_FileDemandeEntree_Prof_BlaisePacal,&demande,sizeof(MessageDemandeEntree),0,0) == -1 && errno == EINTR); //sans block
 
-        demande.voiture.typeUsager = TypeUsager::AUCUN;
-        while(msgrcv(msgid_FileDemandeEntree_Prof_BlaisePacal,&demande,sizeof(MessageDemandeEntree),0,0) == -1); //sans block
-            //si egale -1 on reteste car on a peut etre recu signal SIGCHLD (errno == EINTR)
+        demande.voiture.arrivee = time(NULL);
+
         if( (pid_Voiturier = GarerVoiture(typeBarriere)) != -1 )
         {
             voituriers.insert(make_pair(pid_Voiturier,demande.voiture));
-            int status;
-            waitpid(pid_Voiturier,&status,0);
         }
         else
         {
             //requete
+            sembuf prendre = {(short unsigned int)mutex_Requetes, (short)-1, (short)0};
+            sembuf vendre = {(short unsigned int)mutex_Requetes, (short)1, (short)0};
+            while(semop(mutex_Requetes,&prendre,1) == -1 && errno == EINTR);
+            requetes[indiceBarriere] = demande.voiture;
+            semop(mutex_MemoirePartageeVoitures,&vendre,1);
+            AfficherRequete (typeBarriere,demande.voiture.typeUsager,demande.voiture.arrivee);
+            DessinerVoitureBarriere(typeBarriere,demande.voiture.typeUsager);
         }
         sleep(1);
     }
@@ -122,11 +128,28 @@ void finVoiturier(int numSignal)
 // Algorithme :
 //
 {
+    sembuf prendre = {(short unsigned int)mutex_MemoirePartageeVoitures, (short)-1, (short)0};
+    sembuf vendre = {(short unsigned int)mutex_MemoirePartageeVoitures, (short)1, (short)0};
     pid_t pid_Voiturier;
-    int statutVoiturier;
+    int statut_Voiturier;
+    int numeroPlace;
     if(numSignal == SIGCHLD) {
-        pid_Voiturier = wait(&statutVoiturier);
+        pid_Voiturier = wait(&statut_Voiturier);//pb sur le wait
+
+        map<pid_t,Voiture>::iterator it = voituriers.find(pid_Voiturier);
+        Voiture voiture = it->second;
+        voituriers.erase(pid_Voiturier);
+        numeroPlace = WEXITSTATUS(statut_Voiturier);
+        AfficherPlace(numeroPlace,voiture.typeUsager,voiture.numeroVoiture,voiture.arrivee);
+
         //mettre voiture dans place memoire partagé
+        while(semop(mutex_MemoirePartageeVoitures,&prendre,1) == -1 && errno == EINTR);
+
+        memoirePartageeVoitures->nbVoituresGarees++;
+        memoirePartageeVoitures->voitures[numeroPlace-1] = voiture;
+
+        semop(mutex_MemoirePartageeVoitures,&vendre,1);
+
     }
 } //----- fin de finVoiturier
 
@@ -146,8 +169,6 @@ void fin(int numSignal)
         for(map<pid_t,Voiture>::iterator it = voituriers.begin(); it != voituriers.end(); it++)
         {
             kill(it->first,SIGUSR2);
-
-            AfficherSortie((it->second).typeUsager, it->first, time(NULL),time(NULL));
         }
         for(map<pid_t,Voiture>::iterator it = voituriers.begin(); it != voituriers.end(); it++)
         {

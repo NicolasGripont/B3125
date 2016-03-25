@@ -100,8 +100,8 @@ int main ( int argc, char** argv)
     mutex_MemoirePartageeVoitures = semget(ftok(PARKING_EXE,4),1,IPC_CREAT | DROITS_SEMAPHORE);
     semctl(mutex_MemoirePartageeVoitures,0,SETVAL,1);
 
-    mutex_Requetes = semget(ftok(PARKING_EXE,5),1,IPC_CREAT | DROITS_SEMAPHORE);
-    semctl(mutex_Requetes,0,SETVAL,1);
+    mutex_MemoirePartageeVoitures = semget(ftok(PARKING_EXE,5),1,IPC_CREAT | DROITS_SEMAPHORE);
+    semctl(mutex_MemoirePartageeVoitures,0,SETVAL,1);
 
     semSyc_Requetes = semget(ftok(PARKING_EXE,6),3,IPC_CREAT | DROITS_SEMAPHORE);
     semctl(mutex_Requetes,3,SETALL,1);
@@ -136,41 +136,38 @@ int main ( int argc, char** argv)
         //Fils
         GestionClavier(msgid_FileDemandeEntree_Prof_BlaisePacal,msgid_FileDemandeEntree_Autre_BlaisePacal,msgid_FileDemandeEntree_GastonBerger,msgid_FileDemandeSortie_GastonBerger);
     }
+    else if( (pid_EntreeBlaisePascalProf = fork()) == 0 )
+    {
+        Entree(TypeBarriere::PROF_BLAISE_PASCAL,INDICE_ENTREE_BLAISE_PASCALE_PROF,msgid_FileDemandeEntree_Prof_BlaisePacal,msgid_FileDemandeEntree_Autre_BlaisePacal,msgid_FileDemandeEntree_GastonBerger,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
+    }
     else
     {
-        if( (pid_EntreeBlaisePascalProf = fork()) == 0 )
-        {
-            Entree(TypeBarriere::PROF_BLAISE_PASCAL,msgid_FileDemandeEntree_Prof_BlaisePacal,msgid_FileDemandeEntree_Autre_BlaisePacal,msgid_FileDemandeEntree_GastonBerger,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
-        }
-        else
-        {
-            pid_Heure = ActiverHeure();
+        pid_Heure = ActiverHeure();
 
-            //Phase Moteur
-            waitpid(pid_GestionClavier,&statut_GestionClavier,0);
+        //Phase Moteur
+        waitpid(pid_GestionClavier,&statut_GestionClavier,0);
 
-            //Phase Destruction
-            kill(pid_Heure,SIGUSR2);//test valeur retour -1 error
-            waitpid(pid_Heure,&statut_Heure,0);
-            kill(pid_EntreeBlaisePascalProf,SIGUSR2);//test valeur retour -1 error
-            waitpid(pid_EntreeBlaisePascalProf,&statut_EntreeBlaisePascalProf,0);
+        //Phase Destruction
+        kill(pid_Heure,SIGUSR2);//test valeur retour -1 error
+        waitpid(pid_Heure,&statut_Heure,0);
+        kill(pid_EntreeBlaisePascalProf,SIGUSR2);//test valeur retour -1 error
+        waitpid(pid_EntreeBlaisePascalProf,&statut_EntreeBlaisePascalProf,0);
 
-            //liberation des ressources
-            TerminerApplication();
-            //boites aux lettres
-            msgctl(msgid_FileDemandeEntree_Prof_BlaisePacal,IPC_RMID,0);
-            msgctl(msgid_FileDemandeEntree_Autre_BlaisePacal,IPC_RMID,0);
-            msgctl(msgid_FileDemandeEntree_GastonBerger,IPC_RMID,0);
-            msgctl(msgid_FileDemandeSortie_GastonBerger,IPC_RMID,0);
-            //memoires partages
-            shmctl(shmId_MemoirePartageeVoitures, IPC_RMID, 0);
-            shmctl(shmId_Requetes, IPC_RMID, 0);
-            //semaphores
-            semctl(mutex_MemoirePartageeVoitures, IPC_RMID, 0);
-            semctl(semSyc_Requetes, IPC_RMID, 0);
-            semctl(mutex_Requetes, IPC_RMID, 0);
-            exit(0);
-        }
+        //liberation des ressources
+        TerminerApplication();
+        //boites aux lettres
+        msgctl(msgid_FileDemandeEntree_Prof_BlaisePacal,IPC_RMID,0);
+        msgctl(msgid_FileDemandeEntree_Autre_BlaisePacal,IPC_RMID,0);
+        msgctl(msgid_FileDemandeEntree_GastonBerger,IPC_RMID,0);
+        msgctl(msgid_FileDemandeSortie_GastonBerger,IPC_RMID,0);
+        //memoires partages
+        shmctl(shmId_MemoirePartageeVoitures, IPC_RMID, 0);
+        shmctl(shmId_Requetes, IPC_RMID, 0);
+        //semaphores
+        semctl(mutex_MemoirePartageeVoitures, IPC_RMID, 0);
+        semctl(semSyc_Requetes, IPC_RMID, 0);
+        semctl(mutex_Requetes, IPC_RMID, 0);
+        exit(0);
     }
 
 

@@ -30,6 +30,10 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 #define DROITS_MEMOIRE_PARTAGEE 0660
 #define DROITS_SEMAPHORE 0660
 
+#define INDICE_ENTREE_BLAISE_PASCALE_PROF 0
+#define INDICE_ENTREE_BLAISE_PASCALE_AUTRE 1
+#define INDICE_ENTREE_GASTON_BERGER 2
+
 //------------------------------------------------------------------ Types
 typedef struct voiture {
     TypeUsager typeUsager;
