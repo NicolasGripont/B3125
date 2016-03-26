@@ -148,6 +148,10 @@ int main ( int argc, char** argv)
     {
         Entree(TypeBarriere::ENTREE_GASTON_BERGER,INDICE_ENTREE_GASTON_BERGER,msgid_FileDemandeEntree_GastonBerger,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
     }
+    else if( (pid_Sortie = fork()) == 0 )
+    {
+        Sortie(msgid_FileDemandeSortie_GastonBerger,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
+    }
     else
     {
         pid_Heure = ActiverHeure();
@@ -160,12 +164,13 @@ int main ( int argc, char** argv)
         kill(pid_EntreeBlaisePascalProf,SIGUSR2);//test valeur retour -1 error
         kill(pid_EntreeBlaisePascalAutre,SIGUSR2);//test valeur retour -1 error
         kill(pid_EntreeGastonBerger,SIGUSR2);//test valeur retour -1 error
-
+        kill(pid_Sortie,SIGUSR2);//test valeur retour -1 error
 
         waitpid(pid_Heure,&statut_Heure,0);
         waitpid(pid_EntreeBlaisePascalProf,&statut_EntreeBlaisePascalProf,0);
         waitpid(pid_EntreeBlaisePascalAutre,&statut_EntreeBlaisePascalAutre,0);
         waitpid(pid_EntreeGastonBerger,&statut_EntreeGastonBerger,0);
+        waitpid(pid_Sortie,&statut_Sortie,0);
 
         //liberation des ressources
         TerminerApplication();

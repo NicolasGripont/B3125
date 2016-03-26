@@ -66,8 +66,9 @@ static void finVoiturier(int numSignal)
     pid_t pid_Voiturier;
     int statut_Voiturier;
     int numeroPlace;
-    if(numSignal == SIGCHLD) {
-        pid_Voiturier = wait(&statut_Voiturier);//pb sur le wait
+    if(numSignal == SIGCHLD)
+    {
+        pid_Voiturier = wait(&statut_Voiturier);
 
         map<pid_t,Voiture>::iterator it = voituriers.find(pid_Voiturier);
         Voiture voiture = it->second;
@@ -92,7 +93,8 @@ static void fin(int numSignal)
 //
 {
     //destruction
-    if(numSignal == SIGUSR2) {
+    if(numSignal == SIGUSR2)
+    {
         struct sigaction action;
         action.sa_handler = SIG_IGN ;
         sigemptyset(&action.sa_mask);
@@ -138,6 +140,12 @@ void Entree(TypeBarriere type, int indiceBarriere, int msgid_BAL, int mutex_R, i
     memoirePartageeVoitures = (MemoirePartageeVoitures*) shmat(shmId_MemoirePartageeVoitures,NULL,0);
     requetes = (Voiture*) shmat(shmId_Requetes,NULL,0);
 
+    struct sigaction action;
+    action.sa_handler = SIG_IGN ;
+    sigemptyset(&action.sa_mask);
+    action.sa_flags = 0 ;
+    sigaction(SIGUSR1,&action,NULL);
+
     struct sigaction actionFin;
     actionFin.sa_handler = fin;
     sigemptyset(&actionFin.sa_mask);
@@ -169,6 +177,8 @@ void Entree(TypeBarriere type, int indiceBarriere, int msgid_BAL, int mutex_R, i
             semop(mutex_Requetes,&vendreMutex,1);
             AfficherRequete (typeBarriere,demande.voiture.typeUsager,demande.voiture.arrivee);
             DessinerVoitureBarriere(typeBarriere,demande.voiture.typeUsager);
+
+            Afficher(TypeZone::MESSAGE, indiceBarriere);
 
             sembuf prendreSemSync = {(short unsigned int)indiceBarriere, (short)-1, (short)0};
             while(semop(semSyc_Requetes,&prendreSemSync,1) == -1 && errno == EINTR);

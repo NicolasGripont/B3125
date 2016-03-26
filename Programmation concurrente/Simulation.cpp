@@ -14,6 +14,8 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 #include <stdlib.h>
 #include <time.h>
 #include <sys/msg.h>
+#include <signal.h>
+
 //------------------------------------------------------ Include personnel
 #include "Simulation.h"
 #include "Menu.h"
@@ -53,6 +55,18 @@ void GestionClavier(int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid_FDE_GB, in
     msgid_FileDemandeEntree_Autre_BlaisePacal = msgid_FDE_A_BP;
     msgid_FileDemandeEntree_GastonBerger = msgid_FDE_GB;
     msgid_FileDemandeSortie_GastonBerger = msgid_FDS_GB;
+
+    struct sigaction action;
+    action.sa_handler = SIG_IGN ;
+    sigemptyset(&action.sa_mask);
+    action.sa_flags = 0 ;
+    sigaction(SIGUSR1,&action,NULL);
+
+    struct sigaction actionFin;
+    actionFin.sa_handler = SIG_IGN;
+    sigemptyset(&actionFin.sa_mask);
+    actionFin.sa_flags = 0 ;
+    sigaction(SIGUSR2,&actionFin,NULL);
 
     for(;;)
     {
