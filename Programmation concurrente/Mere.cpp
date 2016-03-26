@@ -109,7 +109,7 @@ int main ( int argc, char** argv)
     //Memoires partagées
     shmId_MemoirePartageeVoitures = shmget(ftok(PARKING_EXE,7),sizeof(MemoirePartageeVoitures), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
     memoirePartageeVoitures = (MemoirePartageeVoitures*) shmat(shmId_MemoirePartageeVoitures,NULL,0);
-    memoirePartageeVoitures->nbVoituresGarees = 0;
+
     for(int i=0; i < (int) NB_PLACES ; i++)
     {
         memoirePartageeVoitures->voitures[i] = {TypeUsager::AUCUN,0,0};

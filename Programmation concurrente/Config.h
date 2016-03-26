@@ -53,7 +53,6 @@ typedef struct messsageDemandeSortie {
 
 
 typedef struct memoirePartageeVoitures {
-    int nbVoituresGarees;
     Voiture voitures[NB_PLACES];
 } MemoirePartageeVoitures;
 

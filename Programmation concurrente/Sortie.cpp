@@ -63,17 +63,13 @@ static int choixRequete();
 // Contrat :
 //
 
-static bool operator > (Voiture v1, Voiture v2);
+static bool isV1Prio(Voiture v1, Voiture v2);
 // Mode d'emploi :
 //
 // Contrat :
 //
 
-static bool operator > (TypeUsager type1, TypeUsager type2);
-// Mode d'emploi :
-//
-// Contrat :
-//
+
 
 static void finVoiturier(int numSignal)
 // Algorithme :
@@ -85,18 +81,16 @@ static void finVoiturier(int numSignal)
     pid_t pid_Voiturier;
     int statut_Voiturier;
     int numeroPlace;
-    int nbVoituresGarees;
     Voiture voiture;
     int indiceRequete;
 
     if(numSignal == SIGCHLD)
     {
-        pid_Voiturier = wait(&statut_Voiturier);
+        pid_Voiturier = wait(&statut_Voiturier); //le faire apres mutex Requte et ou memoire
         numeroPlace = WEXITSTATUS(statut_Voiturier);
 
         while(semop(mutex_MemoirePartageeVoitures,&prendreMutex,1) == -1 && errno == EINTR);
 
-        nbVoituresGarees = memoirePartageeVoitures->nbVoituresGarees--;
         voiture = memoirePartageeVoitures->voitures[numeroPlace-1];
         memoirePartageeVoitures->voitures[numeroPlace-1] = {TypeUsager::AUCUN,0,0};
         semop(mutex_MemoirePartageeVoitures,&vendreMutex,1);
@@ -105,20 +99,17 @@ static void finVoiturier(int numSignal)
         AfficherSortie(voiture.typeUsager,voiture.numero,voiture.arrivee,time(NULL));
         voituriers.erase(pid_Voiturier);
 
-        if(nbVoituresGarees == NB_PLACES)
-        {
-            while(semop(mutex_Requetes,&prendreMutex,1) == -1 && errno == EINTR);
 
-            if( (indiceRequete = choixRequete()) != -1 )
-            {
-                requetes[indiceRequete] = {TypeUsager::AUCUN,0,0};
-                Effacer((TypeZone)(TypeZone::REQUETE_R1 + indiceRequete));
-                sembuf vendreSemSync = {(short unsigned int)indiceRequete, (short)1, (short)0};
-                while(semop(semSyc_Requetes,&vendreSemSync,1) == -1 && errno == EINTR);
-                Afficher(TypeZone::MESSAGE, indiceRequete);
-            }
-            semop(mutex_Requetes,&vendreMutex,1);
+        while(semop(mutex_Requetes,&prendreMutex,1) == -1 && errno == EINTR);
+
+        if( (indiceRequete = choixRequete()) != -1 )
+        {
+            requetes[indiceRequete] = {TypeUsager::AUCUN,0,0};
+            Effacer((TypeZone)(TypeZone::REQUETE_R1 + indiceRequete));
+            sembuf vendreSemSync = {(short unsigned int)indiceRequete, (short)1, (short)0};
+            while(semop(semSyc_Requetes,&vendreSemSync,1) == -1 && errno == EINTR);
         }
+        semop(mutex_Requetes,&vendreMutex,1);
     }
 } //----- fin de finVoiturier
 
@@ -153,26 +144,16 @@ static void fin(int numSignal)
     }
 } //----- fin de fin
 
-static bool operator > (TypeUsager type1, TypeUsager type2)
-// Algorithme :
-//
-{
-    // on veut : PROF > AUTRE > AUCUN
-    // propriété enum : AUTRE(2) > PROF(1) > AUCUN (0)
-    if(type1 == TypeUsager::PROF && type2 == TypeUsager::AUTRE) { return true; }
-    if(type1 == TypeUsager::AUTRE && type2 == TypeUsager::PROF) { return false; }
-    return (type1 > type2);
-} //----- fin de operator >
 
-static bool operator > (Voiture v1, Voiture v2)
-// Algorithme :
-//
+static bool isV1Prio(Voiture v1, Voiture v2)
 {
+    if(v1.typeUsager == v2.typeUsager) { return (v1.arrivee < v2.arrivee); }
+    if(v1.typeUsager == TypeUsager::PROF && v2.typeUsager == TypeUsager::AUTRE) { return true; }
+    if(v1.typeUsager == TypeUsager::AUTRE && v2.typeUsager == TypeUsager::PROF) { return false; }
     if(v1.typeUsager > v2.typeUsager) { return true; }
-    if(v1.typeUsager < v2.typeUsager) { return false; }
-//  if(v1.typeUsager == v2.typeUsager)
-    return v1.arrivee < v2.arrivee;
-} //----- fin de operator >
+//    if(v1.typeUsager < v2.typeUsager) { return false; }
+    return false;
+}
 
 static int choixRequete()
 // Algorithme :
@@ -182,16 +163,24 @@ static int choixRequete()
     Voiture v2 = requetes[INDICE_ENTREE_BLAISE_PASCALE_AUTRE];
     Voiture v3 = requetes[INDICE_ENTREE_GASTON_BERGER];
 
-    if(v1 > v2 && v1 > v3) { return INDICE_ENTREE_BLAISE_PASCALE_PROF; }
-    if(v2 > v1 && v2 > v3) { return INDICE_ENTREE_BLAISE_PASCALE_AUTRE; }
-    if(v3 > v1 && v3 > v2) { return INDICE_ENTREE_GASTON_BERGER; }
+    if(isV1Prio(v1,v2) && isV1Prio(v1,v3) && v1.typeUsager != TypeUsager::AUCUN)
+    {
+        return 0;
+    }
+    if(isV1Prio(v2,v1) && isV1Prio(v2,v3) && v2.typeUsager != TypeUsager::AUCUN)
+    {
+        return 1;
+    }
+    if(isV1Prio(v3,v2) && isV1Prio(v3,v1) && v3.typeUsager != TypeUsager::AUCUN)
+    {
+        return 2;
+    }
 
-    return -1;//pas de requete
+    return -1;
 } //----- fin de choixRequete
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-
 
 
 void Sortie(int msgid_BAL, int mutex_R, int semSyc_R, int shmId_R, int mutex_MPV, int shmId_MPV)

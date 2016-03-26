@@ -79,7 +79,6 @@ static void finVoiturier(int numSignal)
         //mettre voiture dans place memoire partagé
         while(semop(mutex_MemoirePartageeVoitures,&prendre,1) == -1 && errno == EINTR);
 
-        memoirePartageeVoitures->nbVoituresGarees++;
         memoirePartageeVoitures->voitures[numeroPlace-1] = voiture;
 
         semop(mutex_MemoirePartageeVoitures,&vendre,1);
@@ -177,8 +176,6 @@ void Entree(TypeBarriere type, int indiceBarriere, int msgid_BAL, int mutex_R, i
             semop(mutex_Requetes,&vendreMutex,1);
             AfficherRequete (typeBarriere,demande.voiture.typeUsager,demande.voiture.arrivee);
             DessinerVoitureBarriere(typeBarriere,demande.voiture.typeUsager);
-
-            Afficher(TypeZone::MESSAGE, indiceBarriere);
 
             sembuf prendreSemSync = {(short unsigned int)indiceBarriere, (short)-1, (short)0};
             while(semop(semSyc_Requetes,&prendreSemSync,1) == -1 && errno == EINTR);
