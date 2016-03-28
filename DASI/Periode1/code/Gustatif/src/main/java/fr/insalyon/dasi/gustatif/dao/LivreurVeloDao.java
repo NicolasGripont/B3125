@@ -56,4 +56,25 @@ public class LivreurVeloDao extends LivreurDao {
         }     
         return livreurs;
     }
+    
+    public LivreurVelo findLivreurVeloByMailAndPassword(String mail, String password) throws Throwable {
+        EntityManager em = JpaUtil.obtenirEntityManager();
+        List<LivreurVelo> livreurs = null;
+        LivreurVelo lv = null;
+        try {
+//            Query q = em.createQuery("SELECT l FROM LivreurVelo l WHERE l.mail = '" + mail + "' AND l.motDePasse = '" + password + "'");
+            Query q = em.createQuery("SELECT l FROM LivreurVelo l WHERE l.mail = :mail AND l.motDePasse = :password");
+            q.setParameter("mail", mail);
+            q.setParameter("password", password);
+            livreurs = (List<LivreurVelo>) q.getResultList();
+        }
+        catch(Exception e) {
+            throw e;
+        }
+        try {
+            lv = livreurs.get(0);
+        } catch (Exception e){
+        }
+        return lv;
+    }
 }

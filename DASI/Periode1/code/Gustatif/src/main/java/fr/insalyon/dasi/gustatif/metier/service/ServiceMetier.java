@@ -16,6 +16,7 @@ import fr.insalyon.dasi.gustatif.dao.ProduitDao;
 import fr.insalyon.dasi.gustatif.dao.RestaurantDao;
 import fr.insalyon.dasi.gustatif.metier.modele.Client;
 import fr.insalyon.dasi.gustatif.metier.modele.Commande;
+import fr.insalyon.dasi.gustatif.metier.modele.LigneDeCommande;
 import fr.insalyon.dasi.gustatif.metier.modele.Produit;
 import fr.insalyon.dasi.gustatif.metier.modele.Restaurant;
 import fr.insalyon.dasi.gustatif.metier.modele.Livreur;
@@ -24,6 +25,7 @@ import fr.insalyon.dasi.gustatif.metier.modele.LivreurDrone;
 import fr.insalyon.dasi.gustatif.util.GeoTest;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.RollbackException;
@@ -81,13 +83,13 @@ public class ServiceMetier {
         {
             //envoyer mail succes
             subject = "Bienvenue chez Gustat'IF";
-            body = "Bonjour <prenom>,\n" 
+            body = "Bonjour "+ client.getPrenom() +",\n" 
                 + "\n" 
-                + "       Nous vous confirmons votre inscription au service Gustat'IF.";
+                + "       Nous vous confirmons votre inscription au service Gustat'IF. Votre numéro de client est : " + client.getId() + ".";
         } else {
             //envoyer mail echec
             subject = "Bienvenue chez Gustat'IF";
-            body = "Bonjour <prenom>,\n" 
+            body = "Bonjour "+ client.getPrenom() +",\n" 
                 + "\n" 
                 + "       Votre inscription au service Gustat'IF a malencontreusement échoué... Merci de recommencer ultérieurement.";
         }
@@ -296,18 +298,24 @@ public class ServiceMetier {
         JpaUtil.creerEntityManager();
         
         boolean result = false;
-        
+        Livreur livreur = null;
         try {
             
             JpaUtil.ouvrirTransaction();
             
-            Livreur livreur = chooseLivreur(commande);
+            livreur = chooseLivreur(commande);
             if(livreur != null){
                 commande.setDateDebut(new Date());
                 commandeDao.create(commande);
                 livreur.addCommande(commande);
                 livreur.setDisponible(false);
                 livreurDao.update(livreur);
+
+                //a commenté pour pouvoir l'utiliser en ihm non console (sert juste au test)
+                Scanner sc = new Scanner(System.in);
+                sc.nextLine(); 
+                //__________________________________
+                
                 JpaUtil.validerTransaction();
                 result = true;
             } else {
@@ -323,7 +331,52 @@ public class ServiceMetier {
         
         JpaUtil.fermerEntityManager();
                     
-        //Envoyer un mail
+        // envoi du mail
+        String recipient = null;
+        String subject = null;
+        String body = null;
+        if(result && livreur instanceof LivreurVelo)
+        {
+            //envoyer mail succes
+            recipient = livreur.getMail();
+            subject = "Livraison n°" + commande.getId() + " à effectuer";
+            body = "Bonjour "+ ((LivreurVelo)livreur).getNom()+",\n" 
+                + "\n       Merci d'effectuer cette livraison dès maintenant, tout en respectant le code de la route ;-)"
+                + "\n\nLe Chef"
+                + "\n\nDétails de la Livraison"
+                + "\n   - Date/heure : " + commande.getDateDebut().toString()
+                + "\n   - Livreur : " + ((LivreurVelo)livreur).getPrenom() + " "+ ((LivreurVelo)livreur).getNom().toUpperCase() + " (n°" + livreur.getId() + ")"
+                + "\n   - Restaurant : " + commande.getRestaurant().getDenomination()
+                + "\n   - Client :"
+                + "\n       " + commande.getClient().getPrenom() + " " + commande.getClient().getNom().toUpperCase()
+                + "\n       " + commande.getClient().getAdresse()
+                + "\n       " + commande.getClient().getTelephone()
+                + "\n\n Commande :";
+
+            for (LigneDeCommande ligne : commande.getLignesDeCommande()) {
+                body += "\n    - " + ligne.getQuantite() + " " + ligne.getProduit().getDenomination() + " " + ligne.getQuantite() + " x " + ligne.getPrixUnitaire() + "€"; 
+            }
+            body += "\n\nTOTAL" + commande.getPrix() + "€";
+            serviceTechnique.sendFakeMail(recipient, subject, body);
+            //serviceTechnique.sendRealMail(recipient, subject, body);
+        } 
+        recipient = commande.getClient().getMail();
+        if(result){
+            //envoyer mail succes
+            subject = "Commande n°"+commande.getId();
+            body = "Bonjour " + commande.getClient().getPrenom() + ",\n" 
+                + "\n" 
+                + "       Nous vous confirmons votre commande n°" + commande.getId() + " d'un montant de " + commande.getPrix() + ".";
+        } else {
+            subject = "Echec commande";
+            body = "Bonjour " + commande.getClient().getPrenom() + ",\n" 
+                + "\n" 
+                + "       La validation de votre commade a échouée, veuillez réessayer ultérieurement.";
+       
+        }
+        serviceTechnique.sendFakeMail(recipient, subject, body);
+        //serviceTechnique.sendRealMail(recipient, subject, body);
+        
 
         return result;
     }    
@@ -348,6 +401,24 @@ public class ServiceMetier {
         JpaUtil.fermerEntityManager();
         
         return commande;
+    }    
+    
+    public List<Commande> findCommandesByLivreurId(Long id) {
+        JpaUtil.creerEntityManager();
+        
+        List<Commande> commandes = null;
+        
+        try {
+            commandes = commandeDao.findByLivreurID(id);
+        } catch (Exception e) {
+            System.out.println(e);
+        } catch (Throwable ex) {
+            Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JpaUtil.fermerEntityManager();
+        
+        return commandes;
     }    
     
     public List<Commande> findAllCommande() {
@@ -409,13 +480,32 @@ public class ServiceMetier {
         return livreur;
     }
     
-    public Livreur findLivreurByMailAndPassword(String mail, String password) {
+    
+//    public Livreur findLivreurByMailAndPassword(String mail, String password) {
+//        JpaUtil.creerEntityManager();
+//        
+//        Livreur livreur = null;
+//        
+//        try {
+//            livreur = livreurDao.findByMailAndPassword(mail, password);
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        } catch (Throwable ex) {
+//            Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//        JpaUtil.fermerEntityManager();
+//        
+//        return livreur;
+//    }
+    
+    public LivreurVelo findLivreurVeloByMailAndPassword(String mail, String password) {
         JpaUtil.creerEntityManager();
         
-        Livreur livreur = null;
+        LivreurVelo livreur = null;
         
         try {
-            livreur = livreurDao.findByMailAndPassword(mail, password);
+            livreur = livreurVeloDao.findLivreurVeloByMailAndPassword(mail, password);
         } catch (Exception e) {
             System.out.println(e);
         } catch (Throwable ex) {
@@ -425,6 +515,24 @@ public class ServiceMetier {
         JpaUtil.fermerEntityManager();
         
         return livreur;
+    }
+    
+    public List<LivreurDrone> findLivreursDronesByMailAndPassword(String mail, String password) {
+        JpaUtil.creerEntityManager();
+        
+        List<LivreurDrone> livreurs = null;
+        
+        try {
+            livreurs = livreurDroneDao.findLivreursDronesByMailAndPassword(mail, password);
+        } catch (Exception e) {
+            System.out.println(e);
+        } catch (Throwable ex) {
+            Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JpaUtil.fermerEntityManager();
+        
+        return livreurs;
     }
     
     public Livreur findLivreurById(Long id) {
@@ -527,17 +635,17 @@ public class ServiceMetier {
         if(livreurs.size() > 0) {
             livreurChoisi = livreurs.get(0);
             if(livreurChoisi instanceof LivreurVelo){
-                tempsFinal = GeoTest.getTripDurationByBicycleInMinute(livreurChoisi.getLatLng(), commande.getClient().getLatLng());
+                tempsFinal = GeoTest.getTripDurationByBicycleInMinute(livreurChoisi.getLatLng(),commande.getClient().getLatLng(), commande.getRestaurant().getLatLng());
             } else if (livreurChoisi instanceof LivreurDrone){
-                tempsFinal = (GeoTest.getFlightDistanceInKm(livreurChoisi.getLatLng(), commande.getClient().getLatLng()) / ((LivreurDrone)livreurChoisi).getVitesseMoyenneDeVolEnKmH()) * 60;
+                tempsFinal = ( (GeoTest.getFlightDistanceInKm(livreurChoisi.getLatLng(), commande.getRestaurant().getLatLng()) + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(), commande.getClient().getLatLng())) / ((LivreurDrone)livreurChoisi).getVitesseMoyenneDeVolEnKmH()) * 60;
             } else {
                 return null;
             }
             for (int i=1; i < livreurs.size(); i++) {
                 if(livreurs.get(i) instanceof LivreurVelo){
-                    temps = GeoTest.getTripDurationByBicycleInMinute(livreurs.get(i).getLatLng(), commande.getClient().getLatLng());
+                    temps = GeoTest.getTripDurationByBicycleInMinute(livreurs.get(i).getLatLng(), commande.getClient().getLatLng() , commande.getRestaurant().getLatLng());
                 } else if (livreurs.get(i) instanceof LivreurDrone){
-                    temps = (GeoTest.getFlightDistanceInKm(livreurs.get(i).getLatLng(), commande.getClient().getLatLng()) / ((LivreurDrone)livreurs.get(i)).getVitesseMoyenneDeVolEnKmH()) * 60;
+                    temps = ( (GeoTest.getFlightDistanceInKm(livreurs.get(i).getLatLng(), commande.getRestaurant().getLatLng()) + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(), commande.getClient().getLatLng()) ) / ((LivreurDrone)livreurs.get(i)).getVitesseMoyenneDeVolEnKmH()) * 60;
                 } else {
                     return null;
                 }

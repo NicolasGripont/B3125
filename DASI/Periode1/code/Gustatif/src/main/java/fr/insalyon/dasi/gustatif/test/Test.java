@@ -22,8 +22,6 @@ import fr.insalyon.dasi.gustatif.metier.modele.LivreurDrone;
 import fr.insalyon.dasi.gustatif.metier.modele.LivreurVelo;
 import fr.insalyon.dasi.gustatif.metier.modele.Produit;
 import fr.insalyon.dasi.gustatif.metier.modele.Restaurant;
-import fr.insalyon.dasi.gustatif.metier.service.ServiceMetier;
-import fr.insalyon.dasi.gustatif.util.GeoTest;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -51,8 +49,8 @@ public class Test {
     public static void testClient(){
         try{
             
-            Client c1 = new Client("Nicolas", "Gripont","195 avenue Roger Salengro, 69100 Villeurbanne", "n.gripont@gmail.com","mdp");
-            Client c4 = new Client("Nicolas", "Gripont","195 avenue Roger Salengro, 69100 Villeurbanne", "n.gripont@gmail.com","mdp");
+            Client c1 = new Client("Nicolas", "Gripont","195 avenue Roger Salengro, 69100 Villeurbanne", "n.gripont@gmail.com","mdp", "0678901234");
+            Client c4 = new Client("Nicolas", "Gripont","195 avenue Roger Salengro, 69100 Villeurbanne", "n.gripont@gmail.com","mdp","0678901234");
 
             ClientDao cd = new ClientDao();
 
@@ -171,7 +169,7 @@ public class Test {
             Livreur l1 = new LivreurVelo("nomLivreurVelo", "prenomLivreurVelo", "mailLivreurVelo@gmail.com", "mdp", "adresse", new Double(30000.F));
             LivreurDao ld = new LivreurDao();
             
-            Client c1 = new Client("Nicolas", "Gripont","195 avenue Roger Salengro, 69100 Villeurbanne", "n.gripont@gmail.com","mdp");
+            Client c1 = new Client("Nicolas", "Gripont","195 avenue Roger Salengro, 69100 Villeurbanne", "n.gripont@gmail.com","mdp","0678901234");
             ClientDao cd = new ClientDao();  
 
             Restaurant r1 = new Restaurant("Le boeuf d'argent", "Plats traditionnels...", "12 rue Einstein, 69000 Lyon");

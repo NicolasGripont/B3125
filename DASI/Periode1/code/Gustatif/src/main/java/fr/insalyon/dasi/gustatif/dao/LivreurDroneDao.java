@@ -57,4 +57,24 @@ public class LivreurDroneDao extends LivreurDao {
         }     
         return livreurs;
     }
+    
+    public List<LivreurDrone> findLivreursDronesByMailAndPassword(String mail, String password) throws Throwable {
+        EntityManager em = JpaUtil.obtenirEntityManager();
+        List<LivreurDrone> livreurs = null;
+        try {
+//            Query q = em.createQuery("SELECT l FROM LivreurVelo l WHERE l.mail = '" + mail + "' AND l.motDePasse = '" + password + "'");
+            Query q = em.createQuery("SELECT l FROM LivreurDrone l WHERE l.mail = :mail AND l.motDePasse = :password");
+            q.setParameter("mail", mail);
+            q.setParameter("password", password);
+            livreurs = (List<LivreurDrone>) q.getResultList();
+            if(livreurs.isEmpty()) {
+                livreurs = null;
+            }
+        }
+        catch(Exception e) {
+            throw e;
+        }
+
+        return livreurs;
+    }
 }

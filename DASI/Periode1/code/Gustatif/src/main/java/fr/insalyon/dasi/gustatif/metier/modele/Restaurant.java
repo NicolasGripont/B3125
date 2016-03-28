@@ -56,6 +56,10 @@ public class Restaurant implements Serializable {
     public Double getLatitude() {
         return latitude;
     }
+    
+    public LatLng getLatLng() {
+        return new LatLng(latitude, longitude);
+    }
 
     public List<Produit> getProduits() {
         return produits;

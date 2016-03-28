@@ -48,26 +48,26 @@ public class LivreurDao {
         return livreur;
     }
     
-    public Livreur findByMailAndPassword(String mail, String password) throws Throwable {
-        EntityManager em = JpaUtil.obtenirEntityManager();
-        List<Livreur> livreurs = null;
-        Livreur c = null;
-        try {
-//            Query q = em.createQuery("SELECT l FROM Livreur l WHERE l.mail = '" + mail + "' AND l.motDePasse = '" + password + "'");
-            Query q = em.createQuery("SELECT l FROM Livreur l WHERE l.mail = :mail AND l.motDePasse = :password");
-            q.setParameter("mail", mail);
-            q.setParameter("password", password);
-            livreurs = (List<Livreur>) q.getResultList();
-        }
-        catch(Exception e) {
-            throw e;
-        }
-        try {
-            c = livreurs.get(0);
-        } catch (Exception e){
-        }
-        return c;
-    }
+//    public Livreur findByMailAndPassword(String mail, String password) throws Throwable {
+//        EntityManager em = JpaUtil.obtenirEntityManager();
+//        List<Livreur> livreurs = null;
+//        Livreur c = null;
+//        try {
+////            Query q = em.createQuery("SELECT l FROM Livreur l WHERE l.mail = '" + mail + "' AND l.motDePasse = '" + password + "'");
+//            Query q = em.createQuery("SELECT l FROM Livreur l WHERE l.mail = :mail AND l.motDePasse = :password");
+//            q.setParameter("mail", mail);
+//            q.setParameter("password", password);
+//            livreurs = (List<Livreur>) q.getResultList();
+//        }
+//        catch(Exception e) {
+//            throw e;
+//        }
+//        try {
+//            c = livreurs.get(0);
+//        } catch (Exception e){
+//        }
+//        return c;
+//    }
     
     public List<Livreur> findAll() throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
