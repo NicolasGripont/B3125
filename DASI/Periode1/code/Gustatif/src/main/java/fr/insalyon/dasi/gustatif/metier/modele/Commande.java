@@ -28,11 +28,9 @@ public class Commande implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-//    @Column(unique=true)
-//    private String numeroCommande;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateDebut;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateFin;
     @ManyToOne
     private Restaurant restaurant;
@@ -43,21 +41,18 @@ public class Commande implements Serializable{
     @ManyToOne
     private Livreur livreur;
     
-    
     public Commande() {
         this.lignesDeCommande = new ArrayList<>();
     }
 
-    public Commande(/*String numeroCommande,*/ Restaurant restaurant, Client client) {
+    public Commande(Restaurant restaurant, Client client) {
         this.lignesDeCommande = new ArrayList<>();
-//        this.numeroCommande = numeroCommande;
         this.restaurant = restaurant;
         this.client = client;
     }
     
-    public Commande(/*String numeroCommande,*/ Restaurant restaurant, Client client, Date dateDebut) {
+    public Commande(Restaurant restaurant, Client client, Date dateDebut) {
         this.lignesDeCommande = new ArrayList<>();
-//        this.numeroCommande = numeroCommande;
         this.restaurant = restaurant;
         this.client = client;
         this.dateDebut = dateDebut;
@@ -68,9 +63,6 @@ public class Commande implements Serializable{
         return id;
     }
     
-//    public String getNumeroCommande() {
-//        return numeroCommande;
-//    }
 
     public Date getDateDebut() {
         return dateDebut;
@@ -92,7 +84,7 @@ public class Commande implements Serializable{
         return livreur;
     }
     
-    public Double getPoids() {
+    public Double getPoidsEnGrammes() {
         Double poids = new Double(0.F);
         for(LigneDeCommande l : lignesDeCommande)
         {
@@ -114,9 +106,6 @@ public class Commande implements Serializable{
         return lignesDeCommande;
     }
     
-//    public void setNumeroCommande(String numeroCommande) {
-//        this.numeroCommande = numeroCommande;
-//    }
 
     public void setDateDebut(Date dateDebut) {
         this.dateDebut = dateDebut;
@@ -144,6 +133,6 @@ public class Commande implements Serializable{
     
     @Override
     public String toString() {
-        return "Commande{ id=" + id + /*", numeroCommande=" + numeroCommande +*/ ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", client=[" + client + "], restaurant=[" + restaurant + "], lignesDeCommande=[" + lignesDeCommande + "], livreur=[" + livreur.getMail() + "]"+'}';
+        return "Commande{ id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", client=[" + client + "], restaurant=[" + restaurant + "], lignesDeCommande=[" + lignesDeCommande + "], livreur=[" + livreur.getMail() + "]"+'}';
     }
 }

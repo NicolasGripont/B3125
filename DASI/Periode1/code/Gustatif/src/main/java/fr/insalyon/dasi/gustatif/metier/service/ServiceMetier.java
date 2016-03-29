@@ -296,41 +296,44 @@ public class ServiceMetier {
     
     public boolean createCommande(Commande commande) {
         JpaUtil.creerEntityManager();
-        
         boolean result = false;
         Livreur livreur = null;
-        try {
-            
-            JpaUtil.ouvrirTransaction();
-            
-            livreur = chooseLivreur(commande);
-            if(livreur != null){
-                commande.setDateDebut(new Date());
-                commandeDao.create(commande);
-                livreur.addCommande(commande);
-                livreur.setDisponible(false);
-                livreurDao.update(livreur);
-
-                //a commenté pour pouvoir l'utiliser en ihm non console (sert juste au test)
-                Scanner sc = new Scanner(System.in);
-                sc.nextLine(); 
-                //__________________________________
+        int nbTentative = 0;
+        while(result == false && nbTentative < 10) { 
+            try {
                 
-                JpaUtil.validerTransaction();
-                result = true;
-            } else {
+                JpaUtil.ouvrirTransaction();
+
+                livreur = chooseLivreur(commande);
+                if(livreur != null){
+                    commande.setDateDebut(new Date());
+                    commande.setLivreur(livreur);
+                    commandeDao.create(commande);
+                    livreur.addCommande(commande);
+                    livreur.setDisponible(false);
+                    livreurDao.update(livreur);
+
+                    //a commenté pour pouvoir l'utiliser en ihm non console (sert juste au test)
+                    Scanner sc = new Scanner(System.in);
+                    sc.nextLine(); 
+                    //__________________________________
+
+                    JpaUtil.validerTransaction();
+                    result = true;
+                } else {
+                    JpaUtil.annulerTransaction();
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+                JpaUtil.annulerTransaction();
+            } catch (Throwable ex) {
+                Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
                 JpaUtil.annulerTransaction();
             }
-        } catch (Exception e) {
-            System.out.println(e);
-            JpaUtil.annulerTransaction();
-        } catch (Throwable ex) {
-            Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
-            JpaUtil.annulerTransaction();
+            nbTentative++;
         }
-        
         JpaUtil.fermerEntityManager();
-                    
+        
         // envoi du mail
         String recipient = null;
         String subject = null;
@@ -340,7 +343,7 @@ public class ServiceMetier {
             //envoyer mail succes
             recipient = livreur.getMail();
             subject = "Livraison n°" + commande.getId() + " à effectuer";
-            body = "Bonjour "+ ((LivreurVelo)livreur).getNom()+",\n" 
+            body = "Bonjour "+ ((LivreurVelo)livreur).getPrenom()+",\n" 
                 + "\n       Merci d'effectuer cette livraison dès maintenant, tout en respectant le code de la route ;-)"
                 + "\n\nLe Chef"
                 + "\n\nDétails de la Livraison"
@@ -356,7 +359,7 @@ public class ServiceMetier {
             for (LigneDeCommande ligne : commande.getLignesDeCommande()) {
                 body += "\n    - " + ligne.getQuantite() + " " + ligne.getProduit().getDenomination() + " " + ligne.getQuantite() + " x " + ligne.getPrixUnitaire() + "€"; 
             }
-            body += "\n\nTOTAL" + commande.getPrix() + "€";
+            body += "\n\nTOTAL : " + commande.getPrix() + "€";
             serviceTechnique.sendFakeMail(recipient, subject, body);
             //serviceTechnique.sendRealMail(recipient, subject, body);
         } 
@@ -366,7 +369,7 @@ public class ServiceMetier {
             subject = "Commande n°"+commande.getId();
             body = "Bonjour " + commande.getClient().getPrenom() + ",\n" 
                 + "\n" 
-                + "       Nous vous confirmons votre commande n°" + commande.getId() + " d'un montant de " + commande.getPrix() + ".";
+                + "       Nous vous confirmons votre commande n°" + commande.getId() + " d'un montant de " + commande.getPrix() + "€.";
         } else {
             subject = "Echec commande";
             body = "Bonjour " + commande.getClient().getPrenom() + ",\n" 
@@ -386,7 +389,7 @@ public class ServiceMetier {
         
         try {
             JpaUtil.ouvrirTransaction();
-            commandeDao.create(commande);
+            commandeDao.update(commande);
             JpaUtil.validerTransaction();
         } catch (Exception e) {
             System.out.println(e);
@@ -438,6 +441,23 @@ public class ServiceMetier {
         
         return commandes;
     }    
+    public Commande findCommandeById(Long id) {
+        JpaUtil.creerEntityManager();
+        
+        Commande commande = null;
+        
+        try {
+            commande = commandeDao.findById(id);
+        } catch (Exception e) {
+            System.out.println(e);
+        } catch (Throwable ex) {
+            Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JpaUtil.fermerEntityManager();
+        
+        return commande;
+    }   
     
     public List<Commande> findAllCommandeNotEnded() {
         JpaUtil.creerEntityManager();
@@ -458,7 +478,7 @@ public class ServiceMetier {
     }
     
     
-    public Livreur updateLivreurById(Livreur livreur) { 
+    public Livreur updateLivreur(Livreur livreur) { 
         JpaUtil.creerEntityManager();
         
         try {
@@ -631,7 +651,7 @@ public class ServiceMetier {
         double temps;
         double tempsFinal;
         
-        List<Livreur> livreurs = livreurDao.findAllDisponible(commande.getPoids());
+        List<Livreur> livreurs = livreurDao.findAllDisponible(commande.getPoidsEnGrammes());
         if(livreurs.size() > 0) {
             livreurChoisi = livreurs.get(0);
             if(livreurChoisi instanceof LivreurVelo){

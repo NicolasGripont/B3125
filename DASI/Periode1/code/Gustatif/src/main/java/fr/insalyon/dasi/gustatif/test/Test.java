@@ -39,7 +39,7 @@ public class Test {
     // TODO code application logic here    public static void main(String[] args) {
     // TODO code application logic here
         
-//        testClient();
+        testClient();
 //        testRestaurant();
 //        testLivreurVelo();
 //        testCommande();
@@ -180,7 +180,7 @@ public class Test {
             Produit p3 = new Produit("Ile flottante", "decs ile", new Double(7.0F),new Double(223.0F));
             ProduitDao pd = new ProduitDao();
             
-            Commande cmd = new Commande(/*"C00001",*/ r1, c1, Date.from(Instant.now()));
+            Commande cmd = new Commande(/*"C00001",*/ r1, c1, new Date());
             CommandeDao cmdd = new CommandeDao();
 //            LigneDeCommande ldc1 = new LigneDeCommande(p1, new Integer(2));
 //            LigneDeCommande ldc2 = new LigneDeCommande(p3, new Integer(3));
@@ -227,109 +227,6 @@ public class Test {
         }
     }
     
-//    public static void testChoixLivreur() {
-//        try{ 
-//            //les livreurs
-//            Livreur lv1 = new LivreurVelo("nomLivreurVelo1", "prenomLivreurVelo1", "mailLivreurVelo1@gmail.com", "mdp", "145 Rue Anatole France, 69628 Villeurbanne", new Double(30000.F));
-//            lv1.setCoordonnees(GeoTest.getLatLng(lv1.getAdresse()));
-//            Livreur ld1 = new LivreurDrone(new Double(10.F), "mailLivreurDrone@gmail.com", "mdp", "110 Boulevard du 11 Novembre 1918, 69100 Villeurbanne", new Double(1000.F));
-//            ld1.setCoordonnees(GeoTest.getLatLng(ld1.getAdresse()));
-//            Livreur lv2 = new LivreurVelo("nomLivreurVelo2cimetiere", "prenomLivreurVelo2", "mailLivreurVelo2@gmail.com", "mdp", "30 Avenue Albert Einstein, 69100 Villeurbanne", new Double(40000.F));
-//            lv2.setCoordonnees(GeoTest.getLatLng(lv2.getAdresse()));
-//            Livreur ld2 = new LivreurDrone(new Double(12.F), "mailLivreurDrone@gmail.com", "mdp", "61 Avenue Roger Salengro, 69100 Villeurbanne", new Double(1000.F));
-//            ld2.setCoordonnees(GeoTest.getLatLng(ld2.getAdresse()));
-//            Livreur lv3 = new LivreurVelo("nomLivreurVelo3", "prenomLivreurVelo3", "mailLivreurVelo3@gmail.com", "mdp", "Domaine de la Doua, 20 Avenue Gaston Berger, 69100 Villeurbanne", new Double(50000.F));
-//            lv3.setCoordonnees(GeoTest.getLatLng(lv3.getAdresse()));
-//            Livreur ld3 = new LivreurDrone(new Double(10.F), "mailLivreurDrone@gmail.com", "mdp", "61 Avenue Roger Salengro, 69100 Villeurbanne", new Double(2000.F));
-//            ld3.setCoordonnees(GeoTest.getLatLng(ld3.getAdresse()));
-//            LivreurDao ld = new LivreurDao();
-//            LivreurVeloDao lvd = new LivreurVeloDao();
-//            LivreurDroneDao ldd = new LivreurDroneDao();
-//            
-//            //le client 
-//            Client c1 = new Client("Nicolas", "Gripont","195 avenue Roger Salengro, 69100 Villeurbanne", "n.gripont@gmail.com","mdp");
-//            ClientDao cd = new ClientDao(); 
-//            c1.setCoordonnees(GeoTest.getLatLng(c1.getAdresse()));
-//            
-//            //Le restaurant, ses produits, la commande 
-//            Restaurant r1 = new Restaurant("Le boeuf d'argent", "Plats traditionnels...", "12 rue Einstein, 69000 Lyon");
-//            RestaurantDao rd = new RestaurantDao();
-//
-//            Produit p1 = new Produit("Andouillette", "decs andouillette", new Double(16.0F),new Double(127.0F));
-//            Produit p2 = new Produit("Opéra", "decs opéra", new Double(7.0F),new Double(445.0F));
-//            Produit p3 = new Produit("Ile flottante", "decs ile", new Double(7.0F),new Double(223.0F));
-//            ProduitDao pd = new ProduitDao();
-//            
-//            //commande 
-//
-//            Commande cmd = new Commande(r1, c1);
-//            Commande cmd2 = new Commande(r1, c1);
-//            CommandeDao cmdd = new CommandeDao();
-//            cmd.addLigneDeCommande(p1, new Integer(2));
-//            cmd.addLigneDeCommande(p3, new Integer(3));
-//            cmd.addLigneDeCommande(p1, new Integer(2));
-//            cmd.addLigneDeCommande(p3, new Integer(3));
-//
-//            //LigneDeCommandeDao ldcd = new LigneDeCommandeDao();
-//            
-//       
-//            
-//            
-//            //persistence livreurs, clients, restaurant.  
-//            JpaUtil.creerEntityManager();
-//            JpaUtil.ouvrirTransaction();
-//            //livreurs
-//            ld.create(lv1);
-//            ld.create(ld1);
-//            ld.create(lv2);
-//            ld.create(ld2);
-//            ld.create(lv3);
-//            ld.create(ld3);
-//            //clients
-//            cd.create(c1);
-//            //restaurante et produits 
-//            pd.create(p1);
-//            pd.create(p2);
-//            pd.create(p3);
-//
-//            List<Produit> p = pd.findAll();
-//
-//            r1.addProduit(p.get(0));
-//            r1.addProduit(p.get(1));
-//            r1.addProduit(p.get(2));
-//
-//            rd.create(r1);	
-//
-//
-//            JpaUtil.validerTransaction();
-//            
-//            System.out.println(lv1);
-//
-//            //créer la commande après affectation du livreur : 
-//
-//            JpaUtil.ouvrirTransaction();
-//            //choix du livreur à l'interieur de la transaction pour assurer la synchro.
-//            ServiceMetier sm = new ServiceMetier();
-//            Livreur l1 = sm.chooseLivreur(cmd);	
-//            System.out.println("livreur choisi : " + l1);
-//
-//            cmd.setLivreur(l1);
-//            l1.addCommande(cmd);
-//
-//            ld.update(l1);
-//            cmdd.create(cmd);
-//
-//            JpaUtil.validerTransaction();
-//
-//            JpaUtil.fermerEntityManager();
-//            
-//        }
-//        catch (Exception e) {
-//            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, e);
-//        } catch (Throwable t){
-//            
-//        }
-//    }
 }
 
 

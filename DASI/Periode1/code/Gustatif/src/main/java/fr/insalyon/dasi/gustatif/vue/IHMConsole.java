@@ -8,7 +8,6 @@ package fr.insalyon.dasi.gustatif.vue;
 import fr.insalyon.dasi.gustatif.metier.modele.Client;
 import fr.insalyon.dasi.gustatif.metier.modele.Commande;
 import fr.insalyon.dasi.gustatif.metier.modele.LigneDeCommande;
-import fr.insalyon.dasi.gustatif.metier.modele.Livreur;
 import fr.insalyon.dasi.gustatif.metier.modele.LivreurDrone;
 import fr.insalyon.dasi.gustatif.metier.modele.LivreurVelo;
 import fr.insalyon.dasi.gustatif.metier.modele.Produit;
@@ -26,7 +25,7 @@ import java.util.Scanner;
 public class IHMConsole {
     
     private static final Scanner scanner = new Scanner(System.in);
-    private static ServiceMetier serviceMetier = new ServiceMetier();
+    private static final ServiceMetier serviceMetier = new ServiceMetier();
 
     
     public static void main(String[] args) {   
@@ -71,6 +70,7 @@ public class IHMConsole {
         client.setMail(scanner.nextLine());
         System.out.println("Entrez votre mot de passe : ");
         client.setMotDePasse(scanner.nextLine());
+        client.setMotDePasse(null);
         System.out.println("Entrez votre adresse : ");
         client.setAdresse(scanner.nextLine());
         System.out.println("Entrez votre numéro de téléphone : ");
@@ -92,7 +92,7 @@ public class IHMConsole {
         return serviceMetier.findLivreurVeloByMailAndPassword(mail,motDePasse);
     }
     
-        private static Client connexion()
+    private static Client connexion()
     {
         String mail;
         String motDePasse;
@@ -111,7 +111,7 @@ public class IHMConsole {
         
         String input, numR;
         do {
-            System.out.println("Choisir un restaurant : quitter : q");
+            System.out.println("Choisir un restaurant : r, Retour/Déconnexion : d, quitter : q");
             input = scanner.nextLine();
             
             if(input.equals("r")) {
@@ -121,11 +121,19 @@ public class IHMConsole {
                     System.out.println("\t" + r.getId() + " - " + r.getDenomination());
                 }
                 numR = scanner.nextLine();
-                Restaurant restaurant = serviceMetier.findRestaurantById(new Long(Integer.parseInt(numR)));
-                vueRestaurant(restaurant, client);
-            }
-        } while(!input.equals("q"));
-        System.exit(0);
+                
+                try {
+                    Restaurant restaurant = serviceMetier.findRestaurantById(new Long(Integer.parseInt(numR)));
+                    if(restaurant != null) {
+                        vueRestaurant(restaurant, client);
+                    }
+                } catch(NumberFormatException e) {
+                    
+                }
+            } else if(input.equals("q")) {
+                System.exit(0);
+            }  
+        } while(!input.equals("d"));
     }
     
     private static void vueRestaurant(Restaurant restaurant, Client client)
@@ -140,9 +148,9 @@ public class IHMConsole {
         String input, p, q;
 
         do {            
-            System.out.println("Récapitulatif commande : prix = " + commande.getPrix() + ", poids = " + commande.getPoids());
+            System.out.println("Récapitulatif commande : prix = " + commande.getPrix() + ", poids = " + commande.getPoidsEnGrammes());
             for (LigneDeCommande ligneDeCommande : commande.getLignesDeCommande()) {
-                System.out.println("\t " + ligneDeCommande.getProduit().getDenomination() + " : prix unitaire = " + ligneDeCommande.getPrixUnitaire() + " poids unitaire = " + ligneDeCommande.getPoidsUnitaireEnGrammes() + " quantité = " + ligneDeCommande.getQuantite());
+                System.out.println("\t " + ligneDeCommande.getProduit().getDenomination() + " : prix unitaire = " + ligneDeCommande.getPrixUnitaire() + "€, poids unitaire = " + ligneDeCommande.getPoidsUnitaireEnGrammes() + "g, quantité = " + ligneDeCommande.getQuantite());
             }
             System.out.println("Ajouter un produit : p, valider : v, annuler/retour : a, quitter q");
             
@@ -152,41 +160,65 @@ public class IHMConsole {
                 System.out.println("Entrez le numéro du produit pour le selectionner :");
                 for(int i = 0; i < produits.size(); i++) {
                     Produit produit = produits.get(i);
-                    System.out.println("\t" + produit.getId() + " - " + produit.getDenomination());
+                    System.out.println("\t" + produit.getId() + " - " + produit.getDenomination() + ", prix = " + produit.getPrix() + "€, poids = " + produit.getPoids() + "g");
                 } 
                 p = scanner.nextLine();
                 
                 System.out.println("Entrez la quatité :");
                 q = scanner.nextLine();
-                
-                Produit prod = serviceMetier.findProduitById(new Long(Integer.parseInt(p)));
-                commande.addLigneDeCommande(prod, Integer.parseInt(q));
+                try {
+                    Produit prod = serviceMetier.findProduitById(new Long(Integer.parseInt(p)));
+                    if(prod != null) {
+                        int n =  Integer.parseInt(q);
+                        commande.addLigneDeCommande(prod,n);
+                    }
+                } catch(NumberFormatException e) {
+                    
+                }
                 
             } else if (input.equals("a")) {
+                //valider : 
+                if(commande.getLignesDeCommande().size() > 0) {
+                    commande.setDateDebut(new Date());
+                    serviceMetier.createCommande(commande);
+                }
                 return;
             } else if(input.equals("q")) {
                 System.exit(0);
             }  
-        } while(!input.equals("v"));
-        
-        //valider : 
-        if(commande.getLignesDeCommande().size() > 0) {
-            commande.setDateDebut(new Date());
-            serviceMetier.createCommande(commande);
-        }
-        
+        } while(!input.equals("r"));
+                
     }
 
     private static void vueLivreurVelo(LivreurVelo livreur) {
         String cmd;
-
+        String noC;
         do {
-            System.out.println("Afficher Commandes : c, Retout : r ou Quitter : q");
+            System.out.println("Afficher détails d'une commande : c, Retour : r ou Quitter : q");
             cmd = scanner.nextLine();
             
             if(cmd.equals("c")) {
                 List<Commande> commandes = serviceMetier.findCommandesByLivreurId(livreur.getId());
-                afficherCommandes(commandes);
+                System.out.println("Entrez le numéro d'une commande pour le selectionner :");
+                for(Commande c : commandes)
+                {
+                    String l = "\t" + c.getId();
+                    if(c.getDateFin() == null) {
+                        l += " - non cloturée";
+                    } else {
+                        l += " - cloturée";
+                    }
+                    System.out.println(l);
+                }
+                noC = scanner.nextLine();
+                try {
+                    Commande commande = serviceMetier.findCommandeById(new Long(Integer.parseInt(noC)));
+                    if(commande != null) {
+                        detailsCommande(commande);
+                    }
+                } catch(NumberFormatException e) {
+                    
+                }
             } else if(cmd.equals("q")) {
                 System.exit(0);
             }     
@@ -195,8 +227,9 @@ public class IHMConsole {
     
     private static void vueLivreursDrones(List<LivreurDrone> livreurs) {
         String cmd;
+        String noC;
         do {
-            System.out.println("Afficher Commandes : c, Retout : r ou Quitter : q");
+            System.out.println("Afficher détails d'une commande : c, Retour : r ou Quitter : q");
             cmd = scanner.nextLine();
             
             if(cmd.equals("c")) {
@@ -204,43 +237,43 @@ public class IHMConsole {
                 for(LivreurDrone l : livreurs) {
                     commandes.addAll(serviceMetier.findCommandesByLivreurId(l.getId()));
                 }
-                afficherCommandes(commandes);
-            } else if(cmd.equals("q")) {
-                System.exit(0);
-            }     
-        } while(!cmd.equals("r"));
-    }
-    
-    private static void afficherCommandes(List<Commande> commandes) {
-        String cmd;
-
-        do {
-            System.out.println("Afficher détails d'une commande : c, Retout : r ou Quitter : q");
-            cmd = scanner.nextLine();
-            
-            if(cmd.equals("c")) {
                 System.out.println("Entrez le numéro d'une commande pour le selectionner :");
                 for(Commande c : commandes)
                 {
                     String l = "\t" + c.getId();
-                    if(c.getDateFin() != null) {
+                    if(c.getDateFin() == null) {
                         l += " - non cloturée";
                     } else {
                         l += " - cloturée";
                     }
                     System.out.println(l);
                 }
+                noC = scanner.nextLine();
+                    
+                try{
+                    Commande commande = serviceMetier.findCommandeById(new Long(Integer.parseInt(noC)));
+                    if(commande != null) {
+                        detailsCommande(commande);
+                    }
+                } catch(NumberFormatException e) {
+                    
+                }
             } else if(cmd.equals("q")) {
                 System.exit(0);
             }     
         } while(!cmd.equals("r"));
+       
     }
-
+    
     private static void detailsCommande(Commande commande) {
         String cmd;
         String body = "Détails de la commande n°" + commande.getId()
-                + "\n   - Date/heure : " + commande.getDateDebut().toString()
-                + "\n   - Livreur : " + commande.getLivreur().getId()
+                + "\n   - Date/heure creation : " + commande.getDateDebut().toString()
+                + "\n   - Date/heure cloture : "; 
+        if(commande.getDateFin() != null) {
+            body += commande.getDateFin().toString();
+        }
+        body += "\n   - Livreur : " + commande.getLivreur().getId()
                 + "\n   - Restaurant : " + commande.getRestaurant().getDenomination()
                 + "\n   - Client :"
                 + "\n       " + commande.getClient().getPrenom() + " " + commande.getClient().getNom().toUpperCase()
@@ -251,17 +284,19 @@ public class IHMConsole {
         for (LigneDeCommande ligne : commande.getLignesDeCommande()) {
             body += "\n        - " + ligne.getQuantite() + " " + ligne.getProduit().getDenomination() + " " + ligne.getQuantite() + " x " + ligne.getPrixUnitaire() + "€"; 
         }
-        body += "\n   - TOTAL" + commande.getPrix() + "€";        
+        body += "\n   - TOTAL : " + commande.getPrix() + "€";        
         System.out.println(body);
            
         if(commande.getDateFin() ==null)
         {
-            System.out.println("Cloturer commande : c, Retout : r ou Quitter : q");
+            System.out.println("Cloturer commande : c, Retour : r ou Quitter : q");
             cmd = scanner.nextLine();
             
             if(cmd.equals("c")) {
                 commande.setDateFin(new Date());
+                commande.getLivreur().setDisponible(Boolean.TRUE);
                 serviceMetier.updateCommande(commande);
+                serviceMetier.updateLivreur(commande.getLivreur());
             } else if(cmd.equals("q")) {
                 System.exit(0);
             }     

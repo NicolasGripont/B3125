@@ -18,6 +18,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Version;
 
 /**
  *
@@ -41,6 +42,10 @@ public abstract class Livreur implements Serializable {
     @OneToMany(mappedBy = "livreur")
     @OrderBy("dateDebut DESC")
     private List<Commande> commandes;
+    
+    @Version
+    @Column(name = "VERSION")
+    private Integer version;
     
     public Livreur(){
         this.commandes = new ArrayList<>();
