@@ -1,6 +1,7 @@
 package fr.insalyon.dasi.gustatif.metier.modele;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,9 +13,13 @@ public class Produit implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable = false)
     private String denomination;
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
     private Double prix;
+    @Column(nullable = false)
     private Double poidsEnGrammes;
 
     public Produit() {

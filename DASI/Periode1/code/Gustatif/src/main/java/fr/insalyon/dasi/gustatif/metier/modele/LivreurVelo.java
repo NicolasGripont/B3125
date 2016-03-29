@@ -5,6 +5,7 @@
  */
 package fr.insalyon.dasi.gustatif.metier.modele;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -13,8 +14,9 @@ import javax.persistence.Entity;
  */
 @Entity
 public class LivreurVelo extends Livreur{
-    
+    @Column(nullable = false)
     private String nom;
+    @Column(nullable = false)
     private String prenom;
     
     

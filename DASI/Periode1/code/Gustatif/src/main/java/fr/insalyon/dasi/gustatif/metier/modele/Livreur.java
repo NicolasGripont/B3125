@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Version;
@@ -31,14 +32,21 @@ public abstract class Livreur implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable = false)
     private String mail;
+    @Column(nullable = false)
     private String motDePasse;
+    @Column(nullable = false)
     private String adresse;
+    @Column(nullable = false)
     private Double longitude;
+    @Column(nullable = false)
     private Double latitude;
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private Double chargeMaxEnGrammes;
+    @Column(nullable = false)
     private Boolean disponible;
+    @JoinColumn(nullable = false)
     @OneToMany(mappedBy = "livreur")
     @OrderBy("dateDebut DESC")
     private List<Commande> commandes;

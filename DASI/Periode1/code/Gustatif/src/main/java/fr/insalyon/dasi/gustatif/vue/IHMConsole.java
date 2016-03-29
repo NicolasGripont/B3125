@@ -70,7 +70,6 @@ public class IHMConsole {
         client.setMail(scanner.nextLine());
         System.out.println("Entrez votre mot de passe : ");
         client.setMotDePasse(scanner.nextLine());
-        client.setMotDePasse(null);
         System.out.println("Entrez votre adresse : ");
         client.setAdresse(scanner.nextLine());
         System.out.println("Entrez votre numéro de téléphone : ");

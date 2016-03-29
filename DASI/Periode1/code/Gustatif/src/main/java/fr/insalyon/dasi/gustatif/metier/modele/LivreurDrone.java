@@ -5,6 +5,7 @@
  */
 package fr.insalyon.dasi.gustatif.metier.modele;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -13,7 +14,7 @@ import javax.persistence.Entity;
  */
 @Entity
 public class LivreurDrone extends Livreur{
-    
+    @Column(nullable = false)
     private Double vitesseMoyenneDeVolEnKmH; // en km/h
     
     public LivreurDrone() {

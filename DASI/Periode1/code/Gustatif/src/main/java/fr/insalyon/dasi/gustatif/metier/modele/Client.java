@@ -14,14 +14,21 @@ public class Client implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable = false)
     private String nom;
+    @Column(nullable = false)
     private String prenom;
-    @Column(unique=true)
+    @Column(nullable = false,unique = true)
     private String mail;
+    @Column(nullable = false)
     private String motDePasse;
+    @Column(nullable = false)
     private String adresse;
+    @Column(nullable = false)
     private String telephone;
+    @Column(nullable = false)
     private Double longitude;
+    @Column(nullable = false)
     private Double latitude;
 
     public Client() {
