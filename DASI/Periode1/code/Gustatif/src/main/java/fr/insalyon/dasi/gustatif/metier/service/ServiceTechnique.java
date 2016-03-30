@@ -41,7 +41,7 @@ public class ServiceTechnique {
         double temps;
         double tempsFinal;
         
-        if(livreurs.size() > 0) {
+        if(!livreurs.isEmpty()) {
             livreurChoisi = livreurs.get(0);
             if(livreurChoisi instanceof LivreurVelo){
                 tempsFinal = GeoTest.getTripDurationByBicycleInMinute(livreurChoisi.getLatLng(),commande.getClient().getLatLng(), commande.getRestaurant().getLatLng());
