@@ -36,7 +36,8 @@ public class ServiceTechnique {
     }
    
     
-    public Livreur chooseBestLivreur(Commande commande,List<Livreur> livreurs ) throws Throwable {
+    public Livreur chooseBestLivreur(Commande commande,List<Livreur> livreurs ) 
+            throws Throwable {
         Livreur livreurChoisi = null;
         double temps;
         double tempsFinal;
@@ -44,17 +45,29 @@ public class ServiceTechnique {
         if(!livreurs.isEmpty()) {
             livreurChoisi = livreurs.get(0);
             if(livreurChoisi instanceof LivreurVelo){
-                tempsFinal = GeoTest.getTripDurationByBicycleInMinute(livreurChoisi.getLatLng(),commande.getClient().getLatLng(), commande.getRestaurant().getLatLng());
+                tempsFinal = GeoTest.getTripDurationByBicycleInMinute(
+                        livreurChoisi.getLatLng(),commande.getClient().getLatLng(),
+                        commande.getRestaurant().getLatLng());
             } else if (livreurChoisi instanceof LivreurDrone){
-                tempsFinal = ( (GeoTest.getFlightDistanceInKm(livreurChoisi.getLatLng(), commande.getRestaurant().getLatLng()) + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(), commande.getClient().getLatLng())) / ((LivreurDrone)livreurChoisi).getVitesseMoyenneDeVolEnKmH()) * 60;
+                tempsFinal = ( (GeoTest.getFlightDistanceInKm(livreurChoisi.getLatLng(), 
+                        commande.getRestaurant().getLatLng()) 
+                        + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(),
+                                commande.getClient().getLatLng())) 
+                        / ((LivreurDrone)livreurChoisi).getVitesseMoyenneDeVolEnKmH()) * 60;
             } else {
                 return null;
             }
             for (int i=1; i < livreurs.size(); i++) {
                 if(livreurs.get(i) instanceof LivreurVelo){
-                    temps = GeoTest.getTripDurationByBicycleInMinute(livreurs.get(i).getLatLng(), commande.getClient().getLatLng() , commande.getRestaurant().getLatLng());
+                    temps = GeoTest.getTripDurationByBicycleInMinute(
+                            livreurs.get(i).getLatLng(), commande.getClient().getLatLng(),
+                            commande.getRestaurant().getLatLng());
                 } else if (livreurs.get(i) instanceof LivreurDrone){
-                    temps = ( (GeoTest.getFlightDistanceInKm(livreurs.get(i).getLatLng(), commande.getRestaurant().getLatLng()) + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(), commande.getClient().getLatLng()) ) / ((LivreurDrone)livreurs.get(i)).getVitesseMoyenneDeVolEnKmH()) * 60;
+                    temps = ( (GeoTest.getFlightDistanceInKm(livreurs.get(i).getLatLng(),
+                            commande.getRestaurant().getLatLng()) 
+                            + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(),
+                                    commande.getClient().getLatLng()) ) 
+                            / ((LivreurDrone)livreurs.get(i)).getVitesseMoyenneDeVolEnKmH()) * 60;
                 } else {
                     return null;
                 }

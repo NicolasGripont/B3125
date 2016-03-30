@@ -58,7 +58,8 @@ public abstract class Livreur implements Serializable {
         this.commandes = new ArrayList<>();
     }
 
-    public Livreur(String mail, String motDePasse, String adresse, Double chargeMaxEnGrammes) {
+    public Livreur(String mail, String motDePasse, String adresse,
+            Double chargeMaxEnGrammes) {
         this.commandes = new ArrayList<>();
         this.mail = mail;
         this.motDePasse = motDePasse;
@@ -138,6 +139,11 @@ public abstract class Livreur implements Serializable {
     
     @Override
     public String toString() {
-        return "Livreur{" + "id=" + id + ", mail=" + mail + ", motDePasse=" + motDePasse + ", adresse=" + adresse + ", longitude=" + longitude + ", latitude=" + latitude + ", chargeMaxEnGrammes=" + chargeMaxEnGrammes + ", disponible " + disponible +", commandes=[" + commandes + "]" + '}';
+        return "Livreur{" + "id=" + id + ", mail=" + mail + ", motDePasse=" 
+                + motDePasse + ", adresse=" + adresse + ", longitude=" 
+                + longitude + ", latitude=" + latitude 
+                + ", chargeMaxEnGrammes=" + chargeMaxEnGrammes 
+                + ", disponible " + disponible +", commandes=[" + commandes 
+                + "]" + '}';
     }
 }

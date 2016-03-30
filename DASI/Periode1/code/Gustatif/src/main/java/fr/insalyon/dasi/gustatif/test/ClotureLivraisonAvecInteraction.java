@@ -22,7 +22,9 @@ public class ClotureLivraisonAvecInteraction {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) { 
-        //Créer une classe avec une méthode « main »  permettant de tester la clôture d’une livraison avec interaction avec l'utilisateur (saisie de l'id du livreur ou de la livraison)
+        // Créer une classe avec une méthode « main »  permettant de tester la 
+        // clôture d’une livraison avec interaction avec l'utilisateur (saisie de
+        // l'id du livreur ou de la livraison)
         List<Commande> commandes = serviceMetier.findAllCommandesNotEnded();
         
         if(commandes == null) {
@@ -33,7 +35,9 @@ public class ClotureLivraisonAvecInteraction {
         String cmd;
         
         do {
-            System.out.println("Cloturer une commande par id commande : ic, Cloturer une commande par id livreur : il , lister commande non cloturée : lnc, quitter : q");
+            System.out.println("Cloturer une commande par id commande : ic, "
+                    + "Cloturer une commande par id livreur : il , lister commande"
+                    + " non cloturée : lnc, quitter : q");
             cmd = scanner.nextLine();
             try {
                 if(cmd.equals("ic")) {
@@ -61,7 +65,8 @@ public class ClotureLivraisonAvecInteraction {
                 } else if(cmd.equals("lnc")) {
                     commandes = serviceMetier.findAllCommandesNotEnded();
                     for (Commande commande : commandes) {
-                        System.out.println("\tCommande n°" + commande.getId() + " - livreur n°" + commande.getLivreur().getId());
+                        System.out.println("\tCommande n°" + commande.getId() 
+                                + " - livreur n°" + commande.getLivreur().getId());
                     }
                 }
             } catch (NumberFormatException e)

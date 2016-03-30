@@ -34,7 +34,8 @@ public class Client implements Serializable {
     public Client() {
     }
 
-    public Client(String nom, String prenom, String adresse, String mail, String motDePasse, String telephone) {
+    public Client(String nom, String prenom, String adresse,String mail,
+            String motDePasse, String telephone) {
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
@@ -114,7 +115,10 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", mail=" + mail + ", motDePasse=" + motDePasse + ", telephone=" + telephone + ", adresse=" + adresse + ", longitude=" + longitude + ", latitude=" + latitude + '}';
+        return "Client{" + "id=" + id + ", nom=" + nom + ", prenom=" 
+			+ prenom + ", mail=" + mail + ", motDePasse=" + motDePasse 
+            + ", telephone=" + telephone + ", adresse=" + adresse 
+            + ", longitude=" + longitude + ", latitude=" + latitude + '}';
     }
 
 }

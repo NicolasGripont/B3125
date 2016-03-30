@@ -55,7 +55,8 @@ public class CommandeDao {
         Commande commande = null;
         List<Commande> commandes = null;
         try {
-            Query q = em.createQuery("SELECT c FROM Commande c WHERE c.dateFin IS NULL AND c.livreur = :livreur");
+            Query q = em.createQuery("SELECT c FROM Commande c WHERE c.dateFin "
+                    + "IS NULL AND c.livreur = :livreur");
             
             q.setParameter("livreur", livreur);
             commandes = (List<Commande>) q.getResultList();
@@ -107,7 +108,8 @@ public class CommandeDao {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<Commande> commandes = null;
         try {
-            Query q = em.createQuery("SELECT c FROM Commande c WHERE c.dateFin IS NULL");
+            Query q = em.createQuery("SELECT c FROM Commande c WHERE "
+                    + "c.dateFin IS NULL");
             commandes = (List<Commande>) q.getResultList();
         }
         catch(Exception e) {

@@ -33,7 +33,8 @@ public class LivreurVeloDao extends LivreurDao {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<LivreurVelo> livreurs = null;
         try {
-            Query q = em.createQuery("SELECT l FROM LivreurVelo l WHERE l.disponible = TRUE");
+            Query q = em.createQuery("SELECT l FROM LivreurVelo l WHERE "
+                    + "l.disponible = TRUE");
             livreurs = (List<LivreurVelo>) q.getResultList();
         }
         catch(Exception e) {
@@ -42,12 +43,14 @@ public class LivreurVeloDao extends LivreurDao {
         return livreurs;
     }
     
-    public List<LivreurVelo> findAllLivreursVelosDisponibles(Double commandeWeight) throws Throwable
+    public List<LivreurVelo> findAllLivreursVelosDisponibles(Double commandeWeight)
+            throws Throwable
     {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<LivreurVelo> livreurs = null;
         try {
-            Query q = em.createQuery("SELECT l FROM LivreurDrone l WHERE l.disponible = TRUE AND l.chargeMax >= :commandeWeight");
+            Query q = em.createQuery("SELECT l FROM LivreurDrone l WHERE "
+                    + "l.disponible = TRUE AND l.chargeMax >= :commandeWeight");
             q.setParameter("commandeWeight", commandeWeight);
             livreurs = (List<LivreurVelo>) q.getResultList();
         }
@@ -57,13 +60,14 @@ public class LivreurVeloDao extends LivreurDao {
         return livreurs;
     }
     
-    public LivreurVelo findLivreurVeloByMailAndPassword(String mail, String password) throws Throwable {
+    public LivreurVelo findLivreurVeloByMailAndPassword(String mail, String password)
+            throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<LivreurVelo> livreurs = null;
         LivreurVelo lv = null;
         try {
-//            Query q = em.createQuery("SELECT l FROM LivreurVelo l WHERE l.mail = '" + mail + "' AND l.motDePasse = '" + password + "'");
-            Query q = em.createQuery("SELECT l FROM LivreurVelo l WHERE l.mail = :mail AND l.motDePasse = :password");
+            Query q = em.createQuery("SELECT l FROM LivreurVelo l WHERE "
+                    + "l.mail = :mail AND l.motDePasse = :password");
             q.setParameter("mail", mail);
             q.setParameter("password", password);
             livreurs = (List<LivreurVelo>) q.getResultList();

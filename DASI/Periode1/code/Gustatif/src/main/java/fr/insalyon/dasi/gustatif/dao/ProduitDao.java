@@ -5,10 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-
-
 public class ProduitDao {
-    
     public void create(Produit produit) throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
         try {
@@ -52,7 +49,6 @@ public class ProduitDao {
         catch(Exception e) {
             throw e;
         }
-        
         return produits;
     }
 }

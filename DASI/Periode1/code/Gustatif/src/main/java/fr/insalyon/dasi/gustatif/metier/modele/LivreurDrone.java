@@ -20,7 +20,8 @@ public class LivreurDrone extends Livreur{
     public LivreurDrone() {
     }
 
-    public LivreurDrone(Double vitesseMoyenneDeVolEnKmH, String mail, String motDePasse, String adresse, Double chargeMaxEnGrammes) {
+    public LivreurDrone(Double vitesseMoyenneDeVolEnKmH, String mail, 
+            String motDePasse, String adresse, Double chargeMaxEnGrammes) {
         super(mail, motDePasse, adresse, chargeMaxEnGrammes);
         this.vitesseMoyenneDeVolEnKmH = vitesseMoyenneDeVolEnKmH;
     }
@@ -37,6 +38,8 @@ public class LivreurDrone extends Livreur{
     
     @Override
     public String toString() {
-        return "LivreurDrone{" + super.toString() + ", vitesseMoyenneDeVolEnKmH=" + vitesseMoyenneDeVolEnKmH + '}';
+        return "LivreurDrone{" + super.toString() 
+                + ", vitesseMoyenneDeVolEnKmH=" 
+                + vitesseMoyenneDeVolEnKmH + '}';
     }
 }

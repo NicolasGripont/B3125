@@ -28,7 +28,8 @@ public class LigneDeCommandeDao {
         }
     }
     
-    public LigneDeCommande update(LigneDeCommande ligneDeCommande) throws Throwable {
+    public LigneDeCommande update(LigneDeCommande ligneDeCommande) 
+            throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
         try {
             ligneDeCommande = em.merge(ligneDeCommande);
@@ -51,7 +52,8 @@ public class LigneDeCommandeDao {
         return ligneDeCommande;
     }
     
-    public List<LigneDeCommande> findByCommandeID(Long commandeId) throws Throwable {
+    public List<LigneDeCommande> findByCommandeID(Long commandeId) 
+            throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<LigneDeCommande> lignesDeCommande = null;
         

@@ -41,12 +41,14 @@ public class ClientDao {
         return client;
     }
     
-    public Client findByMailAndPassword(String mail, String password) throws Throwable {
+    public Client findByMailAndPassword(String mail, String password) 
+            throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<Client> clients = null;
         Client c = null;
         try {
-            Query q = em.createQuery("SELECT c FROM Client c WHERE c.mail = :mail AND c.motDePasse = :password");
+            Query q = em.createQuery("SELECT c FROM Client c WHERE c.mail = "
+                    + ":mail AND c.motDePasse = :password");
             q.setParameter("mail", mail);
             q.setParameter("password", password);
             clients = (List<Client>) q.getResultList();
@@ -66,7 +68,8 @@ public class ClientDao {
         List<Client> clients = null;
         Client c = null;
         try {
-            Query q = em.createQuery("SELECT c FROM Client c WHERE c.mail = :mail");
+            Query q = em.createQuery("SELECT c FROM Client c "
+                    + "WHERE c.mail = :mail");
             q.setParameter("mail", mail);
             clients = (List<Client>) q.getResultList();
         }

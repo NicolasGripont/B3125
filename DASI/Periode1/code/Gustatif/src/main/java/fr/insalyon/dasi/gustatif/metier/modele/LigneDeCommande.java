@@ -90,7 +90,8 @@ public class LigneDeCommande implements Serializable {
 
     @Override
     public String toString() {
-        return "LigneDeCommande{" + "id=" + id + ", produit=[" + produit + "], quantite=" + quantite + '}';
+        return "LigneDeCommande{" + "id=" + id + ", produit=[" + produit 
+                + "], quantite=" + quantite + '}';
     }
 
     

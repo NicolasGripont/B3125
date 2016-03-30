@@ -34,7 +34,8 @@ public class LivreurDroneDao extends LivreurDao {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<LivreurDrone> livreurs = null;
         try {
-            Query q = em.createQuery("SELECT l FROM LivreurDrone l WHERE l.disponible = TRUE");
+            Query q = em.createQuery("SELECT l FROM LivreurDrone l WHERE "
+                    + "l.disponible = TRUE");
             livreurs = (List<LivreurDrone>) q.getResultList();
         }
         catch(Exception e) {
@@ -43,12 +44,14 @@ public class LivreurDroneDao extends LivreurDao {
         return livreurs;
     }
     
-    public List<LivreurDrone> findAllLivreursDronesDisponibles(Double commandeWeight) throws Throwable
+    public List<LivreurDrone> findAllLivreursDronesDisponibles(Double commandeWeight) 
+            throws Throwable
     {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<LivreurDrone> livreurs = null;
         try {
-            Query q = em.createQuery("SELECT l FROM LivreurDrone l WHERE l.disponible = TRUE AND l.chargeMax >= :commandeWeight");
+            Query q = em.createQuery("SELECT l FROM LivreurDrone l WHERE "
+                    + "l.disponible = TRUE AND l.chargeMax >= :commandeWeight");
             q.setParameter("commandeWeight", commandeWeight);
             livreurs = (List<LivreurDrone>) q.getResultList();
         }
@@ -58,12 +61,13 @@ public class LivreurDroneDao extends LivreurDao {
         return livreurs;
     }
     
-    public List<LivreurDrone> findLivreursDronesByMailAndPassword(String mail, String password) throws Throwable {
+    public List<LivreurDrone> findLivreursDronesByMailAndPassword(String mail, String password)
+            throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<LivreurDrone> livreurs = null;
         try {
-//            Query q = em.createQuery("SELECT l FROM LivreurVelo l WHERE l.mail = '" + mail + "' AND l.motDePasse = '" + password + "'");
-            Query q = em.createQuery("SELECT l FROM LivreurDrone l WHERE l.mail = :mail AND l.motDePasse = :password");
+            Query q = em.createQuery("SELECT l FROM LivreurDrone l WHERE l.mail = :mail"
+                    + " AND l.motDePasse = :password");
             q.setParameter("mail", mail);
             q.setParameter("password", password);
             livreurs = (List<LivreurDrone>) q.getResultList();

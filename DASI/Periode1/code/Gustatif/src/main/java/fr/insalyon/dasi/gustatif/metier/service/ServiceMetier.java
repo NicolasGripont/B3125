@@ -85,13 +85,15 @@ public class ServiceMetier {
             subject = "Bienvenue chez Gustat'IF";
             body = "Bonjour "+ client.getPrenom() +",\n" 
                 + "\n" 
-                + "       Nous vous confirmons votre inscription au service Gustat'IF. Votre numéro de client est : " + client.getId() + ".";
+                + "       Nous vous confirmons votre inscription au service "
+                + "Gustat'IF. Votre numéro de client est : " + client.getId() + ".";
         } else {
             //envoyer mail echec
             subject = "Bienvenue chez Gustat'IF";
             body = "Bonjour "+ client.getPrenom() +",\n" 
                 + "\n" 
-                + "       Votre inscription au service Gustat'IF a malencontreusement échoué... Merci de recommencer ultérieurement.";
+                + "       Votre inscription au service Gustat'IF a malencontreusement"
+                + " échoué... Merci de recommencer ultérieurement.";
         }
         serviceTechnique.sendFakeMail(recipient, subject, body);
         //serviceTechnique.sendRealMail(recipient, subject, body);
@@ -345,20 +347,27 @@ public class ServiceMetier {
             recipient = livreur.getMail();
             subject = "Livraison n°" + commande.getId() + " à effectuer";
             body = "Bonjour "+ ((LivreurVelo)livreur).getPrenom()+",\n" 
-                + "\n       Merci d'effectuer cette livraison dès maintenant, tout en respectant le code de la route ;-)"
+                + "\n       Merci d'effectuer cette livraison dès maintenant, "
+                    + "tout en respectant le code de la route ;-)"
                 + "\n\nLe Chef"
                 + "\n\nDétails de la Livraison"
                 + "\n   - Date/heure : " + commande.getDateDebut().toString()
-                + "\n   - Livreur : " + ((LivreurVelo)livreur).getPrenom() + " "+ ((LivreurVelo)livreur).getNom().toUpperCase() + " (n°" + livreur.getId() + ")"
+                + "\n   - Livreur : " + ((LivreurVelo)livreur).getPrenom() + " "
+                    + ((LivreurVelo)livreur).getNom().toUpperCase() + " (n°" 
+                    + livreur.getId() + ")"
                 + "\n   - Restaurant : " + commande.getRestaurant().getDenomination()
                 + "\n   - Client :"
-                + "\n       " + commande.getClient().getPrenom() + " " + commande.getClient().getNom().toUpperCase()
+                + "\n       " + commande.getClient().getPrenom() + " " 
+                    + commande.getClient().getNom().toUpperCase()
                 + "\n       " + commande.getClient().getAdresse()
                 + "\n       " + commande.getClient().getTelephone()
                 + "\n\n Commande :";
 
             for (LigneDeCommande ligne : commande.getLignesDeCommande()) {
-                body += "\n    - " + ligne.getQuantite() + " " + ligne.getProduit().getDenomination() + " " + ligne.getQuantite() + " x " + ligne.getPrixUnitaire() + "€"; 
+                body += "\n    - " + ligne.getQuantite() + " " 
+                        + ligne.getProduit().getDenomination() + " " 
+                        + ligne.getQuantite() + " x " + ligne.getPrixUnitaire() 
+                        + "€"; 
             }
             body += "\n\nTOTAL : " + commande.getPrix() + "€";
             serviceTechnique.sendFakeMail(recipient, subject, body);
@@ -370,18 +379,19 @@ public class ServiceMetier {
             subject = "Commande n°"+commande.getId();
             body = "Bonjour " + commande.getClient().getPrenom() + ",\n" 
                 + "\n" 
-                + "       Nous vous confirmons votre commande n°" + commande.getId() + " d'un montant de " + commande.getPrix() + "€.";
+                + "       Nous vous confirmons votre commande n°" + commande.getId() 
+                    + " d'un montant de " + commande.getPrix() + "€.";
         } else {
             subject = "Echec commande";
             body = "Bonjour " + commande.getClient().getPrenom() + ",\n" 
                 + "\n" 
-                + "       La validation de votre commade a échouée, veuillez réessayer ultérieurement.";
+                + "       La validation de votre commade a échouée, veuillez "
+                    + "réessayer ultérieurement.";
        
         }
         serviceTechnique.sendFakeMail(recipient, subject, body);
         //serviceTechnique.sendRealMail(recipient, subject, body);
         
-
         return result;
     }    
     
@@ -652,38 +662,5 @@ public class ServiceMetier {
         return livreurs;
     }
             
-//    
-//    private Livreur chooseLivreur( Commande commande ) throws Throwable {
-//        Livreur livreurChoisi = null;
-//        double temps;
-//        double tempsFinal;
-//        
-//        List<Livreur> livreurs = livreurDao.findAllDisponible(commande.getPoidsEnGrammes());
-//        if(livreurs.size() > 0) {
-//            livreurChoisi = livreurs.get(0);
-//            if(livreurChoisi instanceof LivreurVelo){
-//                tempsFinal = GeoTest.getTripDurationByBicycleInMinute(livreurChoisi.getLatLng(),commande.getClient().getLatLng(), commande.getRestaurant().getLatLng());
-//            } else if (livreurChoisi instanceof LivreurDrone){
-//                tempsFinal = ( (GeoTest.getFlightDistanceInKm(livreurChoisi.getLatLng(), commande.getRestaurant().getLatLng()) + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(), commande.getClient().getLatLng())) / ((LivreurDrone)livreurChoisi).getVitesseMoyenneDeVolEnKmH()) * 60;
-//            } else {
-//                return null;
-//            }
-//            for (int i=1; i < livreurs.size(); i++) {
-//                if(livreurs.get(i) instanceof LivreurVelo){
-//                    temps = GeoTest.getTripDurationByBicycleInMinute(livreurs.get(i).getLatLng(), commande.getClient().getLatLng() , commande.getRestaurant().getLatLng());
-//                } else if (livreurs.get(i) instanceof LivreurDrone){
-//                    temps = ( (GeoTest.getFlightDistanceInKm(livreurs.get(i).getLatLng(), commande.getRestaurant().getLatLng()) + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(), commande.getClient().getLatLng()) ) / ((LivreurDrone)livreurs.get(i)).getVitesseMoyenneDeVolEnKmH()) * 60;
-//                } else {
-//                    return null;
-//                }
-//                if(temps < tempsFinal) {
-//                    tempsFinal = temps;
-//                    livreurChoisi = livreurs.get(i);
-//                }
-//            }
-//        }
-//        
-//        return livreurChoisi;
-//    }
     
 }

@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 public class GeoTest {
         final static String MA_CLÉ_GOOGLE_API = "AIzaSyAQ1rgsSDdetI6uhC9egwf_OqdDprHwB-g"; 
 
-//    final static String MA_CLÉ_GOOGLE_API = "AIzaSyAhf3JleYpal9S-xouJYH8lf7Dvz5Y2Nko"; //fonctionne plus
-//    final static String MA_CLÉ_GOOGLE_API = "AIzaSyDcVVJjfmxsNdbdUYeg9MjQoJJ6THPuap4"; //fonctionne plus
+//    final static String MA_CLÉ_GOOGLE_API = "AIzaSyAhf3JleYpal9S-xouJYH8lf7Dvz5Y2Nko";
+
 
     final static GeoApiContext MON_CONTEXTE_GEOAPI = new GeoApiContext().setApiKey(MA_CLÉ_GOOGLE_API);
 
@@ -64,9 +64,11 @@ public class GeoTest {
         return getTripDurationOrDistance(TravelMode.DRIVING, false, origin, destination, steps);
     }
     
-    public static Double getTripDurationOrDistance(TravelMode mode, boolean duration, LatLng origin, LatLng destination, LatLng... steps) {
+    public static Double getTripDurationOrDistance(TravelMode mode, boolean duration, 
+            LatLng origin, LatLng destination, LatLng... steps) {
 
-        DirectionsApiRequest request = DirectionsApi.getDirections(MON_CONTEXTE_GEOAPI, origin.toString(), destination.toString());
+        DirectionsApiRequest request = DirectionsApi.getDirections(MON_CONTEXTE_GEOAPI,
+                origin.toString(), destination.toString());
         request.mode(mode);
         request.region("fr");
         
@@ -119,12 +121,15 @@ public class GeoTest {
         LatLng coords3 = getLatLng(adresse3);
 
         Double duree = getTripDurationByBicycleInMinute(coords1, coords3, coords2);
-        System.out.println("Durée de Trajet à Vélo de Adresse #1 à Adresse #3 en passant par Adresse #2: " + duree + " min");
+        System.out.println("Durée de Trajet à Vélo de Adresse #1 à Adresse #3 en "
+                + "passant par Adresse #2: " + duree + " min");
         
         Double distance = getTripDistanceByCarInKm(coords1, coords3);
-        System.out.println("Distance en Voiture de Adresse #1 à Adresse #3 (trajet direct par la route): " + distance + " km");
+        System.out.println("Distance en Voiture de Adresse #1 à Adresse #3 "
+                + "(trajet direct par la route): " + distance + " km");
 
         Double distanceVolDOiseau = getFlightDistanceInKm(coords1, coords3);
-        System.out.println("Distance à Vol d'Oiseau de Adresse #1 à Adresse #3 (distance géographique): " + distanceVolDOiseau + " km");
+        System.out.println("Distance à Vol d'Oiseau de Adresse #1 à Adresse #3"
+                + " (distance géographique): " + distanceVolDOiseau + " km");
     }
 }

@@ -33,7 +33,8 @@ public class IHMConsole {
         Client client = null;
         LivreurVelo livreur = null;
         do {
-            System.out.println("Connexion client : c, Connexion livreur velo : l, Gestionionnaire drones : d, Inscription : i ou Quitter : q");
+            System.out.println("Connexion client : c, Connexion livreur velo : "
+                    + "l, Gestionionnaire drones : d, Inscription : i ou Quitter : q");
             cmd = scanner.nextLine();
             
             if(cmd.equals("c")) {
@@ -122,7 +123,8 @@ public class IHMConsole {
                 numR = scanner.nextLine();
                 
                 try {
-                    Restaurant restaurant = serviceMetier.findRestaurantById(new Long(Integer.parseInt(numR)));
+                    Restaurant restaurant = serviceMetier.findRestaurantById(
+                            new Long(Integer.parseInt(numR)));
                     if(restaurant != null) {
                         vueRestaurant(restaurant, client);
                     }
@@ -148,11 +150,16 @@ public class IHMConsole {
         String input, p, q;
 
         do {     
-            System.out.println("Récapitulatif commande : prix = " + commande.getPrix() + ", poids = " + commande.getPoidsEnGrammes());
+            System.out.println("Récapitulatif commande : prix = " + commande.getPrix()
+                    + ", poids = " + commande.getPoidsEnGrammes());
             for (LigneDeCommande ligneDeCommande : commande.getLignesDeCommande()) {
-                System.out.println("\t " + ligneDeCommande.getProduit().getDenomination() + " : prix unitaire = " + ligneDeCommande.getPrixUnitaire() + "€, poids unitaire = " + ligneDeCommande.getPoidsUnitaireEnGrammes() + "g, quantité = " + ligneDeCommande.getQuantite());
+                System.out.println("\t " + ligneDeCommande.getProduit().getDenomination() 
+                        + " : prix unitaire = " + ligneDeCommande.getPrixUnitaire() 
+                        + "€, poids unitaire = " + ligneDeCommande.getPoidsUnitaireEnGrammes() 
+                        + "g, quantité = " + ligneDeCommande.getQuantite());
             }
-            System.out.println("Ajouter un produit : p, modifier une ligne : m, supprimer une ligne s, valider : v, annuler/retour : a, quitter q");
+            System.out.println("Ajouter un produit : p, modifier une ligne : m, "
+                    + "supprimer une ligne s, valider : v, annuler/retour : a, quitter q");
             
             input = scanner.nextLine();
             
@@ -160,7 +167,9 @@ public class IHMConsole {
                 System.out.println("Entrez le numéro du produit pour le selectionner :");
                 for(int i = 0; i < produits.size(); i++) {
                     Produit produit = produits.get(i);
-                    System.out.println("\t" + produit.getId() + " - " + produit.getDenomination() + ", prix = " + produit.getPrix() + "€, poids = " + produit.getPoids() + "g");
+                    System.out.println("\t" + produit.getId() + " - " + produit.getDenomination() 
+                            + ", prix = " + produit.getPrix() + "€, poids = " 
+                            + produit.getPoids() + "g");
                 } 
                 p = scanner.nextLine();
                 
@@ -179,7 +188,8 @@ public class IHMConsole {
                             }
                         }
                         if(index != -1) {
-                            lignesDeCommande.get(index).setQuantite(lignesDeCommande.get(index).getQuantite() + l.getQuantite());
+                            lignesDeCommande.get(index).setQuantite(
+                                    lignesDeCommande.get(index).getQuantite() + l.getQuantite());
                         } else {
                             lignesDeCommande.add(l);
                         }
@@ -191,13 +201,16 @@ public class IHMConsole {
                 if(!lignesDeCommande.isEmpty()) {
                     System.out.println("Entrez le numéro de la ligne à modifier:");
                     for(int i = 0; i < lignesDeCommande.size(); i++) {
-                        System.out.println("\t" + i + " - " + lignesDeCommande.get(i).getProduit().getDenomination() + ", quantité = " + lignesDeCommande.get(i).getQuantite());
+                        System.out.println("\t" + i + " - " 
+                                + lignesDeCommande.get(i).getProduit().getDenomination() 
+                                + ", quantité = " + lignesDeCommande.get(i).getQuantite());
                     }
                     String indexLigne = scanner.nextLine();
                     System.out.println("Entrez la nouvelle quantité :");
                     String ql = scanner.nextLine();
                     try {
-                        lignesDeCommande.get(Integer.parseInt(indexLigne)).setQuantite(Integer.parseInt(ql));
+                        lignesDeCommande.get(Integer.parseInt(indexLigne)).setQuantite(
+                                Integer.parseInt(ql));
                     } catch(NullPointerException | NumberFormatException e) {
 
                     }
@@ -206,7 +219,9 @@ public class IHMConsole {
                 if(!lignesDeCommande.isEmpty()) {
                     System.out.println("Entrez le numéro de la ligne à supprimer:");
                     for(int i = 0; i < lignesDeCommande.size(); i++) {
-                        System.out.println("\t" + i + " - " + lignesDeCommande.get(i).getProduit().getDenomination() + ", quantité = " + lignesDeCommande.get(i).getQuantite());
+                        System.out.println("\t" + i + " - " 
+                                + lignesDeCommande.get(i).getProduit().getDenomination() 
+                                + ", quantité = " + lignesDeCommande.get(i).getQuantite());
                     }
                     String indexLigne = scanner.nextLine();
                     try {
@@ -252,7 +267,8 @@ public class IHMConsole {
                 }
                 noC = scanner.nextLine();
                 try {
-                    Commande commande = serviceMetier.findCommandeById(new Long(Integer.parseInt(noC)));
+                    Commande commande = serviceMetier.findCommandeById(
+                            new Long(Integer.parseInt(noC)));
                     if(commande != null) {
                         detailsCommande(commande);
                     }
@@ -269,7 +285,8 @@ public class IHMConsole {
         String cmd;
         String noC;
         do {
-            System.out.println("Afficher détails d'une commande : c, Retour : r ou Quitter : q");
+            System.out.println("Afficher détails d'une commande : c, "
+                    + "Retour : r ou Quitter : q");
             cmd = scanner.nextLine();
             
             if(cmd.equals("c")) {
@@ -294,7 +311,8 @@ public class IHMConsole {
                 noC = scanner.nextLine();
                     
                 try{
-                    Commande commande = serviceMetier.findCommandeById(new Long(Integer.parseInt(noC)));
+                    Commande commande = serviceMetier.findCommandeById(
+                            new Long(Integer.parseInt(noC)));
                     if(commande != null) {
                         detailsCommande(commande);
                     }
@@ -319,13 +337,16 @@ public class IHMConsole {
         body += "\n   - Livreur : " + commande.getLivreur().getId()
                 + "\n   - Restaurant : " + commande.getRestaurant().getDenomination()
                 + "\n   - Client :"
-                + "\n       " + commande.getClient().getPrenom() + " " + commande.getClient().getNom().toUpperCase()
+                + "\n       " + commande.getClient().getPrenom() + " " 
+                + commande.getClient().getNom().toUpperCase()
                 + "\n       " + commande.getClient().getAdresse()
                 + "\n       " + commande.getClient().getTelephone()
                 + "\n   - Produits :";
 
         for (LigneDeCommande ligne : commande.getLignesDeCommande()) {
-            body += "\n        - " + ligne.getQuantite() + " " + ligne.getProduit().getDenomination() + " " + ligne.getQuantite() + " x " + ligne.getPrixUnitaire() + "€"; 
+            body += "\n        - " + ligne.getQuantite() + " " 
+                    + ligne.getProduit().getDenomination() + " " 
+                    + ligne.getQuantite() + " x " + ligne.getPrixUnitaire() + "€"; 
         }
         body += "\n   - TOTAL : " + commande.getPrix() + "€";        
         System.out.println(body);

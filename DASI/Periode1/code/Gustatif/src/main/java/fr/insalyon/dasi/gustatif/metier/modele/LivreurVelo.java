@@ -23,7 +23,8 @@ public class LivreurVelo extends Livreur{
     public LivreurVelo() {   
     }
 
-    public LivreurVelo(String nom, String prenom, String mail, String motDePasse, String adresse, Double chargeMaxEnGrammes) {
+    public LivreurVelo(String nom, String prenom, String mail, 
+            String motDePasse, String adresse, Double chargeMaxEnGrammes) {
         super(mail, motDePasse, adresse, chargeMaxEnGrammes);
         this.nom = nom;
         this.prenom = prenom;
@@ -49,6 +50,7 @@ public class LivreurVelo extends Livreur{
     
     @Override
     public String toString() {
-        return "LivreurVelo{" + super.toString() + ", nom=" + nom + ", prenom=" + prenom + '}';
+        return "LivreurVelo{" + super.toString() + ", nom=" + nom 
+                + ", prenom=" + prenom + '}';
     }
 }

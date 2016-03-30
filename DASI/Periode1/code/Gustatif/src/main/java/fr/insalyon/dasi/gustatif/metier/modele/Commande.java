@@ -141,6 +141,9 @@ public class Commande implements Serializable{
     
     @Override
     public String toString() {
-        return "Commande{ id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", client=[" + client + "], restaurant=[" + restaurant + "], lignesDeCommande=[" + lignesDeCommande + "], livreur=[" + livreur.getMail() + "]"+'}';
+        return "Commande{ id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" 
+                + dateFin + ", client=[" + client + "], restaurant=[" 
+                + restaurant + "], lignesDeCommande=[" + lignesDeCommande 
+                + "], livreur=[" + livreur.getMail() + "]"+'}';
     }
 }
