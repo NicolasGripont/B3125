@@ -35,16 +35,16 @@ public class Commande implements Serializable{
     private Date dateDebut;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateFin;
-    @JoinColumn(nullable = false)
+//    @JoinColumn(nullable = false)
     @ManyToOne
     private Restaurant restaurant;
-    @JoinColumn(nullable = false)
+//    @JoinColumn(nullable = false)
     @ManyToOne
     private Client client;
-    @JoinColumn(nullable = false)
+//    @JoinColumn(nullable = false)
     @OneToMany(cascade = CascadeType.ALL)
     private List<LigneDeCommande> lignesDeCommande;
-    @JoinColumn(nullable = false)
+//    @JoinColumn(nullable = false)
     @ManyToOne
     private Livreur livreur;
     
@@ -134,8 +134,9 @@ public class Commande implements Serializable{
         this.livreur = livreur;
     }
     
-    public void addLigneDeCommande(Produit produit, Integer quantite) {
-        this.lignesDeCommande.add(new LigneDeCommande(produit,quantite));
+    public void setLignesDeCommande(List<LigneDeCommande> lignesDeCommande) {
+//        this.lignesDeCommande.add(new LigneDeCommande(produit,quantite));
+        this.lignesDeCommande = lignesDeCommande;
     }
     
     @Override

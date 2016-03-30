@@ -6,6 +6,7 @@
 package fr.insalyon.dasi.gustatif.metier.modele;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class LigneDeCommande implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @JoinColumn(nullable = false)
+//    @JoinColumn(nullable = false)
     @ManyToOne
     private Produit produit;
     @Column(nullable = false)
@@ -91,5 +92,8 @@ public class LigneDeCommande implements Serializable {
     public String toString() {
         return "LigneDeCommande{" + "id=" + id + ", produit=[" + produit + "], quantite=" + quantite + '}';
     }
+
+    
+    
     
 }

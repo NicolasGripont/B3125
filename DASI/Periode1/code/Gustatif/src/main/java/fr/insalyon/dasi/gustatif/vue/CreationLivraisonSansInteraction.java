@@ -7,9 +7,11 @@ package fr.insalyon.dasi.gustatif.vue;
 
 import fr.insalyon.dasi.gustatif.metier.modele.Client;
 import fr.insalyon.dasi.gustatif.metier.modele.Commande;
+import fr.insalyon.dasi.gustatif.metier.modele.LigneDeCommande;
 import fr.insalyon.dasi.gustatif.metier.modele.Livreur;
 import fr.insalyon.dasi.gustatif.metier.modele.Restaurant;
 import fr.insalyon.dasi.gustatif.metier.service.ServiceMetier;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,19 +25,19 @@ public class CreationLivraisonSansInteraction {
 //        Créer une classe avec une méthode « main » permettant de tester la création d’une nouvelle livraison sans interaction avec l'utilisateur (valeurs des paramètres « en dur » dans le code).
         
         List<Client> clients = serviceMetier.findAllClients();
-        if(clients.isEmpty()) {
+        if(clients == null) {
             System.err.println("Aucun client dans la base de donnée. Insérez en pour exécuter ce code.");
             return;
         }
         Client client = clients.get(0);
         
         List<Livreur> livreurs = serviceMetier.findAllLivreurs();
-        if(livreurs.isEmpty()) {
+        if(livreurs == null) {
             System.err.println("Aucun livreur dans la base de donnée. Insérez en pour exécuter ce code.");
             return;
         }
         List<Restaurant> restaurants = serviceMetier.findAllRestaurants();
-        if(restaurants.isEmpty()) {
+        if(restaurants == null) {
             System.err.println("Aucun restaurant dans la base de donnée. Insérez en pour exécuter ce code.");
             return;
         }
@@ -47,14 +49,16 @@ public class CreationLivraisonSansInteraction {
         
         Commande commande = new Commande(restaurant, client);
         
-        commande.addLigneDeCommande(restaurant.getProduits().get(0), new Integer(1));
+        List<LigneDeCommande> lignesDeCommande = new ArrayList<LigneDeCommande>();
+                
+        lignesDeCommande.add(new LigneDeCommande(restaurant.getProduits().get(0), new Integer(1)));
+        commande.setLignesDeCommande(lignesDeCommande);
         
-        livreurs = serviceMetier.findAllLivreursDisponible();
+        livreurs = serviceMetier.findAllLivreursDisponibles();
         boolean result = false;
         for(Livreur l : livreurs) {
-            if(l.getChargeMaxEnGrammes() > commande.getPoidsEnGrammes()) {
+            if(l.getChargeMaxEnGrammes() >= commande.getPoidsEnGrammes()) {
                 result = true;
-                return;
             }
         }
         if(!result) {

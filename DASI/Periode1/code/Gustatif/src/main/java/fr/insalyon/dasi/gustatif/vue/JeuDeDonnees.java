@@ -29,11 +29,11 @@ public class JeuDeDonnees {
             Livreur lv3 = new LivreurVelo("Petit", "Charlie", "charlie@livreur.com", "mdp", "Domaine de la Doua, 20 Avenue Gaston Berger, 69100 Villeurbanne", new Double(50000.F));
             lv3.setCoordonnees(GeoTest.getLatLng(lv3.getAdresse()));
             
-            Livreur ld1 = new LivreurDrone(new Double(10.F), "mailLivreurDrone@gmail.com", "mdp", "61 Avenue Roger Salengro, 69100 Villeurbanne", new Double(1000.F));
+            Livreur ld1 = new LivreurDrone(new Double(10.F), "drone@gmail.com", "mdp", "61 Avenue Roger Salengro, 69100 Villeurbanne", new Double(1000.F));
             ld1.setCoordonnees(GeoTest.getLatLng(ld1.getAdresse()));
-            Livreur ld2 = new LivreurDrone(new Double(12.F), "mailLivreurDrone@gmail.com", "mdp", "61 Avenue Roger Salengro, 69100 Villeurbanne", new Double(1000.F));
+            Livreur ld2 = new LivreurDrone(new Double(12.F), "drone@gmail.com", "mdp", "61 Avenue Roger Salengro, 69100 Villeurbanne", new Double(1000.F));
             ld2.setCoordonnees(GeoTest.getLatLng(ld2.getAdresse()));
-            Livreur ld3 = new LivreurDrone(new Double(10.F), "mailLivreurDrone@gmail.com", "mdp", "61 Avenue Roger Salengro, 69100 Villeurbanne", new Double(1000.F));
+            Livreur ld3 = new LivreurDrone(new Double(10.F), "drone@gmail.com", "mdp", "61 Avenue Roger Salengro, 69100 Villeurbanne", new Double(1000.F));
             ld3.setCoordonnees(GeoTest.getLatLng(ld3.getAdresse()));
             
             LivreurDao livreurDao = new LivreurDao();

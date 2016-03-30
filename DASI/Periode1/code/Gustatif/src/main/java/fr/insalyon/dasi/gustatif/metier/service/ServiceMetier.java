@@ -303,8 +303,8 @@ public class ServiceMetier {
             try {
                 
                 JpaUtil.ouvrirTransaction();
-
-                livreur = chooseLivreur(commande);
+                List<Livreur> livreurs = livreurDao.findAllDisponible(commande.getPoidsEnGrammes());
+                livreur = serviceTechnique.chooseBestLivreur(commande,livreurs);
                 if(livreur != null){
                     commande.setDateDebut(new Date());
                     commande.setLivreur(livreur);
@@ -315,6 +315,7 @@ public class ServiceMetier {
 
                     //a commenté pour pouvoir l'utiliser en ihm non console (sert juste au test)
                     Scanner sc = new Scanner(System.in);
+                    System.out.println("Press enter...");
                     sc.nextLine(); 
                     //__________________________________
 
@@ -384,13 +385,19 @@ public class ServiceMetier {
         return result;
     }    
     
-    public Commande updateCommande(Commande commande) {  
+    public Commande validateCommande(Commande commande) {  
         JpaUtil.creerEntityManager();
         
         try {
-            JpaUtil.ouvrirTransaction();
-            commandeDao.update(commande);
-            JpaUtil.validerTransaction();
+            if(commande.getDateFin() != null) {
+                JpaUtil.ouvrirTransaction();
+                commandeDao.update(commande);
+                commande.getLivreur().setDisponible(Boolean.TRUE);
+                livreurDao.update(commande.getLivreur());
+                JpaUtil.validerTransaction();
+            } else {
+                commande = null;
+            }
         } catch (Exception e) {
             System.out.println(e);
             commande = null;
@@ -424,7 +431,24 @@ public class ServiceMetier {
         return commandes;
     }    
     
-    public List<Commande> findAllCommande() {
+    public Commande findNotEndedByLivreur(Livreur livreur) {
+        JpaUtil.creerEntityManager();
+        
+        Commande commande = null;
+        
+        try {
+            commande = commandeDao.findNotEndedByLivreur(livreur);
+        } catch (Exception e) {
+            System.out.println(e);
+        } catch (Throwable ex) {
+            Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JpaUtil.fermerEntityManager();
+        
+        return commande;
+    }
+    public List<Commande> findAllCommandes() {
         JpaUtil.creerEntityManager();
         
         List<Commande> commandes = null;
@@ -459,7 +483,7 @@ public class ServiceMetier {
         return commande;
     }   
     
-    public List<Commande> findAllCommandeNotEnded() {
+    public List<Commande> findAllCommandesNotEnded() {
         JpaUtil.creerEntityManager();
         
         List<Commande> commandes = null;
@@ -500,24 +524,7 @@ public class ServiceMetier {
         return livreur;
     }
     
-    
-//    public Livreur findLivreurByMailAndPassword(String mail, String password) {
-//        JpaUtil.creerEntityManager();
-//        
-//        Livreur livreur = null;
-//        
-//        try {
-//            livreur = livreurDao.findByMailAndPassword(mail, password);
-//        } catch (Exception e) {
-//            System.out.println(e);
-//        } catch (Throwable ex) {
-//            Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//        JpaUtil.fermerEntityManager();
-//        
-//        return livreur;
-//    }
+  
     
     public LivreurVelo findLivreurVeloByMailAndPassword(String mail, String password) {
         JpaUtil.creerEntityManager();
@@ -627,7 +634,7 @@ public class ServiceMetier {
         return livreurs;
     }
 
-    public List<Livreur> findAllLivreursDisponible() {      
+    public List<Livreur> findAllLivreursDisponibles() {      
         JpaUtil.creerEntityManager();
         
         List<Livreur> livreurs = null;
@@ -645,38 +652,38 @@ public class ServiceMetier {
         return livreurs;
     }
             
-    
-   private Livreur chooseLivreur( Commande commande ) throws Throwable {
-        Livreur livreurChoisi = null;
-        double temps;
-        double tempsFinal;
-        
-        List<Livreur> livreurs = livreurDao.findAllDisponible(commande.getPoidsEnGrammes());
-        if(livreurs.size() > 0) {
-            livreurChoisi = livreurs.get(0);
-            if(livreurChoisi instanceof LivreurVelo){
-                tempsFinal = GeoTest.getTripDurationByBicycleInMinute(livreurChoisi.getLatLng(),commande.getClient().getLatLng(), commande.getRestaurant().getLatLng());
-            } else if (livreurChoisi instanceof LivreurDrone){
-                tempsFinal = ( (GeoTest.getFlightDistanceInKm(livreurChoisi.getLatLng(), commande.getRestaurant().getLatLng()) + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(), commande.getClient().getLatLng())) / ((LivreurDrone)livreurChoisi).getVitesseMoyenneDeVolEnKmH()) * 60;
-            } else {
-                return null;
-            }
-            for (int i=1; i < livreurs.size(); i++) {
-                if(livreurs.get(i) instanceof LivreurVelo){
-                    temps = GeoTest.getTripDurationByBicycleInMinute(livreurs.get(i).getLatLng(), commande.getClient().getLatLng() , commande.getRestaurant().getLatLng());
-                } else if (livreurs.get(i) instanceof LivreurDrone){
-                    temps = ( (GeoTest.getFlightDistanceInKm(livreurs.get(i).getLatLng(), commande.getRestaurant().getLatLng()) + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(), commande.getClient().getLatLng()) ) / ((LivreurDrone)livreurs.get(i)).getVitesseMoyenneDeVolEnKmH()) * 60;
-                } else {
-                    return null;
-                }
-                if(temps < tempsFinal) {
-                    tempsFinal = temps;
-                    livreurChoisi = livreurs.get(i);
-                }
-            }
-        }
-        
-        return livreurChoisi;
-    }
+//    
+//    private Livreur chooseLivreur( Commande commande ) throws Throwable {
+//        Livreur livreurChoisi = null;
+//        double temps;
+//        double tempsFinal;
+//        
+//        List<Livreur> livreurs = livreurDao.findAllDisponible(commande.getPoidsEnGrammes());
+//        if(livreurs.size() > 0) {
+//            livreurChoisi = livreurs.get(0);
+//            if(livreurChoisi instanceof LivreurVelo){
+//                tempsFinal = GeoTest.getTripDurationByBicycleInMinute(livreurChoisi.getLatLng(),commande.getClient().getLatLng(), commande.getRestaurant().getLatLng());
+//            } else if (livreurChoisi instanceof LivreurDrone){
+//                tempsFinal = ( (GeoTest.getFlightDistanceInKm(livreurChoisi.getLatLng(), commande.getRestaurant().getLatLng()) + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(), commande.getClient().getLatLng())) / ((LivreurDrone)livreurChoisi).getVitesseMoyenneDeVolEnKmH()) * 60;
+//            } else {
+//                return null;
+//            }
+//            for (int i=1; i < livreurs.size(); i++) {
+//                if(livreurs.get(i) instanceof LivreurVelo){
+//                    temps = GeoTest.getTripDurationByBicycleInMinute(livreurs.get(i).getLatLng(), commande.getClient().getLatLng() , commande.getRestaurant().getLatLng());
+//                } else if (livreurs.get(i) instanceof LivreurDrone){
+//                    temps = ( (GeoTest.getFlightDistanceInKm(livreurs.get(i).getLatLng(), commande.getRestaurant().getLatLng()) + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(), commande.getClient().getLatLng()) ) / ((LivreurDrone)livreurs.get(i)).getVitesseMoyenneDeVolEnKmH()) * 60;
+//                } else {
+//                    return null;
+//                }
+//                if(temps < tempsFinal) {
+//                    tempsFinal = temps;
+//                    livreurChoisi = livreurs.get(i);
+//                }
+//            }
+//        }
+//        
+//        return livreurChoisi;
+//    }
     
 }

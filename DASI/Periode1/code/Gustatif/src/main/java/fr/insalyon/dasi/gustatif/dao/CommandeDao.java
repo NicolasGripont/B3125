@@ -49,6 +49,25 @@ public class CommandeDao {
         return commande;
     }
     
+        
+    public Commande findNotEndedByLivreur(Livreur livreur) throws Throwable {
+        EntityManager em = JpaUtil.obtenirEntityManager();
+        Commande commande = null;
+        List<Commande> commandes = null;
+        try {
+            Query q = em.createQuery("SELECT c FROM Commande c WHERE c.dateFin IS NULL AND c.livreur = :livreur");
+            
+            q.setParameter("livreur", livreur);
+            commandes = (List<Commande>) q.getResultList();
+            if(!commandes.isEmpty()) {
+                commande = commandes.get(0);
+            }
+        }
+        catch(Exception e) {
+            throw e;
+        }     
+        return commande;
+    }
     
     public List<Commande> findAll() throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();

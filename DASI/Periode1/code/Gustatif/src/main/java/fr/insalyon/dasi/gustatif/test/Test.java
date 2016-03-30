@@ -23,6 +23,7 @@ import fr.insalyon.dasi.gustatif.metier.modele.LivreurVelo;
 import fr.insalyon.dasi.gustatif.metier.modele.Produit;
 import fr.insalyon.dasi.gustatif.metier.modele.Restaurant;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -182,10 +183,12 @@ public class Test {
             
             Commande cmd = new Commande(/*"C00001",*/ r1, c1, new Date());
             CommandeDao cmdd = new CommandeDao();
-//            LigneDeCommande ldc1 = new LigneDeCommande(p1, new Integer(2));
-//            LigneDeCommande ldc2 = new LigneDeCommande(p3, new Integer(3));
-            cmd.addLigneDeCommande(p1, new Integer(2));
-            cmd.addLigneDeCommande(p3, new Integer(3));
+            LigneDeCommande ldc1 = new LigneDeCommande(p1, new Integer(2));
+            LigneDeCommande ldc2 = new LigneDeCommande(p3, new Integer(3));
+            List<LigneDeCommande> list = new ArrayList<>();
+            list.add(ldc1);
+            list.add(ldc2);
+            cmd.setLignesDeCommande(list);
             cmd.setLivreur(l1);
             l1.addCommande(cmd);
 

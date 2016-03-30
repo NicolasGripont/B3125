@@ -50,7 +50,7 @@ public class IHMConsole {
                 inscription();
             } else if(cmd.equals("d")) {
                 List<LivreurDrone> drones = serviceMetier.findAllLivreursDrones();
-                if(!drones.isEmpty()) {
+                if(drones != null) {
                     vueLivreursDrones(drones);
                 }
             }     
@@ -142,16 +142,17 @@ public class IHMConsole {
         System.out.println("Restaurant : " + restaurant.getDenomination());
         System.out.println("Description : " + restaurant.getDescription());
         System.out.println("Adresse : " + restaurant.getAdresse());
-        
+        List<LigneDeCommande> lignesDeCommande = new ArrayList<>();
+
 
         String input, p, q;
 
-        do {            
+        do {     
             System.out.println("Récapitulatif commande : prix = " + commande.getPrix() + ", poids = " + commande.getPoidsEnGrammes());
             for (LigneDeCommande ligneDeCommande : commande.getLignesDeCommande()) {
                 System.out.println("\t " + ligneDeCommande.getProduit().getDenomination() + " : prix unitaire = " + ligneDeCommande.getPrixUnitaire() + "€, poids unitaire = " + ligneDeCommande.getPoidsUnitaireEnGrammes() + "g, quantité = " + ligneDeCommande.getQuantite());
             }
-            System.out.println("Ajouter un produit : p, valider : v, annuler/retour : a, quitter q");
+            System.out.println("Ajouter un produit : p, modifier une ligne : m, supprimer une ligne s, valider : v, annuler/retour : a, quitter q");
             
             input = scanner.nextLine();
             
@@ -169,13 +170,52 @@ public class IHMConsole {
                     Produit prod = serviceMetier.findProduitById(new Long(Integer.parseInt(p)));
                     if(prod != null) {
                         int n =  Integer.parseInt(q);
-                        commande.addLigneDeCommande(prod,n);
+                        LigneDeCommande l = new LigneDeCommande(prod,n);
+                        int index = -1;
+                        for(int i=0; i < lignesDeCommande.size(); i++) {
+                            if(lignesDeCommande.get(i).getProduit().getId() == prod.getId()) {
+                                index = i;
+                                break;
+                            }
+                        }
+                        if(index != -1) {
+                            lignesDeCommande.get(index).setQuantite(lignesDeCommande.get(index).getQuantite() + l.getQuantite());
+                        } else {
+                            lignesDeCommande.add(l);
+                        }
                     }
                 } catch(NumberFormatException e) {
                     
+                }  
+            } else if (input.equals("m")) { 
+                if(!lignesDeCommande.isEmpty()) {
+                    System.out.println("Entrez le numéro de la ligne à modifier:");
+                    for(int i = 0; i < lignesDeCommande.size(); i++) {
+                        System.out.println("\t" + i + " - " + lignesDeCommande.get(i).getProduit().getDenomination() + ", quantité = " + lignesDeCommande.get(i).getQuantite());
+                    }
+                    String indexLigne = scanner.nextLine();
+                    System.out.println("Entrez la nouvelle quantité :");
+                    String ql = scanner.nextLine();
+                    try {
+                        lignesDeCommande.get(Integer.parseInt(indexLigne)).setQuantite(Integer.parseInt(ql));
+                    } catch(NullPointerException | NumberFormatException e) {
+
+                    }
                 }
-                
-            } else if (input.equals("a")) {
+            } else if (input.equals("s")) { 
+                if(!lignesDeCommande.isEmpty()) {
+                    System.out.println("Entrez le numéro de la ligne à supprimer:");
+                    for(int i = 0; i < lignesDeCommande.size(); i++) {
+                        System.out.println("\t" + i + " - " + lignesDeCommande.get(i).getProduit().getDenomination() + ", quantité = " + lignesDeCommande.get(i).getQuantite());
+                    }
+                    String indexLigne = scanner.nextLine();
+                    try {
+                        lignesDeCommande.remove(Integer.parseInt(indexLigne));
+                    } catch(NullPointerException | NumberFormatException e) {
+
+                    }
+                }
+            } else if (input.equals("v")) {
                 //valider : 
                 if(commande.getLignesDeCommande().size() > 0) {
                     commande.setDateDebut(new Date());
@@ -185,7 +225,8 @@ public class IHMConsole {
             } else if(input.equals("q")) {
                 System.exit(0);
             }  
-        } while(!input.equals("r"));
+            commande.setLignesDeCommande(lignesDeCommande);
+        } while(!input.equals("a"));
                 
     }
 
@@ -234,7 +275,10 @@ public class IHMConsole {
             if(cmd.equals("c")) {
                 List<Commande> commandes = new ArrayList<>();
                 for(LivreurDrone l : livreurs) {
-                    commandes.addAll(serviceMetier.findCommandesByLivreurId(l.getId()));
+                    List<Commande> liste = serviceMetier.findCommandesByLivreurId(l.getId());
+                    if(liste != null) {
+                        commandes.addAll(liste);
+                    }
                 }
                 System.out.println("Entrez le numéro d'une commande pour le selectionner :");
                 for(Commande c : commandes)
@@ -293,9 +337,7 @@ public class IHMConsole {
             
             if(cmd.equals("c")) {
                 commande.setDateFin(new Date());
-                commande.getLivreur().setDisponible(Boolean.TRUE);
-                serviceMetier.updateCommande(commande);
-                serviceMetier.updateLivreur(commande.getLivreur());
+                serviceMetier.validateCommande(commande);
             } else if(cmd.equals("q")) {
                 System.exit(0);
             }     

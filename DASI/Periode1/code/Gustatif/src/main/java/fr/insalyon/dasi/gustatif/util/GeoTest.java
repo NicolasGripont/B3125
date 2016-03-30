@@ -17,8 +17,10 @@ import java.util.logging.Logger;
  * @author DASI Team
  */
 public class GeoTest {
+        final static String MA_CLÉ_GOOGLE_API = "AIzaSyAQ1rgsSDdetI6uhC9egwf_OqdDprHwB-g"; 
 
-    final static String MA_CLÉ_GOOGLE_API = "AIzaSyAhf3JleYpal9S-xouJYH8lf7Dvz5Y2Nko";
+//    final static String MA_CLÉ_GOOGLE_API = "AIzaSyAhf3JleYpal9S-xouJYH8lf7Dvz5Y2Nko"; //fonctionne plus
+//    final static String MA_CLÉ_GOOGLE_API = "AIzaSyDcVVJjfmxsNdbdUYeg9MjQoJJ6THPuap4"; //fonctionne plus
 
     final static GeoApiContext MON_CONTEXTE_GEOAPI = new GeoApiContext().setApiKey(MA_CLÉ_GOOGLE_API);
 

@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -26,7 +27,7 @@ public class Restaurant implements Serializable {
     private Double longitude;
     @Column(nullable = false)
     private Double latitude;
-
+//    @JoinColumn(nullable = false)
     @OneToMany
     private final List<Produit> produits = new ArrayList<>();
     

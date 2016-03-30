@@ -5,7 +5,13 @@
  */
 package fr.insalyon.dasi.gustatif.metier.service;
 
+import fr.insalyon.dasi.gustatif.metier.modele.Commande;
+import fr.insalyon.dasi.gustatif.metier.modele.Livreur;
+import fr.insalyon.dasi.gustatif.metier.modele.LivreurDrone;
+import fr.insalyon.dasi.gustatif.metier.modele.LivreurVelo;
+import fr.insalyon.dasi.gustatif.util.GeoTest;
 import fr.insalyon.dasi.gustatif.util.MailSender;
+import java.util.List;
 
 /**
  *
@@ -30,4 +36,35 @@ public class ServiceTechnique {
     }
    
     
+    public Livreur chooseBestLivreur(Commande commande,List<Livreur> livreurs ) throws Throwable {
+        Livreur livreurChoisi = null;
+        double temps;
+        double tempsFinal;
+        
+        if(livreurs.size() > 0) {
+            livreurChoisi = livreurs.get(0);
+            if(livreurChoisi instanceof LivreurVelo){
+                tempsFinal = GeoTest.getTripDurationByBicycleInMinute(livreurChoisi.getLatLng(),commande.getClient().getLatLng(), commande.getRestaurant().getLatLng());
+            } else if (livreurChoisi instanceof LivreurDrone){
+                tempsFinal = ( (GeoTest.getFlightDistanceInKm(livreurChoisi.getLatLng(), commande.getRestaurant().getLatLng()) + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(), commande.getClient().getLatLng())) / ((LivreurDrone)livreurChoisi).getVitesseMoyenneDeVolEnKmH()) * 60;
+            } else {
+                return null;
+            }
+            for (int i=1; i < livreurs.size(); i++) {
+                if(livreurs.get(i) instanceof LivreurVelo){
+                    temps = GeoTest.getTripDurationByBicycleInMinute(livreurs.get(i).getLatLng(), commande.getClient().getLatLng() , commande.getRestaurant().getLatLng());
+                } else if (livreurs.get(i) instanceof LivreurDrone){
+                    temps = ( (GeoTest.getFlightDistanceInKm(livreurs.get(i).getLatLng(), commande.getRestaurant().getLatLng()) + GeoTest.getFlightDistanceInKm(commande.getRestaurant().getLatLng(), commande.getClient().getLatLng()) ) / ((LivreurDrone)livreurs.get(i)).getVitesseMoyenneDeVolEnKmH()) * 60;
+                } else {
+                    return null;
+                }
+                if(temps < tempsFinal) {
+                    tempsFinal = temps;
+                    livreurChoisi = livreurs.get(i);
+                }
+            }
+        }
+        
+        return livreurChoisi;
+    } 
 }

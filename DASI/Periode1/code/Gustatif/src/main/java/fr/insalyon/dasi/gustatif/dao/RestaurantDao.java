@@ -46,7 +46,7 @@ public class RestaurantDao {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<Restaurant> restaurants = null;
         try {
-            Query q = em.createQuery("SELECT r FROM Restaurant r order by r.denomination");
+            Query q = em.createQuery("SELECT r FROM Restaurant r ORDER BY r.denomination");
             restaurants = (List<Restaurant>) q.getResultList();
         }
         catch(Exception e) {

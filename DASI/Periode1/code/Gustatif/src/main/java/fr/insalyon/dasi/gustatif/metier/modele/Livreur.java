@@ -46,11 +46,10 @@ public abstract class Livreur implements Serializable {
     private Double chargeMaxEnGrammes;
     @Column(nullable = false)
     private Boolean disponible;
-    @JoinColumn(nullable = false)
+//    @JoinColumn(nullable = false)
     @OneToMany(mappedBy = "livreur")
     @OrderBy("dateDebut DESC")
     private List<Commande> commandes;
-    
     @Version
     @Column(name = "VERSION")
     private Integer version;
