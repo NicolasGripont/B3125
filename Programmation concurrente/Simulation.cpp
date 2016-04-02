@@ -3,7 +3,7 @@
                              -------------------
 debut     : 16/03/16
 copyright : (C) Simulation par Simulation
-e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
+e-mail    : nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 
 *************************************************************************/
 
@@ -29,15 +29,19 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 //---------------------------------------------------- Variables statiques
 
 //------------------------------------------------------ Fonctions privees
-//static type nom ( liste de parametres )
+static unsigned int GetNumeroVoiture()
 // Mode d'emploi :
 //
 // Contrat :
 //
 // Algorithme :
 //
-//{
-//} //----- fin de nom
+{
+    static unsigned int numeroVoiture = 0; // variable remanente, initialisée au premier appel
+
+    return (numeroVoiture = (numeroVoiture % 999 + 1));
+} //----- fin de GetNumeroVoiture
+
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
@@ -73,15 +77,6 @@ void GestionClavier(int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid_FDE_GB, in
         Menu();
     }
 
-} //----- fin de GestionClavier
-
-unsigned int GetNumeroVoiture()
-// Algorithme :
-//
-{
-    static unsigned int numeroVoiture = 0; // variable remanente, initialisée au premier appel
-
-    return (numeroVoiture = (numeroVoiture % 999 + 1));
 } //----- fin de GestionClavier
 
 

@@ -37,14 +37,15 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 //---------------------------------------------------- Variables statiques
 static int mutex_MemoirePartageeVoitures;
 static int shmId_MemoirePartageeVoitures;
-static int mutex_Requetes;
-static int shmId_Requetes;
-static int semSyc_Requetes;
+static int mutex_MemoirePartageeRequetes;
+static int shmId_MemoirePartageeRequetes;
+static int semSyc_MemoirePartageeRequetes;
 static MemoirePartageeVoitures* memoirePartageeVoitures;
-static Voiture* requetes;
+static MemoirePartageeRequetes* memoirePartageeRequetes;
 static set<pid_t> voituriers;
 
 //------------------------------------------------------ Fonctions privees
+
 static void finVoiturier(int numSignal);
 // Mode d'emploi :
 //
@@ -75,7 +76,7 @@ static void finVoiturier(int numSignal)
 // Algorithme :
 //
 {
-    //moteur
+    // PHASE MOTEUR :
     sembuf prendreMutex = {(short unsigned int)0, (short)-1, (short)0};
     sembuf vendreMutex = {(short unsigned int)0, (short)1, (short)0};
     pid_t pid_Voiturier;
@@ -100,16 +101,16 @@ static void finVoiturier(int numSignal)
         voituriers.erase(pid_Voiturier);
 
 
-        while(semop(mutex_Requetes,&prendreMutex,1) == -1 && errno == EINTR);
+        while(semop(mutex_MemoirePartageeRequetes,&prendreMutex,1) == -1 && errno == EINTR);
 
         if( (indiceRequete = choixRequete()) != -1 )
         {
-            requetes[indiceRequete] = {TypeUsager::AUCUN,0,0};
+            memoirePartageeRequetes->requetes[indiceRequete] = {TypeUsager::AUCUN,0,0};
             Effacer((TypeZone)(TypeZone::REQUETE_R1 + indiceRequete));
             sembuf vendreSemSync = {(short unsigned int)indiceRequete, (short)1, (short)0};
-            while(semop(semSyc_Requetes,&vendreSemSync,1) == -1 && errno == EINTR);
+            while(semop(semSyc_MemoirePartageeRequetes,&vendreSemSync,1) == -1 && errno == EINTR);
         }
-        semop(mutex_Requetes,&vendreMutex,1);
+        semop(mutex_MemoirePartageeRequetes,&vendreMutex,1);
     }
 } //----- fin de finVoiturier
 
@@ -118,7 +119,7 @@ static void fin(int numSignal)
 // Algorithme :
 //
 {
-    //destruction
+    // PHASE DESTRUCTION :
     if(numSignal == SIGUSR2)
     {
         struct sigaction action;
@@ -138,7 +139,7 @@ static void fin(int numSignal)
         }
 
         shmdt(memoirePartageeVoitures);
-        shmdt(requetes);
+        shmdt(memoirePartageeRequetes);
 
         exit(0);
     }
@@ -159,9 +160,9 @@ static int choixRequete()
 // Algorithme :
 //
 {
-    Voiture v1 = requetes[INDICE_ENTREE_BLAISE_PASCALE_PROF];
-    Voiture v2 = requetes[INDICE_ENTREE_BLAISE_PASCALE_AUTRE];
-    Voiture v3 = requetes[INDICE_ENTREE_GASTON_BERGER];
+    Voiture v1 = memoirePartageeRequetes->requetes[INDICE_ENTREE_BLAISE_PASCALE_PROF];
+    Voiture v2 = memoirePartageeRequetes->requetes[INDICE_ENTREE_BLAISE_PASCALE_AUTRE];
+    Voiture v3 = memoirePartageeRequetes->requetes[INDICE_ENTREE_GASTON_BERGER];
 
     if(isV1Prio(v1,v2) && isV1Prio(v1,v3) && v1.typeUsager != TypeUsager::AUCUN)
     {
@@ -183,21 +184,21 @@ static int choixRequete()
 //---------------------------------------------------- Fonctions publiques
 
 
-void Sortie(int msgid_BAL, int mutex_R, int semSyc_R, int shmId_R, int mutex_MPV, int shmId_MPV)
+void Sortie(int msgid_BAL, int mutex_MPR, int semSyc_MPR, int shmId_MPR, int mutex_MPV, int shmId_MPV)
 // Algorithme :
 //
 {
-    //initialisation
+    // PHASE INITIALISATION
     pid_t pid_Voiturier;
     int msgid_BoiteAuxLettres = msgid_BAL;
-    semSyc_Requetes = semSyc_R;
-    mutex_Requetes = mutex_R;
-    shmId_Requetes = shmId_R;
+    semSyc_MemoirePartageeRequetes = semSyc_MPR;
+    mutex_MemoirePartageeRequetes = mutex_MPR;
+    shmId_MemoirePartageeRequetes = shmId_MPR;
     mutex_MemoirePartageeVoitures = mutex_MPV;
     shmId_MemoirePartageeVoitures = shmId_MPV;
 
     memoirePartageeVoitures = (MemoirePartageeVoitures*) shmat(shmId_MemoirePartageeVoitures,NULL,0);
-    requetes = (Voiture*) shmat(shmId_Requetes,NULL,0);
+    memoirePartageeRequetes = (MemoirePartageeRequetes*) shmat(shmId_MemoirePartageeRequetes,NULL,0);
 
     struct sigaction action;
     action.sa_handler = SIG_IGN ;
@@ -219,7 +220,7 @@ void Sortie(int msgid_BAL, int mutex_R, int semSyc_R, int shmId_R, int mutex_MPV
 
     MessageDemandeSortie demande;
 
-    //moteur
+    // PHASE MOTEUR
     for(;;)
     {
         while(msgrcv(msgid_BoiteAuxLettres,&demande,sizeof(MessageDemandeSortie),0,0) == -1 && errno == EINTR); //sans block

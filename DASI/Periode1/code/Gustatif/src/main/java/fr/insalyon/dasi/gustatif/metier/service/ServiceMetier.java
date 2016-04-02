@@ -135,7 +135,7 @@ public class ServiceMetier {
         try {
             JpaUtil.ouvrirTransaction();
             client = clientDao.update(client);
-            JpaUtil.annulerTransaction();
+            JpaUtil.validerTransaction();
         } catch (Exception e) {
             System.out.println(e);
             client = null;

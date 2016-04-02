@@ -79,34 +79,45 @@ int main ( int argc, char** argv)
     int shmId_MemoirePartageeVoitures;
     MemoirePartageeVoitures* memoirePartageeVoitures;
 
-    int mutex_Requetes;
-    int semSyc_Requetes;
-    int shmId_Requetes;
-    Voiture* requetes;
+    int mutex_MemoirePartageeRequetes;
+    int semSyc_MemoirePartageeRequetes;
+    int shmId_MemoirePartageeRequetes;
+    MemoirePartageeRequetes* memoirePartageeRequetes;
 
     struct sigaction action;
 
-    //creation des ressources
-    // /!\ TODO : tester erreur (-1) pour chaque allocation de ressource
+    // PHASE INITIALISATION :
+
+    //masquage signaux SIGUSR1 et SIGUSR2
+    action.sa_handler = SIG_IGN;
+    sigemptyset(&action.sa_mask);
+    action.sa_flags = 0;
+    sigaction(SIGUSR1, &action, NULL);
+    sigaction(SIGUSR2, &action, NULL);
+
+
+    //MISE EN PLACE DES RESSOURCES
+    // /!\ TODO : tester erreur (-1) pour chaque allocation de ressource -> pour chaque appelle systeme
     InitialiserApplication(TYPE_TERMINAL);
 
-    //boites aux lettres
+    //Mise en place des boites aux lettres
     msgid_FileDemandeEntree_Prof_BlaisePacal = msgget(ftok(PARKING_EXE,0),IPC_CREAT | DROITS_BOITE_AU_LETTRE);
     msgid_FileDemandeEntree_Autre_BlaisePacal = msgget(ftok(PARKING_EXE,1),IPC_CREAT | DROITS_BOITE_AU_LETTRE);
     msgid_FileDemandeEntree_GastonBerger = msgget(ftok(PARKING_EXE,2),IPC_CREAT | DROITS_BOITE_AU_LETTRE);
+
     msgid_FileDemandeSortie_GastonBerger = msgget(ftok(PARKING_EXE,3),IPC_CREAT | DROITS_BOITE_AU_LETTRE);
 
-    //semaphores
+    //Mise en place des semaphores
     mutex_MemoirePartageeVoitures = semget(ftok(PARKING_EXE,4),1,IPC_CREAT | DROITS_SEMAPHORE);
     semctl(mutex_MemoirePartageeVoitures,0,SETVAL,1);
 
-    mutex_Requetes = semget(ftok(PARKING_EXE,5),1,IPC_CREAT | DROITS_SEMAPHORE);
-    semctl(mutex_Requetes,0,SETVAL,1);
+    mutex_MemoirePartageeRequetes = semget(ftok(PARKING_EXE,5),1,IPC_CREAT | DROITS_SEMAPHORE);
+    semctl(mutex_MemoirePartageeRequetes,0,SETVAL,1);
 
-    semSyc_Requetes = semget(ftok(PARKING_EXE,6),3,IPC_CREAT | DROITS_SEMAPHORE);
-    semctl(semSyc_Requetes,3,SETALL,0);
+    semSyc_MemoirePartageeRequetes = semget(ftok(PARKING_EXE,6),3,IPC_CREAT | DROITS_SEMAPHORE);
+    semctl(semSyc_MemoirePartageeRequetes,3,SETALL,0);
 
-    //Memoires partagées
+    //Mise en place des mémoires partagées
     shmId_MemoirePartageeVoitures = shmget(ftok(PARKING_EXE,7),sizeof(MemoirePartageeVoitures), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
     memoirePartageeVoitures = (MemoirePartageeVoitures*) shmat(shmId_MemoirePartageeVoitures,NULL,0);
 
@@ -115,51 +126,43 @@ int main ( int argc, char** argv)
         memoirePartageeVoitures->voitures[i] = {TypeUsager::AUCUN,0,0};
     }
 
-    shmId_Requetes = shmget(ftok(PARKING_EXE,8),NB_BARRIERES_ENTREE*sizeof(Voiture), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
-    requetes = (Voiture*) shmat(shmId_Requetes,NULL,0);
+    shmId_MemoirePartageeRequetes = shmget(ftok(PARKING_EXE,8),sizeof(MemoirePartageeRequetes), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
+    memoirePartageeRequetes = (MemoirePartageeRequetes*) shmat(shmId_MemoirePartageeRequetes,NULL,0);
     for(int i=0; i < (int) NB_BARRIERES_ENTREE ; i++)
     {
-        requetes[i] = {TypeUsager::AUCUN,0,0};
+        memoirePartageeRequetes->requetes[i] = {TypeUsager::AUCUN,0,0};
     }
 
 
-    //masquage signauc SIGUSR1 et SIGUSR2
-    action.sa_handler = SIG_IGN;
-    sigemptyset(&action.sa_mask);
-    action.sa_flags = 0;
-    sigaction(SIGUSR1, &action, NULL);
-    sigaction(SIGUSR2, &action, NULL);
-
-
+    //Création des processus fils
     if( (pid_GestionClavier = fork()) == 0 )
     {
-        //Fils
         GestionClavier(msgid_FileDemandeEntree_Prof_BlaisePacal,msgid_FileDemandeEntree_Autre_BlaisePacal,msgid_FileDemandeEntree_GastonBerger,msgid_FileDemandeSortie_GastonBerger);
     }
     else if( (pid_EntreeBlaisePascalProf = fork()) == 0 )
     {
-        Entree(TypeBarriere::PROF_BLAISE_PASCAL,INDICE_ENTREE_BLAISE_PASCALE_PROF,msgid_FileDemandeEntree_Prof_BlaisePacal,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
+        Entree(TypeBarriere::PROF_BLAISE_PASCAL,INDICE_ENTREE_BLAISE_PASCALE_PROF,msgid_FileDemandeEntree_Prof_BlaisePacal,mutex_MemoirePartageeRequetes,semSyc_MemoirePartageeRequetes,shmId_MemoirePartageeRequetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
     }
     else if( (pid_EntreeBlaisePascalAutre = fork()) == 0 )
     {
-        Entree(TypeBarriere::AUTRE_BLAISE_PASCAL,INDICE_ENTREE_BLAISE_PASCALE_AUTRE,msgid_FileDemandeEntree_Autre_BlaisePacal,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
+        Entree(TypeBarriere::AUTRE_BLAISE_PASCAL,INDICE_ENTREE_BLAISE_PASCALE_AUTRE,msgid_FileDemandeEntree_Autre_BlaisePacal,mutex_MemoirePartageeRequetes,semSyc_MemoirePartageeRequetes,shmId_MemoirePartageeRequetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
     }
     else if( (pid_EntreeGastonBerger = fork()) == 0 )
     {
-        Entree(TypeBarriere::ENTREE_GASTON_BERGER,INDICE_ENTREE_GASTON_BERGER,msgid_FileDemandeEntree_GastonBerger,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
+        Entree(TypeBarriere::ENTREE_GASTON_BERGER,INDICE_ENTREE_GASTON_BERGER,msgid_FileDemandeEntree_GastonBerger,mutex_MemoirePartageeRequetes,semSyc_MemoirePartageeRequetes,shmId_MemoirePartageeRequetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
     }
     else if( (pid_Sortie = fork()) == 0 )
     {
-        Sortie(msgid_FileDemandeSortie_GastonBerger,mutex_Requetes,semSyc_Requetes,shmId_Requetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
+        Sortie(msgid_FileDemandeSortie_GastonBerger,mutex_MemoirePartageeRequetes,semSyc_MemoirePartageeRequetes,shmId_MemoirePartageeRequetes,mutex_MemoirePartageeVoitures,shmId_MemoirePartageeVoitures);
     }
     else
     {
         pid_Heure = ActiverHeure();
 
-        //Phase Moteur
+        // PHASE MOTEUR
         waitpid(pid_GestionClavier,&statut_GestionClavier,0);
 
-        //Phase Destruction
+        // PHASE DESTRUCTION
         kill(pid_Heure,SIGUSR2);//test valeur retour -1 error
         kill(pid_EntreeBlaisePascalProf,SIGUSR2);//test valeur retour -1 error
         kill(pid_EntreeBlaisePascalAutre,SIGUSR2);//test valeur retour -1 error
@@ -181,14 +184,13 @@ int main ( int argc, char** argv)
         msgctl(msgid_FileDemandeSortie_GastonBerger,IPC_RMID,0);
         //memoires partages
         shmctl(shmId_MemoirePartageeVoitures, IPC_RMID, 0);
-        shmctl(shmId_Requetes, IPC_RMID, 0);
+        shmctl(shmId_MemoirePartageeRequetes, IPC_RMID, 0);
         //semaphores
         semctl(mutex_MemoirePartageeVoitures, IPC_RMID, 0);
-        semctl(semSyc_Requetes, IPC_RMID, 0);
-        semctl(mutex_Requetes, IPC_RMID, 0);
+        semctl(semSyc_MemoirePartageeRequetes, IPC_RMID, 0);
+        semctl(mutex_MemoirePartageeRequetes, IPC_RMID, 0);
         exit(0);
     }
-
 
 } //----- fin de main
 

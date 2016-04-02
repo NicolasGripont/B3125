@@ -32,7 +32,7 @@ public class JeuDeDonnees {
                     "mdp", "Domaine de la Doua, 20 Avenue Gaston Berger, 69100 Villeurbanne",
                     new Double(50000.F));
             lv3.setCoordonnees(GeoTest.getLatLng(lv3.getAdresse()));
-            Livreur lv4 = new LivreurVelo("Martin", "Damien", "estelle@livreur.com",
+            Livreur lv4 = new LivreurVelo("Martin", "Damien", "damien@livreur.com",
                     "mdp", "200 Rue Léon Blum, 69100 Villeurbanne", new Double(20000.F));
             lv4.setCoordonnees(GeoTest.getLatLng(lv4.getAdresse()));
             Livreur lv5 = new LivreurVelo("Roux", "Estelle", "estelle@livreur.com",

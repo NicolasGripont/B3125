@@ -37,9 +37,9 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 
 static int mutex_MemoirePartageeVoitures;
 static int shmId_MemoirePartageeVoitures;
-static int shmId_Requetes;
+static int shmId_MemoirePartageeRequetes;
 static MemoirePartageeVoitures* memoirePartageeVoitures;
-static Voiture* requetes;
+static MemoirePartageeRequetes* memoirePartageeRequetes;
 static map<pid_t,Voiture> voituriers;
 
 
@@ -111,7 +111,7 @@ static void fin(int numSignal)
         }
 
         shmdt(memoirePartageeVoitures);
-        shmdt(requetes);
+        shmdt(memoirePartageeRequetes);
 
         exit(0);
     }
@@ -122,7 +122,7 @@ static void fin(int numSignal)
 //---------------------------------------------------- Fonctions publiques
 
 
-void Entree(TypeBarriere type, int indiceBarriere, int msgid_BAL, int mutex_R, int semSyc_R, int shmId_R, int mutex_MPV, int shmId_MPV)
+void Entree(TypeBarriere type, int indiceBarriere, int msgid_BAL, int mutex_MPR, int semSyc_MPR, int shmId_MPR, int mutex_MPV, int shmId_MPV)
 // Algorithme :
 //
 {
@@ -130,14 +130,14 @@ void Entree(TypeBarriere type, int indiceBarriere, int msgid_BAL, int mutex_R, i
     pid_t pid_Voiturier;
     TypeBarriere typeBarriere = type;
     int msgid_BoiteAuxLettres = msgid_BAL;
-    int mutex_Requetes = mutex_R;
-    int semSyc_Requetes = semSyc_R;
-    shmId_Requetes = shmId_R;
+    int mutex_MemoirePartageeRequetes = mutex_MPR;
+    int semSyc_MemoirePartageeRequetes = semSyc_MPR;
+    shmId_MemoirePartageeRequetes = shmId_MPR;
     mutex_MemoirePartageeVoitures = mutex_MPV;
     shmId_MemoirePartageeVoitures = shmId_MPV;
 
     memoirePartageeVoitures = (MemoirePartageeVoitures*) shmat(shmId_MemoirePartageeVoitures,NULL,0);
-    requetes = (Voiture*) shmat(shmId_Requetes,NULL,0);
+    memoirePartageeRequetes = (MemoirePartageeRequetes*) shmat(shmId_MemoirePartageeRequetes,NULL,0);
 
     struct sigaction action;
     action.sa_handler = SIG_IGN ;
@@ -171,14 +171,14 @@ void Entree(TypeBarriere type, int indiceBarriere, int msgid_BAL, int mutex_R, i
             //requete
             sembuf prendreMutex = {(short unsigned int)0, (short)-1, (short)0};
             sembuf vendreMutex = {(short unsigned int)0, (short)1, (short)0};
-            while(semop(mutex_Requetes,&prendreMutex,1) == -1 && errno == EINTR);
-            requetes[indiceBarriere] = demande.voiture;
-            semop(mutex_Requetes,&vendreMutex,1);
+            while(semop(mutex_MemoirePartageeRequetes,&prendreMutex,1) == -1 && errno == EINTR);
+            memoirePartageeRequetes->requetes[indiceBarriere] = demande.voiture;
+            semop(mutex_MemoirePartageeRequetes,&vendreMutex,1);
             AfficherRequete (typeBarriere,demande.voiture.typeUsager,demande.voiture.arrivee);
             DessinerVoitureBarriere(typeBarriere,demande.voiture.typeUsager);
 
             sembuf prendreSemSync = {(short unsigned int)indiceBarriere, (short)-1, (short)0};
-            while(semop(semSyc_Requetes,&prendreSemSync,1) == -1 && errno == EINTR);
+            while(semop(semSyc_MemoirePartageeRequetes,&prendreSemSync,1) == -1 && errno == EINTR);
             pid_Voiturier = GarerVoiture(typeBarriere);
         }
         voituriers.insert(make_pair(pid_Voiturier,demande.voiture));

@@ -254,26 +254,28 @@ public class IHMConsole {
             
             if(cmd.equals("c")) {
                 List<Commande> commandes = serviceMetier.findCommandesByLivreurId(livreur.getId());
-                System.out.println("Entrez le numéro d'une commande pour le selectionner :");
-                for(Commande c : commandes)
-                {
-                    String l = "\t" + c.getId();
-                    if(c.getDateFin() == null) {
-                        l += " - non cloturée";
-                    } else {
-                        l += " - cloturée";
+                if(commandes != null) {
+                    System.out.println("Entrez le numéro d'une commande pour le selectionner :");
+                    for(Commande c : commandes)
+                    {
+                        String l = "\t" + c.getId();
+                        if(c.getDateFin() == null) {
+                            l += " - non cloturée";
+                        } else {
+                            l += " - cloturée";
+                        }
+                        System.out.println(l);
                     }
-                    System.out.println(l);
-                }
-                noC = scanner.nextLine();
-                try {
-                    Commande commande = serviceMetier.findCommandeById(
-                            new Long(Integer.parseInt(noC)));
-                    if(commande != null) {
-                        detailsCommande(commande);
+                    noC = scanner.nextLine();
+                    try {
+                        Commande commande = serviceMetier.findCommandeById(
+                                new Long(Integer.parseInt(noC)));
+                        if(commande != null) {
+                            detailsCommande(commande);
+                        }
+                    } catch(NumberFormatException e) {
+
                     }
-                } catch(NumberFormatException e) {
-                    
                 }
             } else if(cmd.equals("q")) {
                 System.exit(0);
