@@ -87,7 +87,7 @@ static void finVoiturier(int numSignal)
 
     if(numSignal == SIGCHLD)
     {
-        pid_Voiturier = wait(&statut_Voiturier); //le faire apres mutex Requte et ou memoire
+        pid_Voiturier = wait(&statut_Voiturier);
         numeroPlace = WEXITSTATUS(statut_Voiturier);
 
         while(semop(mutex_MemoirePartageeVoitures,&prendreMutex,1) == -1 && errno == EINTR);
@@ -174,7 +174,7 @@ static int choixRequete()
     }
     if(isV1Prio(v3,v2) && isV1Prio(v3,v1) && v3.typeUsager != TypeUsager::AUCUN)
     {
-        return 2;
+        return 2; 
     }
 
     return -1;
@@ -188,23 +188,18 @@ void Sortie(int msgid_BAL, int mutex_MPR, int semSyc_MPR, int shmId_MPR, int mut
 // Algorithme :
 //
 {
-    // PHASE INITIALISATION
     pid_t pid_Voiturier;
-    int msgid_BoiteAuxLettres = msgid_BAL;
-    semSyc_MemoirePartageeRequetes = semSyc_MPR;
-    mutex_MemoirePartageeRequetes = mutex_MPR;
-    shmId_MemoirePartageeRequetes = shmId_MPR;
-    mutex_MemoirePartageeVoitures = mutex_MPV;
-    shmId_MemoirePartageeVoitures = shmId_MPV;
+    int msgid_BoiteAuxLettres;
+    MessageDemandeSortie demande;
 
-    memoirePartageeVoitures = (MemoirePartageeVoitures*) shmat(shmId_MemoirePartageeVoitures,NULL,0);
-    memoirePartageeRequetes = (MemoirePartageeRequetes*) shmat(shmId_MemoirePartageeRequetes,NULL,0);
-
+    // PHASE INITIALISATION
     struct sigaction action;
     action.sa_handler = SIG_IGN ;
     sigemptyset(&action.sa_mask);
     action.sa_flags = 0 ;
     sigaction(SIGUSR1,&action,NULL);
+    sigaction(SIGUSR2,&action,NULL);
+    sigaction(SIGCHLD,&action,NULL);
 
     struct sigaction actionFin;
     actionFin.sa_handler = fin;
@@ -218,7 +213,16 @@ void Sortie(int msgid_BAL, int mutex_MPR, int semSyc_MPR, int shmId_MPR, int mut
     actionFinVoiturier.sa_flags = 0 ;
     sigaction(SIGCHLD,&actionFinVoiturier,NULL);
 
-    MessageDemandeSortie demande;
+    msgid_BoiteAuxLettres = msgid_BAL;
+    semSyc_MemoirePartageeRequetes = semSyc_MPR;
+    mutex_MemoirePartageeRequetes = mutex_MPR;
+    shmId_MemoirePartageeRequetes = shmId_MPR;
+    mutex_MemoirePartageeVoitures = mutex_MPV;
+    shmId_MemoirePartageeVoitures = shmId_MPV;
+
+
+    memoirePartageeVoitures = (MemoirePartageeVoitures*) shmat(shmId_MemoirePartageeVoitures,NULL,0);
+    memoirePartageeRequetes = (MemoirePartageeRequetes*) shmat(shmId_MemoirePartageeRequetes,NULL,0);
 
     // PHASE MOTEUR
     for(;;)
@@ -229,8 +233,6 @@ void Sortie(int msgid_BAL, int mutex_MPR, int semSyc_MPR, int shmId_MPR, int mut
         {
             voituriers.insert(pid_Voiturier);
         }
-
-        sleep(TEMPO);
     }
 } //----- fin de Sortie
 

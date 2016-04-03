@@ -125,6 +125,7 @@ int main ( int argc, char** argv)
     {
         memoirePartageeVoitures->voitures[i] = {TypeUsager::AUCUN,0,0};
     }
+    shmdt(memoirePartageeVoitures);
 
     shmId_MemoirePartageeRequetes = shmget(ftok(PARKING_EXE,8),sizeof(MemoirePartageeRequetes), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
     memoirePartageeRequetes = (MemoirePartageeRequetes*) shmat(shmId_MemoirePartageeRequetes,NULL,0);
@@ -132,7 +133,7 @@ int main ( int argc, char** argv)
     {
         memoirePartageeRequetes->requetes[i] = {TypeUsager::AUCUN,0,0};
     }
-
+    shmdt(memoirePartageeRequetes);
 
     //Création des processus fils
     if( (pid_GestionClavier = fork()) == 0 )
