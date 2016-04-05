@@ -2,8 +2,8 @@
                            Sortie  -  description
                              -------------------
 debut     : 16/03/16
-copyright : (C) Sortie par Sortie
-e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
+copyright : (C) 2016 par Nicolas Gripont
+e-mail    :  nicolas.gripont@insa-lyon.fr
 
 *************************************************************************/
 
@@ -42,33 +42,44 @@ static int shmId_MemoirePartageeRequetes;
 static int semSyc_MemoirePartageeRequetes;
 static MemoirePartageeVoitures* memoirePartageeVoitures;
 static MemoirePartageeRequetes* memoirePartageeRequetes;
-static set<pid_t> voituriers;
+static set<pid_t> voituriers; // set contenant les pids des voiturierSortie
+                              // en cours d'exécution
 
 //------------------------------------------------------ Fonctions privees
 
 static void finVoiturier(int numSignal);
-// Mode d'emploi :
+// Mode d'emploi : fonction permettant de gérer la fin d'un processus
+// SortieVoiture.
+// A connecter au signal SIGCHLD
 //
-// Contrat :
+// Contrat : l'accès à la mémoire partagés requêtes et voitures
+// doit être possible (memoirePartageeRequetes et memoirePartageeVoitures)
+// L'accès aux différents sémaphores doit être possible
+// (mutex_MemoirePartageeVoitures,mutex_MemoirePartageeRequetes
+// semSyc_MemoirePartageeRequetes)
 //
 
 static void fin(int numSignal);
-// Mode d'emploi :
+// Mode d'emploi : fonction permettant de Terminer le processus.
+// A connecter au signal SIGUSR2
 //
-// Contrat :
-//
+// Contrat : l'accès à la mémoire partagés requêtes et voitures
+// doit être possible (memoirePartageeRequetes et memoirePartageeVoitures)
+
 
 static int choixRequete();
-// Mode d'emploi :
+// Mode d'emploi : Fonction permettant de choisir la requete d'entrée
+// à traiter. Renvoie l'indice de la requete à traiter (dans la
+// memoirePartageeRequetes) ou -1 si aucune requete.
 //
-// Contrat :
-//
+// Contrat : l'accès à la mémoire partagés requêtes doit être possible
+// (memoirePartageeRequetes)
 
 static bool isV1Prio(Voiture v1, Voiture v2);
-// Mode d'emploi :
+// Mode d'emploi : Renvoie true si v1 est prioritaire par rapport à v2,
+// false sinon.
 //
-// Contrat :
-//
+// Contrat : aucun
 
 
 
@@ -87,29 +98,42 @@ static void finVoiturier(int numSignal)
 
     if(numSignal == SIGCHLD)
     {
+        //recuperation du pid du voiturier terminé
         pid_Voiturier = wait(&statut_Voiturier);
         numeroPlace = WEXITSTATUS(statut_Voiturier);
 
+        //on prend le mutex memoire partagée voitures pour pouvoir y accéder (être seul à y accéder)
         while(semop(mutex_MemoirePartageeVoitures,&prendreMutex,1) == -1 && errno == EINTR);
 
+        //recupération de la voiture sortie
         voiture = memoirePartageeVoitures->voitures[numeroPlace-1];
+        //on efface la voiture sortie de la mémoire partagée
         memoirePartageeVoitures->voitures[numeroPlace-1] = {TypeUsager::AUCUN,0,0};
+        //on rend l'accès à la mémoire partagée voitures
         semop(mutex_MemoirePartageeVoitures,&vendreMutex,1);
 
+        //on efface les infos de la voiture sortie de la zone etat
         Effacer((TypeZone)numeroPlace);
+        //on affiche les informations de la voiture sortie dans la zone sortie
         AfficherSortie(voiture.typeUsager,voiture.numero,voiture.arrivee,time(NULL));
+        //on enleve le pid de du voiturierSortie terminé du set
         voituriers.erase(pid_Voiturier);
 
-
+        //on prend le mutex memoire partagée requetes pour pouvoir y accéder (être seul à y accéder)
         while(semop(mutex_MemoirePartageeRequetes,&prendreMutex,1) == -1 && errno == EINTR);
 
+        //s'il y a une requete a traiter
         if( (indiceRequete = choixRequete()) != -1 )
         {
+            //on efface la requete à traiter de la mémoire partagée requetes
             memoirePartageeRequetes->requetes[indiceRequete] = {TypeUsager::AUCUN,0,0};
+            //on efface la requete à traiter de la zone requetes
             Effacer((TypeZone)(TypeZone::REQUETE_R1 + indiceRequete));
+            //on libere le processus entrée en donnant un jeton au semSync correspondant à la requête
             sembuf vendreSemSync = {(short unsigned int)indiceRequete, (short)1, (short)0};
             while(semop(semSyc_MemoirePartageeRequetes,&vendreSemSync,1) == -1 && errno == EINTR);
         }
+        //on rend l'accès à la mémoire partagée requetes
         semop(mutex_MemoirePartageeRequetes,&vendreMutex,1);
     }
 } //----- fin de finVoiturier
@@ -122,25 +146,30 @@ static void fin(int numSignal)
     // PHASE DESTRUCTION :
     if(numSignal == SIGUSR2)
     {
+        //on masque le signal SIGCHLD pour ne pas être interrompu par la fin
+        //d'un voiturierSortie
         struct sigaction action;
         action.sa_handler = SIG_IGN ;
         sigemptyset(&action.sa_mask);
         action.sa_flags = 0 ;
         sigaction(SIGCHLD,&action,NULL);
 
-
+        //on envoie le signal SIGUSR2 a tous les voiturierSortie en cours d'exécution
         for(set<pid_t>::iterator it = voituriers.begin(); it != voituriers.end(); it++)
         {
             kill(*it,SIGUSR2);
         }
+        //on attend la fin des voiturierSortie à qui on a envoyé SIGUSR2
         for(set<pid_t>::iterator it = voituriers.begin(); it != voituriers.end(); it++)
         {
             waitpid(*it,NULL,0);
         }
 
+        //On se détache des mémoires partagées
         shmdt(memoirePartageeVoitures);
         shmdt(memoirePartageeRequetes);
 
+        //On quitte le processus
         exit(0);
     }
 } //----- fin de fin
@@ -193,6 +222,7 @@ void Sortie(int msgid_BAL, int mutex_MPR, int semSyc_MPR, int shmId_MPR, int mut
     MessageDemandeSortie demande;
 
     // PHASE INITIALISATION
+    //masquage des signaux SIGUSR1, SIGUSR2, SIGCHLD
     struct sigaction action;
     action.sa_handler = SIG_IGN ;
     sigemptyset(&action.sa_mask);
@@ -201,18 +231,21 @@ void Sortie(int msgid_BAL, int mutex_MPR, int semSyc_MPR, int shmId_MPR, int mut
     sigaction(SIGUSR2,&action,NULL);
     sigaction(SIGCHLD,&action,NULL);
 
+    //Positionnement du handler fin sur SIGUSR2
     struct sigaction actionFin;
     actionFin.sa_handler = fin;
     sigemptyset(&actionFin.sa_mask);
     actionFin.sa_flags = 0 ;
     sigaction(SIGUSR2,&actionFin,NULL);
 
+    //Positionnement du handler finVoiturier sur SIGUSR2
     struct sigaction actionFinVoiturier;
     actionFinVoiturier.sa_handler = finVoiturier;
     sigemptyset(&actionFinVoiturier.sa_mask);
     actionFinVoiturier.sa_flags = 0 ;
     sigaction(SIGCHLD,&actionFinVoiturier,NULL);
 
+    //récupération des paramètres
     msgid_BoiteAuxLettres = msgid_BAL;
     semSyc_MemoirePartageeRequetes = semSyc_MPR;
     mutex_MemoirePartageeRequetes = mutex_MPR;
@@ -220,17 +253,20 @@ void Sortie(int msgid_BAL, int mutex_MPR, int semSyc_MPR, int shmId_MPR, int mut
     mutex_MemoirePartageeVoitures = mutex_MPV;
     shmId_MemoirePartageeVoitures = shmId_MPV;
 
-
+    //Attachement des mémoires partagées
     memoirePartageeVoitures = (MemoirePartageeVoitures*) shmat(shmId_MemoirePartageeVoitures,NULL,0);
     memoirePartageeRequetes = (MemoirePartageeRequetes*) shmat(shmId_MemoirePartageeRequetes,NULL,0);
 
     // PHASE MOTEUR
     for(;;)
     {
+        //lecture de messages dans la boite aux lettres
         while(msgrcv(msgid_BoiteAuxLettres,&demande,sizeof(MessageDemandeSortie),0,0) == -1 && errno == EINTR); //sans block
 
+        // si la création d'un voiturierSortie a fonctionnée
         if( (pid_Voiturier = SortirVoiture(demande.numeroPlace)) != -1 )
         {
+            // ajout du pid au set
             voituriers.insert(pid_Voiturier);
         }
     }

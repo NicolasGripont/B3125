@@ -2,8 +2,8 @@
                            Sortie  -  description
                              -------------------
 debut     : 16/03/16
-copyright : (C) Sortie par Sortie
-e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
+copyright : (C) 2016 par Nicolas Gripont
+e-mail    :  nicolas.gripont@insa-lyon.fr
 
 *************************************************************************/
 
@@ -13,7 +13,7 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 
 //------------------------------------------------------------------------
 // Rôle de la tache <Sortie>
-//
+// Module permettant de gérer la sortie de voitures du Parking
 //
 //------------------------------------------------------------------------
 
@@ -28,10 +28,12 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 //---------------------------------------------------- Fonctions publiques
 
 
-void Sortie(int msgid_BAL, int mutex_MPR, int semSyc_MPR, int shmId_MPR, int mutex_MPV, int shmId_MPV);
-// Mode d'emploi :
+void Sortie(int msgid_BAL, int mutex_MPR, int semSyc_MPR, int shmId_MPR,
+            int mutex_MPV, int shmId_MPV);
+// Mode d'emploi : Fonction permettant de gérer es sortie du parking
 //
-// Contrat :
+// Contrat : les différents paramètres doivent être correctes.
+// (les id des IPCs)
 //
 
 #endif // SORTIE_H

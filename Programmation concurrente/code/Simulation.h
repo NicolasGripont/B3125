@@ -2,8 +2,8 @@
                            Simulation  -  description
                              -------------------
 debut     : 16/03/16
-copyright : (C) Simulation par Simulation
-e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
+copyright : (C) 2016 par Nicolas Gripont
+e-mail    :  nicolas.gripont@insa-lyon.fr
 
 *************************************************************************/
 

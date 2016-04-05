@@ -1,9 +1,9 @@
 /*************************************************************************
-                           Config  -  description
+                           Config  -  Fichier de Configuration
                              -------------------
 debut     : 19/03/16
-copyright : (C) Config par Config
-e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
+copyright : (C) 2016 par Nicolas Gripont
+e-mail    :  nicolas.gripont@insa-lyon.fr
 
 *************************************************************************/
 
@@ -13,7 +13,8 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 
 //------------------------------------------------------------------------
 // Rôle de la tache <Config>
-//
+// Fichier contenant differentes definitions utilisée dans les différents
+// modules de l'application
 //
 //------------------------------------------------------------------------
 

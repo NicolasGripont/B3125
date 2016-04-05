@@ -1,9 +1,9 @@
 /*************************************************************************
-                           Mere  -  description
+                           Mere  -  Application Parking
                              -------------------
 debut     : 16/03/16
-copyright : (C) Mere par Mere
-e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
+copyright : (C) 2016 par Nicolas Gripont
+e-mail    :  nicolas.gripont@insa-lyon.fr
 
 *************************************************************************/
 
@@ -13,7 +13,8 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 
 //------------------------------------------------------------------------
 // Rôle du module <Mere>
-//
+// Ce module permet de mettre en place les ressources et de lancer les
+// différent processus qui interviennent dans la gestion du parking.
 //
 //------------------------------------------------------------------------
 
@@ -26,16 +27,15 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-// type Nom ( liste de parametres );
-// Mode d'emploi :
-//
-// Contrat :
-//
 
-int main (int argc, char** argv);
+int main ();
 // Mode d'emploi :
-//
+// Fonction main permettant de créer mettre en place les différents
+// processus permettant le fonctionnement de l'application Parking
 // Contrat :
+// Si l'application n'est pas quitter de manière classique (commande e/E
+// de simulation), il faut supprimer les IPCs crées (4 boites aux lettres,
+// 5 sémaphores et 3 mémoires partagées)
 //
 
 #endif // MERE_H

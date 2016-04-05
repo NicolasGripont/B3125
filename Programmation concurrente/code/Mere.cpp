@@ -1,9 +1,9 @@
 /*************************************************************************
-                           Mere  -  description
+                           Mere  -  Application Parking
                              -------------------
 debut     : 16/03/16
-copyright : (C) Mere par Mere
-e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
+copyright : (C) 2016 par Nicolas Gripont
+e-mail    :  nicolas.gripont@insa-lyon.fr
 
 *************************************************************************/
 
@@ -53,7 +53,7 @@ e-mail    :  nicolas.gripont@insa-lyon.fr rim.el-idrissi-mokdad@insa-lyon.fr
 
 
 
-int main ( int argc, char** argv)
+int main ()
 // Algorithme :
 //
 {
@@ -120,7 +120,6 @@ int main ( int argc, char** argv)
     //Mise en place des mémoires partagées
     shmId_MemoirePartageeVoitures = shmget(ftok(PARKING_EXE,7),sizeof(MemoirePartageeVoitures), IPC_CREAT | DROITS_MEMOIRE_PARTAGEE);
     memoirePartageeVoitures = (MemoirePartageeVoitures*) shmat(shmId_MemoirePartageeVoitures,NULL,0);
-
     for(int i=0; i < (int) NB_PLACES ; i++)
     {
         memoirePartageeVoitures->voitures[i] = {TypeUsager::AUCUN,0,0};
@@ -176,17 +175,17 @@ int main ( int argc, char** argv)
         waitpid(pid_EntreeGastonBerger,&statut_EntreeGastonBerger,0);
         waitpid(pid_Sortie,&statut_Sortie,0);
 
-        //liberation des ressources
+        //liberation ressources
         TerminerApplication();
-        //boites aux lettres
+        //liberation boites aux lettres
         msgctl(msgid_FileDemandeEntree_Prof_BlaisePacal,IPC_RMID,0);
         msgctl(msgid_FileDemandeEntree_Autre_BlaisePacal,IPC_RMID,0);
         msgctl(msgid_FileDemandeEntree_GastonBerger,IPC_RMID,0);
         msgctl(msgid_FileDemandeSortie_GastonBerger,IPC_RMID,0);
-        //memoires partages
+        //liberation memoires partages
         shmctl(shmId_MemoirePartageeVoitures, IPC_RMID, 0);
         shmctl(shmId_MemoirePartageeRequetes, IPC_RMID, 0);
-        //semaphores
+        //liberation semaphores
         semctl(mutex_MemoirePartageeVoitures, IPC_RMID, 0);
         semctl(semSyc_MemoirePartageeRequetes, IPC_RMID, 0);
         semctl(mutex_MemoirePartageeRequetes, IPC_RMID, 0);
