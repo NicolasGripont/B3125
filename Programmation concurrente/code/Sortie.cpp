@@ -148,7 +148,7 @@ static void fin(int numSignal)
 
 static bool isV1Prio(Voiture v1, Voiture v2)
 {
-    if(v1.typeUsager == v2.typeUsager) { return (v1.arrivee < v2.arrivee); }
+    if(v1.typeUsager == v2.typeUsager) { return (v1.arrivee <= v2.arrivee); }
     if(v1.typeUsager == TypeUsager::PROF && v2.typeUsager == TypeUsager::AUTRE) { return true; }
     if(v1.typeUsager == TypeUsager::AUTRE && v2.typeUsager == TypeUsager::PROF) { return false; }
     if(v1.typeUsager > v2.typeUsager) { return true; }
