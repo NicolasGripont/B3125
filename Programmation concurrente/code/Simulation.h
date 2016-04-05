@@ -27,7 +27,6 @@ e-mail    :  nicolas.gripont@insa-lyon.fr
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
 
-
 void GestionClavier(int msgid_FDE_P_BP, int msgid_FDE_A_BP, int msgid_FDE_GB, int msgid_FDS_GB);
 // Mode d'emploi :
 //
@@ -40,6 +39,4 @@ void Commande(char code, unsigned int valeur);
 // Contrat :
 //
 
-
 #endif // SIMULATION_H
-
