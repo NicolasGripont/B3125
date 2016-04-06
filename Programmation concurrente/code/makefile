@@ -15,7 +15,7 @@ RMFLAGS = -f
 CPPFLAGS = -std=c++11 -Wall 
 EDLFLAGS = $(LIBPATH)
 LIBS = -ltp -lncurses -ltcl
-INCLUDES = /share/public/tp/tp-multitache
+INCLUDES = includes#/shares/public/tp/tp-multitache
 LIBPATH = -L$(INCLUDES)
 INCPATH = -I$(INCLUDES)
 CLEAN = clean
