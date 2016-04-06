@@ -6,15 +6,16 @@ COMP = g++
 RM = rm
 EDL = g++
 ECHO = echo
+CONFIG = Config.h
 INT = Mere.h Simulation.h Entree.h Sortie.h
 REAL = $(INT:.h=.cpp)
 OBJ = $(INT:.h=.o)
 OUTPUT = -o
 RMFLAGS = -f
-CPPFLAGS = -std=c++11 -Wall #-O3 #-D PERF#-D TEST #-D MAP
+CPPFLAGS = -std=c++11 -Wall 
 EDLFLAGS = $(LIBPATH)
 LIBS = -ltp -lncurses -ltcl
-INCLUDES = includes
+INCLUDES = /share/public/tp/tp-multitache
 LIBPATH = -L$(INCLUDES)
 INCPATH = -I$(INCLUDES)
 CLEAN = clean
@@ -40,9 +41,9 @@ $(CLEAN) :
 
 
 $(SOS) :
-	./$(BACKUPFILE) $(MAKEFILE) $(INT) $(REAL) $(RESSOURCES) $(BACKUPFILE)
+	./$(BACKUPFILE) $(MAKEFILE) $(INT) $(REAL) $(RESSOURCES) $(BACKUPFILE) $(CONFIG)
 
-Mere.o : Mere.h Simulation.h Entree.h Sortie.h $(MAKEFILE)
-Simulation.o : Simulation.h $(MAKEFILE)
-Entree.o : Entree.h $(MAKEFILE)
-Sortie.o : Sortie.h $(MAKEFILE)
+Mere.o : Mere.h Simulation.h Entree.h Sortie.h $(CONFIG) $(MAKEFILE) 
+Simulation.o : Simulation.h $(CONFIG) $(MAKEFILE)
+Entree.o : Entree.h $(CONFIG) $(MAKEFILE)
+Sortie.o : Sortie.h $(CONFIG) $(MAKEFILE)

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#Script de sauvegarde c/cpp/h/sh ou fichiers donnés en parametètre.
+#On enregistre dans le dossier ./Backups/date
+
 backup="Backups" #nom du dossier où on enregistre les backups
 
 if [ ! -e $backup ]; then  #si aucun fichier/dossier nommé $backup existe alors on créer le dossier $backup
