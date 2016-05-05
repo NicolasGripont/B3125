@@ -12,6 +12,7 @@ import java.util.Scanner;
 import metier.modele.Adherent;
 import metier.modele.Demande;
 import metier.modele.Evenement;
+import metier.service.ServiceMetier;
 import static metier.service.ServiceMetier.AffichageDetail;
 import static metier.service.ServiceMetier.creerAdherent;
 import static metier.service.ServiceMetier.finaliserEvenement;

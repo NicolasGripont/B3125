@@ -238,6 +238,31 @@ public class ServiceMetier {
         return listNoms;
     }
 
+        /**
+     *Service renvoyant une liste de String des noms d'activité
+     * Ce service est utilisable pour afficher les activités dans un menu déroulant par exemple
+     * @return
+     */
+    public static List<Activite> getAllActivites()
+    {
+        ActiviteDao activiteManager= new ActiviteDao();
+        List<Activite> listAct = null;
+        
+        JpaUtil.creerEntityManager();
+
+        try {
+            listAct = activiteManager.findAll();
+        } catch (Throwable ex) {
+            Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
+           
+        }
+        
+        JpaUtil.fermerEntityManager();
+        
+        return listAct;
+    }
+    
+    
     /**
      *Service renvoyant une liste de String desstatuts
      * Ce service est utilisable pour afficher les statuts dans un menu déroulant par exemple
