@@ -1,0 +1,505 @@
+
+/********************* STYLE GENERAL *********************/
+
+body {
+	/*background:url(back.jpg) fixed;*/
+	background-size: 100%;
+	background-color:#DCDCDC;
+	align: center;
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+	font:12px Arial;
+	min-width: 1000px;
+}
+
+table{
+	margin: 0px, 0px, 0px, 0px;
+	border-collapse:collapse;
+	horizontal-align: middle;
+}
+
+td{
+	horizontal-align: middle;
+	vertical-align: middle;
+	align: center;
+}
+
+a{
+	text-decoration: none;
+}
+
+
+/********************* STYLE FOOTER *********************/
+
+footer {
+	color: #FFFFFF;
+	background-color: #999999;
+	font:italic 12px Arial;
+	margin: 0px, 0px;
+	width:100%;
+	height:40px;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+}
+
+/********************* STYLE PANEL *********************/
+
+table.global{
+	width:100%;
+}
+
+td.panel {
+	width:200px;
+}
+
+section.panel {
+	background-color: #999999;
+	box-shadow: 10px 10px 5px 0px #222222;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	margin : 0px;
+	padding: 0px;
+	display: block;
+	width: 200px;
+	height: 100%;
+	text-align: center;
+	vertical-align: top;
+}
+
+section.panel input[type="email"]{
+	/*position: relative;*/
+	width: 180px;
+    padding: 7px 20px;
+    margin: 8px 0;
+    font-size: 12px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+section.panel input[type="submit"]{
+	width:200px;
+	height:40px;
+	font:normal 16px Arial;
+	border:none;
+	color:white;
+	margin-top: 2px;
+	margin-bottom: auto;
+	background: #F55050;
+}
+
+section.panel input[type="submit"]:hover{
+	background:#223645;
+}
+
+section.panel h1{
+	color: white;
+	background-color: #F55050;
+	font-size: 40px;
+}
+
+
+/********************* Inscription *********************/
+
+table.corps {
+	margin: auto;
+	width: 100%;
+}
+
+div.formulaire {
+	/*display: block;*/
+	background-color: #999999;
+	box-shadow: 10px 10px 5px 0px #222222;
+	width: 400px;
+	margin: auto;
+	margin-top: 25px;
+	margin-bottom: 25px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	/*padding: 25px;*/
+	font:normal 13px Arial;
+	color: #B83A1B;
+	border: 1px solid black;
+	/*border-radius: 5px;*/
+}
+
+
+
+div.formulaire input[type="text"], div.formulaire input[type="email"], div.formulaire input[type="text"]{
+	width: 90%;
+	height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    padding: 0px 20px;
+    box-sizing: border-box;
+}
+
+
+div.formulaire input[type="submit"]{
+    background-color: #F55050;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+   	width: 90%;
+    height: 40px;
+    vertical-align: center;
+}
+
+div.formulaire input[type="submit"]:hover{
+	background:#223645;
+}
+
+div.formulaire h1{
+	background-color: #F55050;
+	text-align: center;
+	font-size: 36px;
+	color: white;
+	width: 100%;
+	padding: 0px;
+}
+
+
+
+
+/********************* BOUTONS *********************/
+
+div.btn_top {
+	background-color: #F55050;
+	box-shadow: 10px 5px 5px 0px #222222;
+	border-radius: 50px;
+	font:normal 14px Arial;
+	position: fixed;
+	bottom: 60px;
+	right: 40px;
+	width: 50px;
+	height: 50px;
+	vertical-align: middle;
+	display:none;
+}
+
+div.btn_top:hover {
+	background-color: #223645;
+}
+
+div.btn_top  a{
+	color: #404040;
+	text-decoration:none; 
+}
+
+
+/*********** mainMenuAdherent **************/
+
+table.mainMenuAdherent {
+	background-color: #999999 ;
+	box-shadow: 10px 10px 5px 0px #222222;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	font:normal 13px Arial;
+	color: #B83A1B;
+	border-color: #000;
+	border: 1px solid black;
+}
+
+table.mainMenuAdherent th {
+	text-align: center;
+	width: 50%;
+	padding-top: 25px;
+	padding-bottom: 25px;
+	font:normal 20px Arial;
+	border: 1px solid black;
+	color: white;
+	background-color: #F55050; 
+}
+
+table.mainMenuAdherent td {
+	color: #000000;
+	padding: 0px;
+	border: 1px solid black;
+}
+
+div.listeDemandes {
+	height:500px;
+	overflow:auto;
+}
+
+table.listeDemandes {
+	width: 100%;
+	border:none;
+}
+
+table.listeDemandes table.detailsDemande {
+	width: 100%;
+}
+
+td.detailsDemande{
+	padding: 0px;
+	background-color: white;
+}
+
+table.listeDemandes td {
+	border:none;
+}
+
+tr.demande + tr.demande>td {
+	border-top: 1px solid black;
+}
+
+
+table.listeDemandes td.td_left{
+	text-align:right;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+table.demandePlanifie>tbody>tr>td, table.demandeEnCours>tbody>tr>td, table.demandeAboutie>tbody>tr>td, table.demandeNonAboutie>tbody>tr>td {
+	border: none;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+
+table.demandePlanifie {
+	/*border: 1px solid black;*/
+	background-color: #FFFFB0;
+	width: 100%;
+}
+
+table.demandeEnCours {
+	/*border: 1px solid black;*/
+	background-color: #87DAB3;
+	width: 100%;
+}
+
+table.demandeAboutie {
+	/*border: 1px solid black;*/
+	background-color: #FFB79B;
+	width: 100%;
+}
+
+table.demandeNonAboutie {
+	/*border: 1px solid black;*/
+	background-color: #FF8793;
+	width: 100%;
+}
+
+
+
+form.nouvelleDemande table{
+	width: 180px;
+	margin: auto;
+	text-align: left;	
+	border:none;
+}
+
+form.nouvelleDemande table , form.nouvelleDemande tr, form.nouvelleDemande td{
+	border:none;
+}
+
+form.nouvelleDemande{
+	text-align: center;
+	width: 100%;
+}
+
+form.nouvelleDemande input[type=text],  table.mainMenuResponsable input[type=text] {
+    width: 150px;
+    padding: 7px 20px;
+    margin: 8px 0;
+    font-size: 16px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+form.nouvelleDemande input[type=submit], table.mainMenuResponsable input[type=submit] {
+    width: 150px;
+    background-color: #F55050;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    height: 34px;
+    vertical-align: center;
+}
+
+form.nouvelleDemande input[type=submit]:hover,  table.mainMenuResponsable input[type=submit]:hover {
+    background-color: #223645;
+}
+
+/************* select **************/
+
+select.select_style {
+	-webkit-appearance: button;
+	-webkit-border-radius: 2px;
+	-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+	-webkit-padding-end: 20px;
+	-webkit-padding-start: 2px;
+	-webkit-user-select: none;
+	background-image: url(arrow5.png);
+	background-position: 95% center;
+	background-repeat: no-repeat;
+	border: 1px solid #AAA;
+	color: #333;
+	border-radius: 5px;
+	overflow: hidden;
+	padding: 5px 10px;
+	font-size: 14px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width:150px;
+	height: 32px;
+	-moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+}
+
+
+
+
+/*********** mainMenuResponsable **************/
+
+table.mainMenuResponsable {
+	background-color: #999999 ;
+	box-shadow: 10px 10px 5px 0px #222222;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	font: normal 13px Arial;
+	color: #B83A1B;
+	border-color: #000;
+	border: 1px solid black;
+	min-width: 800px;
+}
+
+table.mainMenuResponsable th {
+	text-align: center;
+	width: 20%;
+	padding-top: 25px;
+	padding-bottom: 25px;
+	font: normal 20px Arial;
+	border: 1px solid black;
+	color:#000000;
+}
+
+table.mainMenuResponsable td {
+	padding: 0px;
+	border:none;
+	/*border: 1px solid black;*/
+}
+
+table.mainMenuResponsable td.evtImage {
+	width: 32px;
+	
+}
+
+tr.evenement + tr.evenement>td {
+	border-top: 1px solid black;
+}
+
+table.evenementPlanifie td, table.evenementEnCours td, table.evenementAboutie td, table.evenementNonAboutie td {
+	color: black;
+	border: none;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+
+table.evenementPlanifie {
+	/*border: 1px solid black;*/
+	background-color: #FFFFB0;
+	width: 100%;
+}
+
+table.evenementEnCours {
+	/*border: 1px solid black;*/
+	background-color: #87DAB3;
+	width: 100%;
+}
+
+table.evenementAboutie {
+	/*border: 1px solid black;*/
+	background-color: #FFB79B;
+	width: 100%;
+}
+
+table.evenementNonAboutie {
+	/*border: 1px solid black;*/
+	background-color: #FF8793;
+	width: 100%;
+}
+
+td.evtLieu {
+	width: 30%;
+}
+
+table.mainMenuResponsable div.select {
+	margin: auto;
+}
+
+table.mainMenuResponsable tr.participant {
+	background-color: white;
+}
+
+
+/************* Selection lieu **************/
+
+table.select_lieu, table.select_lieu>tbody>tr>td{
+	width:80%;
+	box-shadow: 10px 10px 5px 0px #222222;
+	margin:auto;
+	border: 1px solid black;
+	background-color: #999999;
+	padding: 0px;
+}
+
+
+div.select_lieu {
+	width:300px;
+	color: white;
+
+}
+
+div.select_lieu>p{
+	font-size: 16px;
+}
+
+div.select_lieu>input[type="submit"]{
+    background-color: #F55050;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+   	width: 90%;
+    height: 40px;
+    vertical-align: center;
+}
+
+div.select_lieu input[type="submit"]:hover{
+	background:#223645;
+}
+
+div.select_lieu h1{
+	background-color: #F55050;
+	text-align: center;
+	font-size: 36px;
+	color: white;
+	width: 100%;
+	padding: 0px;
+}

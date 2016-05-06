@@ -37,7 +37,7 @@ public class Serialisation {
         
         // Objet Json "conteneur"
         JsonObject container = new JsonObject();
-        container.add("restaurants", jsonList);
+        container.add("activites", jsonList);
         
         // Serialisation & écriture sur le flux de sortie
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

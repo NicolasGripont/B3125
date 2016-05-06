@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="js/jquery-ui.css" />
+        <title>Rss Hub</title>
+    </head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.js">//uniquement datepicker</script> 
+    <script type="text/javascript" src="script.js"></script> 
+
+
+    <body>
+
+        <table class="global" >
+            <tbody>
+                <tr>
+                    <td class="panel">
+                        <section class="panel">
+                             <header>
+                                 <a href="javascript:window.location.reload(true)">
+                                    <h1>Collect'IF</h1>
+                                </a>
+                            </header>
+                            <form method="post" action="Connexion">
+                                    <input type="email" placeholder="collect@if.fr" name="login" id='login'/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <input type="hidden" value="connexion" name="action" id="action"/>
+                                    <input type="submit" value="Se Connecter" name="connexion" id="connexion" />
+                                    <br/>
+                                    <br/>                                  
+                                    <br/>
+                                </form>
+                                
+
+                            <div id="btn_top" class="btn_top" style="">
+                                <a href="#">
+                                    <img src="arrowtop.png" alt="logo">
+                                </a>
+                            </div>
+                        </section>
+                    </td>
+
+<!-- corps -->
+
+    <!-- Inscription -->
+                    <td>
+                        <table class="corps">
+                            <tr>
+                                <td>
+                                    <!-- inscription -->
+                                    <div class="formulaire">
+                                        <br/>
+                                        <h1>S'inscrire</h1>
+                                         <form method="post" action="Inscription">
+                                            <br/>
+                                            <input type="text" placeholder="Nom" id='nom'/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <input type="text" placeholder="Prenom" id='prenom'/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <input type="text" placeholder="Adresse Postale" id='adresse'/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <input type="email" placeholder="collect@if.com" id='email'/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <input type="submit" value="S'inscrire" id="inscription">
+                                            <br/>   
+                                            <br/>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+
+    <!-- menu adherent -->
+                            <tr>
+                                <td>
+                                    <table class="mainMenuAdherent">
+                                        <tr> 
+                                            <th>
+                                                Nouvelle demande
+                                            </th>
+                                            <th>
+                                                Historique des demandes
+                                            </th>    
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <form class="nouvelleDemande" method="post" action="NoAction">
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                               <select class="select_style" name="Activités">
+                                                                    <option selected disabled>Activités</option>
+                                                                    <option value="handball">Handball</option>
+                                                                    <option value="rugby">Rugby</option>
+                                                                    <option value="tennis">Tennis</option>
+                                                                    <option value="judo">Judo</option>
+                                                                </select> 
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <br/>
+                                                                <br/>
+                                                                <br/>
+                                                                <br/>
+                                                                <br/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="datepicker"/> 
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <br/>
+                                                                <br/>
+                                                                <br/>
+                                                                <br/>
+                                                                <br/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="submit" value="Valider" id="boutonValider">
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <div class="listeDemandes">
+                                                    <table class="listeDemandes"> 
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandePlanifie">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td rowspan="2" class="td_left">
+                                                                            <img src="moins.png">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr class="detailsDemande">
+                                                                        <td colspan="3" class="detailsDemande">
+                                                                            <table class="detailsDemande">
+                                                                                <tr>
+                                                                                    <td colspan="2">
+                                                                                        Date de l'évènement : 14/05/2016
+                                                                                    </td>
+                                                                                    <td class="td_left">
+                                                                                       <select class="select_style" name="Activités">
+                                                                                            <option selected disabled>Activités</option>
+                                                                                            <option value="handball">Handball</option>
+                                                                                            <option value="rugby">Rugby</option>
+                                                                                            <option value="tennis">Tennis</option>
+                                                                                            <option value="judo">Judo</option>
+                                                                                        </select> 
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td colspan="2">
+                                                                                        Lieu: Stade des lumières
+                                                                                    </td>
+                                                                                    <td class="td_left" >
+                                                                                       <select class="select_style" name="Activités" >
+                                                                                            <option selected disabled>Activités</option>
+                                                                                            <option value="handball">Handball</option>
+                                                                                            <option value="rugby">Rugby</option>
+                                                                                            <option value="tennis">Tennis</option>
+                                                                                            <option value="judo">Judo</option>
+                                                                                        </select> 
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    <tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandeEnCours">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td>
+                                                                        </td>
+                                                                        <td rowspan="2" class="td_left">
+                                                                            <img src="plus.png">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandeAboutie">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td rowspan="2" class="td_left">
+                                                                            <img src="plus.png">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandeNonAboutie">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td rowspan="2" class="td_left">
+                                                                            <img src="plus.png">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>  
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandePlanifie">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td rowspan="2" class="td_left">
+                                                                            <img src="plus.png">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandeEnCours">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td>
+                                                                        </td>
+                                                                        <td rowspan="2" class="td_left">
+                                                                            <img src="plus.png">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandeAboutie">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td rowspan="2" class="td_left">
+                                                                            <img src="plus.png">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandeNonAboutie">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td rowspan="2" class="td_left">
+                                                                            <img src="plus.png">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>    
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                            </tr>
+    <!-- menu responsable -->
+                            <tr>
+                                <td>
+                                    <table class="mainMenuResponsable">                                                        
+                                        <tr class="evenement">
+                                            <th>
+                                                <select class="select_style" name="Statut">
+                                                    <option selected disabled>Statut</option>
+                                                    <option value="">...</option>
+                                                    <option value="">...</option>
+                                                </select> 
+                                            </th>
+                                            <th>
+                                                <select class="select_style" name="Activite">
+                                                    <option selected disabled>Activite</option>
+                                                    <option value="">...</option>
+                                                    <option value="">...</option>
+                                                </select>
+                                            </th>
+                                            <th>
+                                                <select class="select_style" name="Lieu">
+                                                    <option selected disabled>Lieu</option>
+                                                    <option value="">...</option>
+                                                    <option value="">...</option>
+                                                </select>
+                                            </th>
+                                            <th>
+                                                <input type="text" class='datepicker'/> 
+                                            </th>
+                                            <th>
+                                                <input type="submit" value="Filtrer" action="NoAction">
+                                            </th>
+                                        </tr>
+                                        <tr class="evenement">
+                                            <td colspan="5">
+                                                <table class="evenementPlanifie">
+                                                    <tr>
+                                                        <td>
+                                                            Evénement n° 4:
+                                                        </td>
+                                                        <td>
+                                                            Statut : A planifier
+                                                        </td>
+                                                        <td></td>
+                                                        <td rowspan="2" class="evtImage">
+                                                            <img src="location.png">
+                                                        </td>
+                                                        <td rowspan="2" class="evtImage">
+                                                            <img src="plus.png">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Activité : Football
+                                                        </td>
+                                                        <td>
+                                                            Date : 01/03/16
+                                                        </td>
+                                                        <td class="evtLieu">
+                                                            Lieu : &Oslash;
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr class="evenement">
+                                            <td colspan="5">
+                                                <table class="evenementNonAboutie">
+                                                    <tr>
+                                                        <td>
+                                                            Evénement n° 4:
+                                                        </td>
+                                                        <td>
+                                                            Statut : A planifier
+                                                        </td>
+                                                        <td></td>
+                                                        <td rowspan="2" class="evtImage">
+                                                           
+                                                        </td>
+                                                        <td rowspan="2" class="evtImage">
+                                                            <img src="plus.png">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Activité : Football
+                                                        </td>
+                                                        <td>
+                                                            Date : 01/03/16
+                                                        </td>
+                                                        <td class="evtLieu">
+                                                            Lieu : &Oslash;
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr class="evenement">
+                                            <td colspan="5">
+                                                <table class="evenementEnCours">
+                                                    <tr>
+                                                        <td>
+                                                            Evénement n° 4:
+                                                        </td>
+                                                        <td>
+                                                            Statut : A planifier
+                                                        </td>
+                                                        <td></td>
+                                                        <td rowspan="2" class="evtImage">
+                                                            
+                                                        </td>
+                                                        <td rowspan="2" class="evtImage">
+                                                            <img src="plus.png">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Activité : Football
+                                                        </td>
+                                                        <td>
+                                                            Date : 01/03/16
+                                                        </td>
+                                                        <td class="evtLieu">
+                                                            Lieu : Gymnase Collette Besson
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr class="evenement">
+                                            <td colspan="5">
+                                                <table class="evenementAboutie">
+                                                    <tr>
+                                                        <td>
+                                                            Evénement n° 4:
+                                                        </td>
+                                                        <td>
+                                                            Statut : A planifier
+                                                        </td>
+                                                        <td></td>
+                                                        <td rowspan="2" class="evtImage">
+                                                           
+                                                        </td>
+                                                        <td rowspan="2" class="evtImage">
+                                                            <img src="plus.png">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Activité : Football
+                                                        </td>
+                                                        <td>
+                                                            Date : 01/03/16
+                                                        </td>
+                                                        <td class="evtLieu">
+                                                            Lieu : Gymnase Collette Besson
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr class="evenement">
+                                            <td colspan="5">
+                                                <table class="evenementPlanifie">
+                                                    <tr>
+                                                        <td>
+                                                            Evénement n° 4:
+                                                        </td>
+                                                        <td>
+                                                            Statut : A planifier
+                                                        </td>
+                                                        <td></td>
+                                                        <td rowspan="2" class="evtImage">
+                                                            <img src="location.png">
+                                                        </td>
+                                                        <td rowspan="2" class="evtImage">
+                                                            <img src="plus.png">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Activité : Football
+                                                        </td>
+                                                        <td>
+                                                            Date : 01/03/16
+                                                        </td>
+                                                        <td class="evtLieu">
+                                                            Lieu : &Oslash;
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr class="evenement">
+                                            <td colspan="5">
+                                                <table class="evenementNonAboutie">
+                                                    <tr>
+                                                        <td>
+                                                            Evénement n° 4:
+                                                        </td>
+                                                        <td>
+                                                            Statut : A planifier
+                                                        </td>
+                                                        <td></td>
+                                                        <td rowspan="2" class="evtImage">
+                                                           
+                                                        </td>
+                                                        <td rowspan="2" class="evtImage">
+                                                            <img src="plus.png">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Activité : Football
+                                                        </td>
+                                                        <td>
+                                                            Date : 01/03/16
+                                                        </td>
+                                                        <td class="evtLieu">
+                                                            Lieu : &Oslash;
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr class="evenement">
+                                            <td colspan="5">
+                                                <table class="evenementEnCours">
+                                                    <tr>
+                                                        <td>
+                                                            Evénement n° 4:
+                                                        </td>
+                                                        <td>
+                                                            Statut : A planifier
+                                                        </td>
+                                                        <td></td>
+                                                        <td rowspan="2" class="evtImage">
+                                                            
+                                                        </td>
+                                                        <td rowspan="2" class="evtImage">
+                                                            <img src="moins.png">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Activité : Football
+                                                        </td>
+                                                        <td>
+                                                            Date : 01/03/16
+                                                        </td>
+                                                        <td class="evtLieu">
+                                                            Lieu : Gymnase Collette Besson
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="participant">
+                                                        <td colspan="5">
+                                                            participant
+                                                        </td>
+                                                    <tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr class="evenement">
+                                            <td colspan="5">
+                                                <table class="evenementAboutie">
+                                                    <tr>
+                                                        <td>
+                                                            Evénement n° 4:
+                                                        </td>
+                                                        <td>
+                                                            Statut : A planifier
+                                                        </td>
+                                                        <td></td>
+                                                        <td rowspan="2" class="evtImage">
+                                                           
+                                                        </td>
+                                                        <td rowspan="2" class="evtImage">
+                                                            <img src="plus.png">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Activité : Football
+                                                        </td>
+                                                        <td>
+                                                            Date : 01/03/16
+                                                        </td>
+                                                        <td class="evtLieu">
+                                                            Lieu : Gymnase Collette Besson
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <table class="select_lieu">
+                                        <tr>
+                                            <td>
+                                                <script src='https://maps.googleapis.com/maps/api/js?v=3.exp'></script>
+                                                <div style='overflow:hidden;height:500px;width:700px;'>
+                                                    <div id='gmap_canvas' style='height:500px;width:700px;'></div>
+                                                    <div>
+                                                        <small>
+                                                            <a href="http://embedgooglemaps.com">
+                                                                google maps carte
+                                                            </a>
+                                                        </small>
+                                                    </div>
+                                                    <div>
+                                                        <small>
+                                                            <a href="http://youtubeembedcode.com">
+                                                                youtube generator
+                                                            </a>
+                                                        </small>
+                                                    </div>
+                                                    <style>
+                                                        #gmap_canvas img{max-width:none!important;background:none!important}
+                                                    </style>
+                                                </div>
+                                                <script type='text/javascript'>
+                                                    function init_map(){
+                                                        var myOptions = {
+                                                            zoom: 10, 
+                                                            center:new google.maps.LatLng(45.7831965,4.877779000000032), 
+                                                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                                                        };
+                                                        map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);
+                                                        marker = new google.maps.Marker({
+                                                            map: map,position: new google.maps.LatLng(45.7831965,4.877779000000032)
+                                                        });
+                                                        infowindow = new google.maps.InfoWindow({
+                                                            content:'<strong>Insa Lyon</strong><br>insa lyon<br>'
+                                                        });
+                                                        google.maps.event.addListener(marker, 'click', function(){
+                                                            infowindow.open(map,marker);
+                                                        });
+                                                        infowindow.open(map,marker);
+                                                    }google.maps.event.addDomListener(window, 'load', init_map);
+                                                </script>
+                                            </td>
+                                            <td>
+                                                <div class="select_lieu">
+                                                    <h1>
+                                                        Activité :
+                                                    </h1>
+                                                    <p>
+                                                        Football
+                                                    </p>
+                                                    <br/>
+                                                    <h1>
+                                                        Date :
+                                                    </h1>
+                                                    <p>
+                                                        04/06/2016
+                                                    </p>
+                                                    <br/>
+                                                    <h1>
+                                                        Lieu :
+                                                    </h1>
+                                                    <select class="select_style" name="Lieu">
+                                                        <option selected disabled>Lieu</option>
+                                                        <option value="">...</option>
+                                                        <option value="">...</option>
+                                                    </select>
+                                                    <br/>
+                                                    <br/>
+                                                    <br/>
+                                                    <input type="submit" value="Valider"/>
+                                                    <br/>
+                                                    <br/>
+                                                    <br/>
+                                                </div>
+                                            </td >
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                     </td>               
+
+<!-- footer -->   
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <footer>
+                            <div>
+                                <p>
+                                    Copyright Nicolas GRIPONT &amp; Rim EL IDRISSI MOKDAD - Tous droits réservés
+                                </p>
+                            </div>            
+                        </footer>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
+

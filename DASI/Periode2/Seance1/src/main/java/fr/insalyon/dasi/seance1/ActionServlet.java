@@ -63,26 +63,7 @@ public class ActionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
-        List<String> list = new ArrayList<>();
-        
-        List<Activite> activites = ServiceMetier.getAllActivites();
-//        List<String> activites = ServiceMetier.AfficheNomActivites();
-//        if(activites != null && activites.size() > 0)
-//        {
-//            for(Activite a : activites) {
-//                list.add(a.getDenomination());
-//            }
-//        } else {
-//            list.add("item1");
-//            list.add("item2");
-//            list.add("item3");
-//        }
-        String json = new Gson().toJson(activites);
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);
+        printAllActivitesInJson(request, response);
     }
 
     /**
@@ -96,7 +77,12 @@ public class ActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        if(request.getParameter("action").compareTo("listerActivites")==0) {
+            printAllActivitesInJson(request, response);
+        } else {
+           
+        }
     }
 
     /**
@@ -109,6 +95,17 @@ public class ActionServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    
+    private void printAllActivitesInJson(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException{
+        
+        List<Activite> activites = ServiceMetier.getAllActivites();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            Serialisation.printListeActivites(out, activites);
+        }
+    }
     
     
 }

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Rss Hub</title>
+    </head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.js">//uniquement datepicker</script> 
+    <script type="text/javascript" src="script.js"></script> 
+
+
+    <body>
+
+        <table class="global" >
+            <tbody>
+                <tr>
+                    <td class="panel">
+                        <section class="panel">
+                             <header>
+                                 <a href="javascript:window.location.reload(true)">
+                                    <h1>Collect'IF</h1>
+                                </a>
+                            </header>
+                            <form method="post" action="Connexion">
+                                    <input type="email" placeholder="collect@if.fr" name="login" id='login'/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <input type="hidden" value="connexion" name="action" id="action"/>
+                                    <input type="submit" value="Se Connecter" name="connexion" id="connexion" />
+                                    <br/>
+                                    <br/>                                  
+                                    <br/>
+                                </form>
+                                
+
+                            <div id="btn_top" class="btn_top">
+                                <a href="#">
+                                    <img src="arrowtop.png" alt="logo">
+                                </a>
+                            </div>
+                        </section>
+                    </td>
+
+<!-- corps -->
+
+
+                    <td>
+                        <table class="corps">
+                            <tr>
+                                <td>
+                                    <!-- inscription -->
+                                    <section class="formulaire">
+                                        <h1>Inscriptions membre</h1>
+                                         <form method="post" action="Inscription">
+                                            <br/>
+                                            <input type="text" placeholder="Nom" id='nom'/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <input type="text" placeholder="Prenom" id='prenom'/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <input type="text" placeholder="Adresse Postale" id='adresse'/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <input type="email" placeholder="collect@if.com" id='email'/>
+                                            <br/>
+                                            <input type="submit" value="S'inscrire" id="inscription">
+                                            <br/>   
+                                            <br/>
+                                        </form>
+                                    </section>
+                                </td>
+                            </tr>
+
+
+
+                            <!-- inscription -->
+                            <tr>
+                                <td>
+                                    <table class="mainMenu">
+                                        <tr> 
+                                            <th>
+                                                Nouvelle demande
+                                            </th>
+                                            <th>
+                                                Historique des demandes
+                                            </th>    
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <form class="nouvelleDemande" method="post" action="NoAction">
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="select">
+                                                                   <select name="Activités">
+                                                                        <option selected disabled>Activités</option>
+                                                                        <option value="handball">Handball</option>
+                                                                        <option value="rugby">Rugby</option>
+                                                                        <option value="tennis">Tennis</option>
+                                                                        <option value="judo">Judo</option>
+                                                                    </select> 
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <br/>
+                                                                <br/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" id='datepicker'/> 
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <br/>
+                                                                <br/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="submit" value="Valider" id="boutonValider">
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <div class="listeDemandes">
+                                                    <table class="listeDemandes"> 
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandePlanifie">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td rowspan="2">
+                                                                            <!-- <img src="plus.png"> -->
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandeEnCours">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td>
+                                                                        </td>
+                                                                        <td rowspan="2">
+                                                                            <!-- <img src="plus.png"> -->
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandeAboutie">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td rowspan="2">
+                                                                            <!-- <img src="plus.png"> -->
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandeNonAboutie">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td rowspan="2">
+                                                                            <!-- <img src="plus.png"> -->
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>  
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandePlanifie">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td rowspan="2">
+                                                                            <!-- <img src="plus.png"> -->
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandeEnCours">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td>
+                                                                        </td>
+                                                                        <td rowspan="2">
+                                                                            <!-- <img src="plus.png"> -->
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandeAboutie">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td rowspan="2">
+                                                                            <!-- <img src="plus.png"> -->
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="demande">
+                                                            <td>
+                                                                <table class="demandeNonAboutie">
+                                                                    <tr>
+                                                                        <td>
+                                                                            Demande n° 4:
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td rowspan="2">
+                                                                            <!-- <img src="plus.png"> -->
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Activité : Football
+                                                                        </td>
+                                                                        <td>
+                                                                            Date : 01/03/16
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>    
+                            </tr>
+                        </table>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                     </td>               
+
+<!-- footer -->   
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <footer>
+                            Copyright Nicolas GRIPONT &amp; Rim EL IDRISSI MOKDAD - Tous droits réservés
+                        </footer>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
+
