@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="js/jquery-ui.css" />
+        <title>Collect'IF</title>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js">//uniquement datepicker</script> 
+        <script type="text/javascript" src="script.js"></script>
+        
+        <script>
+            
+            $(function() {
+                loadHistorique();
+                loadNomsActivites();
+            });
+            
+            function loadHistorique() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: { 
+                        action: 'getDemandes',
+                        id: '39'
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var demandes = data.demandes;
+                    var contenuHtml;//= '<ul>';
+                    var i;
+                    
+                    for (i = 0; i < demandes.length; i++) {
+                        var demande = demandes[i];
+                        contenuHtml += "<tr class='demande'>";
+                        contenuHtml += "<td>";
+                        if(demande.depasse == "true") {
+                            if(demande.lieu == "null") {
+                                contenuHtml += "<table class='demandeNonAboutie'>";
+                            } else {
+                                contenuHtml += "<table class='demandeAboutie'>";
+                            }
+                        } else {
+                            if(demande.lieu == "null") {
+                                contenuHtml += "<table class='demandeEnCours'>";
+                            } else {
+                                contenuHtml += "<table class='demandePlanifie'>";
+                            }
+                        }
+                        contenuHtml += "<tr>";
+                        contenuHtml += "<td>";
+                        contenuHtml += "Demande n°" +demande.id + " :";
+                        contenuHtml += "</td>";
+                        contenuHtml += "<td></td>";
+                        contenuHtml += "<td rowspan='2' class='td_left'>";
+                        contenuHtml += "<img src='images/plus.png'>";
+                        contenuHtml += "</td>";
+                        contenuHtml += "</tr>";
+                        contenuHtml += "<tr>";
+                        contenuHtml += "<td>";
+                        contenuHtml += "Activité : ";
+                        contenuHtml += demande.activite;
+                        contenuHtml += "</td>";
+                        contenuHtml += "<td>";
+                        contenuHtml += "Date : ";
+                        contenuHtml += demande.date;
+                        contenuHtml += "</td>";
+                        contenuHtml += "</tr>";
+                        contenuHtml += "</table>";
+                        contenuHtml += "</td>";
+                        contenuHtml += "</tr>";
+//                        contenuHtml += '<li>' + activites[i].id + " - " + activite.denomination + " - " + activite.nbParticipants + " - " + activite.parEquipe + '</li>';
+                    }
+//                    contenuHtml += '</ul>';
+                    $('#listeDemandes').html(contenuHtml);
+                })
+                .fail(function() {
+                    $('#listeDemandes').html('<tr><td>ERREUR de chargement</td></tr>');
+                })
+                .always(function() {
+                    //
+                });
+
+            }
+        function loadNomsActivites() {
+            $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: { 
+                        action: 'getNomsActivites'
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var nomsActivites = data.nomsActivites;
+                    var contenuHtml = '<option selected disabled>Activités</option>';
+                    var i;
+                    
+                    for (i = 0; i < nomsActivites.length; i++) {
+                        var activite = nomsActivites[i];
+                        contenuHtml += "<option value='";
+                        contenuHtml += activite.nom;
+                        contenuHtml += "'>";
+                        contenuHtml += activite.nom;
+                        contenuHtml += "</option>" ;
+                    }
+                    $('#ActivitesSelect').html(contenuHtml);
+                })
+                .fail(function() {
+                    $('#ActivitesSelect').html('<option>ERREUR de chargement</option>');
+                })
+                .always(function() {
+                    //
+                });
+            }
+            Cookie_Eu.askForAgree();
+        </script>
+       
+    </head>
+
+
+
+    <body>
+        <table class="global" >
+            <tbody>
+                <tr>
+                    <td class="panel">
+                        <section class="panel">
+                             <header>
+                                 <a href="javascript:window.location.reload(true)">
+                                    <h1>Collect'IF</h1>
+                                </a>
+                            </header>
+                            <form method="post" action="Connexion">
+                                    <input type="email" placeholder="collect@if.fr" name="login" id='login'/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <input type="hidden" value="connexion" name="action" id="action"/>
+                                    <input type="submit" value="Se Connecter" name="connexion" id="connexion" />
+                                    <br/>
+                                    <br/>                                  
+                                    <br/>
+                                </form>
+                                
+
+                            <div id="btn_top" class="btn_top" style="">
+                                <a href="#">
+                                    <img src="images/arrowtop.png" alt="logo">
+                                </a>
+                            </div>
+                        </section>
+                    </td>
+
+<!-- corps -->
+
+                    <td>
+                        <table class="corps">
+                            
+   
+
+
+    <!-- menu adherent -->
+                            <tr>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <table class="mainMenuAdherent">
+                                        <tr> 
+                                            <th>
+                                                Nouvelle demande
+                                            </th>
+                                            <th>
+                                                Historique des demandes
+                                            </th>    
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <form class="nouvelleDemande" method="post" action="NoAction">
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="select_style" id="ActivitesSelect">
+                                                                    <option selected disabled>Activités</option>
+                                                                
+                                                                </select> 
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <br/>
+                                                                <br/>
+                                                                <br/>
+                                                                <br/>
+                                                                <br/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="datepicker"/> 
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <br/>
+                                                                <br/>
+                                                                <br/>
+                                                                <br/>
+                                                                <br/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="submit" value="Valider" id="boutonValider">
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <div class="listeDemandes">
+                                                    <table class="listeDemandes" id='listeDemandes'>                                                  
+                                                        
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>    
+                            </tr>
+
+
+                        </table>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                     </td>               
+
+<!-- footer -->   
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <footer>
+                            <div>
+                                <p>
+                                    Copyright Nicolas GRIPONT &amp; Rim EL IDRISSI MOKDAD - Tous droits réservés
+                                </p>
+                            </div>            
+                        </footer>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
+

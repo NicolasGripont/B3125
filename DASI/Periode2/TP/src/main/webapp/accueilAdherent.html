@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="js/jquery-ui.css" />
+        <title>Collect'IF</title>
+        
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js">//uniquement datepicker</script> 
+        <script type="text/javascript" src="script.js"></script> 
+    </head>
+    
+
+
+    <body>      
+        <table class="global" >
+            <tbody>
+                <tr>
+                    <td class="panel">
+                        <section class="panel">
+                             <header>
+                                 <a href="javascript:window.location.reload(true)">
+                                    <h1>Collect'IF</h1>
+                                </a>
+                            </header>
+                            <form method="post" action="Connexion">
+                                    <input type="email" placeholder="collect@if.fr" name="login" id='login'/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <input type="hidden" value="connexion" name="action" id="action"/>
+                                    <input type="submit" value="Se Connecter" name="connexion" id="connexion" />
+                                    <br/>
+                                    <br/>                                  
+                                    <br/>
+                                </form>
+                                
+
+                            <div id="btn_top" class="btn_top" style="">
+                                <a href="#">
+                                    <img src="arrowtop.png" alt="logo">
+                                </a>
+                            </div>
+                        </section>
+                    </td>
+
+<!-- corps -->
+
+    <!-- Inscription -->
+                    <td>
+                        <table class="corps">
+                            <tr>
+                                <td>
+                                    <!-- inscription -->
+                                    <div class="formulaire">
+                                        <br/>
+                                        <h1>S'inscrire</h1>
+                                         <form method="post" action="Inscription">
+                                            <br/>
+                                            <input type="text" placeholder="Nom" id='nom'/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <input type="text" placeholder="Prenom" id='prenom'/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <input type="text" placeholder="Adresse Postale" id='adresse'/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <input type="email" placeholder="collect@if.com" id='email'/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <input type="submit" value="S'inscrire" id="inscription">
+                                            <br/>   
+                                            <br/>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                     </td>               
+
+<!-- footer -->   
+                </tr>
+                <tr id="footer">
+                    <td colspan="2">
+                        <footer>
+                            <div>
+                                <p>
+                                    Copyright Nicolas GRIPONT &amp; Rim EL IDRISSI MOKDAD - Tous droits réservés
+                                </p>
+                            </div>            
+                        </footer>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
+
