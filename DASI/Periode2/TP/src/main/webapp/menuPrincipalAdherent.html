@@ -18,9 +18,78 @@ and open the template in the editor.
         
         <script>
             
+            function plus(idDemande,idButton,idTbody) {
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: { 
+                        action: 'getDemandes',
+                        id: '39'
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    
+                    
+                    
+                    
+                    var contenuHtml = $('#'+idTbody).html();
+                    contenuHtml += "<tr class='detailsDemande'>";
+                    contenuHtml += "<td colspan='3' class='detailsDemande'>";
+                    contenuHtml += "<table class='detailsDemande'>";
+                    contenuHtml += "<tr>";
+                    contenuHtml += "<td colspan='2'>";
+                    contenuHtml += "Date de l'évènement : 14/05/2016";
+                    contenuHtml += "</td>";
+                    contenuHtml += "<td class='td_left'>";
+                    contenuHtml += "<select class='select_style' name='Activités'>";
+                    contenuHtml += "<option selected disabled>Activités</option>";
+                    contenuHtml += "<option value='handball'>Handball</option>";
+                    contenuHtml += "<option value='rugby'>Rugby</option>";
+                    contenuHtml += "<option value='tennis'>Tennis</option>";
+                    contenuHtml += "<option value='judo'>Judo</option>";
+                    contenuHtml += "</select>"; 
+                    contenuHtml += "</td>";
+                    contenuHtml += "</tr>";
+                    contenuHtml += "<tr>";
+                    contenuHtml += "<td colspan='2'>";
+                    contenuHtml += "Lieu: Stade des lumières";
+                    contenuHtml += "</td>";
+                    contenuHtml += "<td class='td_left'>";
+                    contenuHtml += "<select class='select_style' >";
+                    contenuHtml += "<option selected disabled>Mon équipe</option>";
+                    
+                    contenuHtml += "<option value='handball'>Handball</option>";
+                    contenuHtml += "<option value='rugby'>Rugby</option>";
+                    contenuHtml += "<option value='tennis'>Tennis</option>";
+                    contenuHtml += "<option value='judo'>Judo</option>";
+                    contenuHtml += "</select> ";
+                    contenuHtml += "</td>";
+                    contenuHtml += "</tr>";
+                    contenuHtml += "</table>";
+                    contenuHtml += "</td>";
+                    contenuHtml += "<tr>";
+
+                    $('#'+idTbody).html(contenuHtml);
+                    
+                    $('#'+idButton).replaceWith("<img class='button' src='images/moins.png' onclick=\"moins();\">");
+                })
+                .fail(function() {
+                    $('#'+idTbody).html($('#'+idTbody).html()+'<tr><td>ERREUR de chargement</td></tr>');
+                })
+                .always(function() {
+                    //
+                });
+            }
+            function moins(){
+                
+            }
+
+            
             $(function() {
                 loadHistorique();
                 loadNomsActivites();
+//                plus();
             });
             
             function loadHistorique() {
@@ -56,13 +125,16 @@ and open the template in the editor.
                                 contenuHtml += "<table class='demandePlanifie'>";
                             }
                         }
+                        var tbodyDemandeId = "demande"+demande.id;
+                        contenuHtml += "<tbody id='"+tbodyDemandeId+"'>";
                         contenuHtml += "<tr>";
                         contenuHtml += "<td>";
                         contenuHtml += "Demande n°" +demande.id + " :";
                         contenuHtml += "</td>";
                         contenuHtml += "<td></td>";
-                        contenuHtml += "<td rowspan='2' class='td_left'>";
-                        contenuHtml += "<img src='images/plus.png'>";
+                        contenuHtml += "<td rowspan='2' class='td_left' >";
+                        var pludButtonID = "moreInfoButton" + demande.id;
+                        contenuHtml += "<img id='"+pludButtonID+"' class='button' src='images/plus.png' onclick=\"plus('"+demande.id+"','"+pludButtonID+"','"+tbodyDemandeId+"');\">";
                         contenuHtml += "</td>";
                         contenuHtml += "</tr>";
                         contenuHtml += "<tr>";
@@ -75,13 +147,14 @@ and open the template in the editor.
                         contenuHtml += demande.date;
                         contenuHtml += "</td>";
                         contenuHtml += "</tr>";
+                        contenuHtml += "</tbody>";
                         contenuHtml += "</table>";
                         contenuHtml += "</td>";
                         contenuHtml += "</tr>";
-//                        contenuHtml += '<li>' + activites[i].id + " - " + activite.denomination + " - " + activite.nbParticipants + " - " + activite.parEquipe + '</li>';
                     }
 //                    contenuHtml += '</ul>';
                     $('#listeDemandes').html(contenuHtml);
+                    
                 })
                 .fail(function() {
                     $('#listeDemandes').html('<tr><td>ERREUR de chargement</td></tr>');
@@ -91,8 +164,10 @@ and open the template in the editor.
                 });
 
             }
-        function loadNomsActivites() {
-            $.ajax({
+            
+            
+            function loadNomsActivites() {
+                $.ajax({
                     url: './ActionServlet',
                     type: 'POST',
                     data: { 
@@ -104,7 +179,7 @@ and open the template in the editor.
                     var nomsActivites = data.nomsActivites;
                     var contenuHtml = '<option selected disabled>Activités</option>';
                     var i;
-                    
+
                     for (i = 0; i < nomsActivites.length; i++) {
                         var activite = nomsActivites[i];
                         contenuHtml += "<option value='";
@@ -122,7 +197,7 @@ and open the template in the editor.
                     //
                 });
             }
-            Cookie_Eu.askForAgree();
+            
         </script>
        
     </head>
@@ -178,7 +253,7 @@ and open the template in the editor.
                                     <br/>
                                     <table class="mainMenuAdherent">
                                         <tr> 
-                                            <th>
+                                            <th id="plusClick">
                                                 Nouvelle demande
                                             </th>
                                             <th>

@@ -87,8 +87,11 @@ public class ActionServlet extends HttpServlet {
         else if (request.getParameter("action").compareTo("getNomsActivites")==0){
             printAllNomActivitesInJson(request, response);
 //            printAllActivitesInJson(request, response);
+        } else if (request.getParameter("action").compareTo("getDemande")==0){
+//            printDemandeInJson(request, response);
+//            printAllActivitesInJson(request, response);
         } else {
-                
+            
         }
     }
 
@@ -117,7 +120,7 @@ public class ActionServlet extends HttpServlet {
     private void printDemandesInJson(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException{
         
-        List<Demande> demandes = ServiceMetier.selectDemandeByIdAdherent(39);//Integer.getInteger(request.getParameter("id"))
+        List<Demande> demandes = ServiceMetier.selectDemandeByIdAdherent(Integer.parseInt(request.getParameter("id")));//a modifier avec l'id stockée dans la session
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -128,6 +131,21 @@ public class ActionServlet extends HttpServlet {
     private void printAllNomActivitesInJson(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException{
         
+        List<String> noms = ServiceMetier.AfficheNomActivites();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            request.getSession().setAttribute("user", "ngripont");
+            Cookie[] cookies = request.getCookies();
+            response.addCookie(new Cookie("user", "ngripont"));
+            Serialisation.printListeNomActivites(out, noms);
+        }
+    }
+    
+    private void printDemande(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException{
+//        ServiceMetier.
+//        Demande demande = ServiceMetier.AffichageDetail(noEvent)
         List<String> noms = ServiceMetier.AfficheNomActivites();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

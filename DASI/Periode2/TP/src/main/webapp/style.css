@@ -513,3 +513,7 @@ div.select_lieu h1{
 	width: 100%;
 	padding: 0px;
 }
+
+img.button:hover {
+     opacity: 0.6;
+}
