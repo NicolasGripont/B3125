@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import metier.modele.Activite;
+import metier.modele.Adherent;
 import metier.modele.Demande;
 
 /**
@@ -79,6 +80,7 @@ public class Serialisation {
         JsonArray jsonList = new JsonArray();
         
         for (Demande d : demandes) {
+            JsonObject test = new JsonObject();
             JsonObject jsonDemande = new JsonObject();
             
             jsonDemande.addProperty("id", d.getId());
@@ -96,8 +98,37 @@ public class Serialisation {
             } else {
                 jsonDemande.addProperty("depasse",Boolean.FALSE);
             }
-
-            jsonList.add(jsonDemande);
+            
+            jsonDemande.addProperty("isParEquipe", d.getActivite().isParEquipe());
+            
+            
+            if(d.getActivite().isParEquipe()) {
+                JsonArray jsonEquipeA = new JsonArray();
+                for(Adherent a :d.getEvenement().getEquipeA()){
+                    JsonObject adherent = new JsonObject();
+                    adherent.add("adherent", getAdherentInJson(a));
+                    jsonEquipeA.add(adherent);
+                }
+                jsonDemande.add("equipeA", jsonEquipeA);
+                
+                JsonArray jsonEquipeB = new JsonArray();
+                for(Adherent a :d.getEvenement().getEquipeB()){
+                    JsonObject adherent = new JsonObject();
+                    adherent.add("adherent", getAdherentInJson(a));
+                    jsonEquipeA.add(adherent);
+                }
+                jsonDemande.add("equipeB", jsonEquipeB);
+            } else {
+                JsonArray jsonParticipants = new JsonArray();
+                for(Adherent a :d.getEvenement().getParticipants()){
+                    JsonObject adherent = new JsonObject();
+                    adherent.add("adherent", getAdherentInJson(a));
+                    jsonParticipants.add(adherent);
+                }
+                jsonDemande.add("participants", jsonParticipants);
+            }
+            test.add("demande", jsonDemande);
+            jsonList.add(test);
         }
         
         // Objet Json "conteneur"
@@ -115,5 +146,12 @@ public class Serialisation {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         d += df.format(date);
         return d;
+    }
+    
+    public static JsonObject getAdherentInJson(Adherent a){
+        JsonObject jsonAdherent = new JsonObject();
+        jsonAdherent.addProperty("nom",a.getNom());
+        jsonAdherent.addProperty("prenom",a.getPrenom());
+        return jsonAdherent;
     }
 }

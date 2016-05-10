@@ -25,6 +25,6 @@ public class Main2 {
        Scanner scan=new Scanner(System.in);
         System.out.println("Entrez l'id de l'adherent");
         int id=scan.nextInt();
-        CreerDemande("Belote",new Date(),id);
+        CreerDemande("Tennis",new Date(),id);
     }
 }

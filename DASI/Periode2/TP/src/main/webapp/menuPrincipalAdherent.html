@@ -18,78 +18,20 @@ and open the template in the editor.
         
         <script>
             
-            function plus(idDemande,idButton,idTbody) {
-                $.ajax({
-                    url: './ActionServlet',
-                    type: 'POST',
-                    data: { 
-                        action: 'getDemandes',
-                        id: '39'
-                    },
-                    dataType: 'json'
-                })
-                .done(function(data) {
-                    
-                    
-                    
-                    
-                    var contenuHtml = $('#'+idTbody).html();
-                    contenuHtml += "<tr class='detailsDemande'>";
-                    contenuHtml += "<td colspan='3' class='detailsDemande'>";
-                    contenuHtml += "<table class='detailsDemande'>";
-                    contenuHtml += "<tr>";
-                    contenuHtml += "<td colspan='2'>";
-                    contenuHtml += "Date de l'évènement : 14/05/2016";
-                    contenuHtml += "</td>";
-                    contenuHtml += "<td class='td_left'>";
-                    contenuHtml += "<select class='select_style' name='Activités'>";
-                    contenuHtml += "<option selected disabled>Activités</option>";
-                    contenuHtml += "<option value='handball'>Handball</option>";
-                    contenuHtml += "<option value='rugby'>Rugby</option>";
-                    contenuHtml += "<option value='tennis'>Tennis</option>";
-                    contenuHtml += "<option value='judo'>Judo</option>";
-                    contenuHtml += "</select>"; 
-                    contenuHtml += "</td>";
-                    contenuHtml += "</tr>";
-                    contenuHtml += "<tr>";
-                    contenuHtml += "<td colspan='2'>";
-                    contenuHtml += "Lieu: Stade des lumières";
-                    contenuHtml += "</td>";
-                    contenuHtml += "<td class='td_left'>";
-                    contenuHtml += "<select class='select_style' >";
-                    contenuHtml += "<option selected disabled>Mon équipe</option>";
-                    
-                    contenuHtml += "<option value='handball'>Handball</option>";
-                    contenuHtml += "<option value='rugby'>Rugby</option>";
-                    contenuHtml += "<option value='tennis'>Tennis</option>";
-                    contenuHtml += "<option value='judo'>Judo</option>";
-                    contenuHtml += "</select> ";
-                    contenuHtml += "</td>";
-                    contenuHtml += "</tr>";
-                    contenuHtml += "</table>";
-                    contenuHtml += "</td>";
-                    contenuHtml += "<tr>";
-
-                    $('#'+idTbody).html(contenuHtml);
-                    
-                    $('#'+idButton).replaceWith("<img class='button' src='images/moins.png' onclick=\"moins();\">");
-                })
-                .fail(function() {
-                    $('#'+idTbody).html($('#'+idTbody).html()+'<tr><td>ERREUR de chargement</td></tr>');
-                })
-                .always(function() {
-                    //
-                });
+            function plus(trDetailsId,plusButtonID) {
+                $('#'+trDetailsId).css('display','');
+                $('#'+plusButtonID).replaceWith("<img id='"+plusButtonID+"' class='button' src='images/moins.png' onclick=\"moins('"+trDetailsId+"','"+plusButtonID+"');\">");
             }
-            function moins(){
-                
+            
+            function moins(trDetailsId,plusButtonID) {
+                $('#'+trDetailsId).css('display','none');
+                $('#'+plusButtonID).replaceWith("<img id='"+plusButtonID+"' class='button' src='images/plus.png' onclick=\"plus('"+trDetailsId+"','"+plusButtonID+"');\">");
             }
 
             
             $(function() {
                 loadHistorique();
                 loadNomsActivites();
-//                plus();
             });
             
             function loadHistorique() {
@@ -109,10 +51,13 @@ and open the template in the editor.
                     var i;
                     
                     for (i = 0; i < demandes.length; i++) {
-                        var demande = demandes[i];
-                        contenuHtml += "<tr class='demande'>";
+                        var demande = demandes[i].demande;
+                        var plusButtonID = "moreInfoButton" + demande.id;
+                        var trDetailsId = "details" + demande.id;
+                        
+                        contenuHtml += "<tr class='demande'>";                        
                         contenuHtml += "<td>";
-                        if(demande.depasse == "true") {
+                        if(demande.depasse == true) {
                             if(demande.lieu == "null") {
                                 contenuHtml += "<table class='demandeNonAboutie'>";
                             } else {
@@ -124,17 +69,15 @@ and open the template in the editor.
                             } else {
                                 contenuHtml += "<table class='demandePlanifie'>";
                             }
-                        }
-                        var tbodyDemandeId = "demande"+demande.id;
-                        contenuHtml += "<tbody id='"+tbodyDemandeId+"'>";
+                        }                        
+                        contenuHtml += "<tbody>";
                         contenuHtml += "<tr>";
                         contenuHtml += "<td>";
                         contenuHtml += "Demande n°" +demande.id + " :";
                         contenuHtml += "</td>";
                         contenuHtml += "<td></td>";
                         contenuHtml += "<td rowspan='2' class='td_left' >";
-                        var pludButtonID = "moreInfoButton" + demande.id;
-                        contenuHtml += "<img id='"+pludButtonID+"' class='button' src='images/plus.png' onclick=\"plus('"+demande.id+"','"+pludButtonID+"','"+tbodyDemandeId+"');\">";
+                        contenuHtml += "<img id='"+plusButtonID+"' class='button' src='images/plus.png' onclick=\"plus('"+trDetailsId+"','"+plusButtonID+"');\">";
                         contenuHtml += "</td>";
                         contenuHtml += "</tr>";
                         contenuHtml += "<tr>";
@@ -147,6 +90,67 @@ and open the template in the editor.
                         contenuHtml += demande.date;
                         contenuHtml += "</td>";
                         contenuHtml += "</tr>";
+                        
+                        //details
+                        contenuHtml += "<tr id='"+trDetailsId+"' class='detailsDemande' style='display:none;'>";
+                        contenuHtml += "<td colspan='3' class='detailsDemande'>";
+                        contenuHtml += "<table class='detailsDemande'>";
+                        contenuHtml += "<tr>";
+                        contenuHtml += "<td colspan='2'>";
+                        contenuHtml += "Date de l'évènement : " +demande.dateEvenement;
+                        contenuHtml += "</td>";
+                        contenuHtml += "<td class='td_left'>";
+                        
+                        contenuHtml += "<select class='select_style'>";
+                        if(demande.isParEquipe == true){
+                            contenuHtml += "<option selected disabled>Mon équipe</option>";
+                            var equipeA = demande.equipeA;
+                            for (j = 0; j < demande.equipeA.length; j++) {
+                                var adherent = equipeA[j].adherent;
+                                contenuHtml += "<option>"+adherent.nom+"</option>";
+                            }
+                        } else {
+                            contenuHtml += "<option selected disabled>Participants</option>";
+                            var participants = demande.participants;
+                            for (j = 0; j < demande.participants.length; j++) {
+                                var adherent = participants[j].adherent;
+                                contenuHtml += "<option>"+adherent.nom+"</option>";
+                            }
+                        }                                              
+                        contenuHtml += "</select>";
+                        
+                        contenuHtml += "</td>";
+                        contenuHtml += "</tr>";
+                        contenuHtml += "<tr>";
+                        contenuHtml += "<td colspan='2'>";
+                        if(demande.lieu != "null"){
+                            contenuHtml += "Lieu : &Oslash;";
+                        } else {
+                            contenuHtml += "Lieu : " + demande.lieu;
+                        }
+                        
+                        contenuHtml += "</td>";
+                        contenuHtml += "<td class='td_left'>";
+                        
+                        if(demande.isParEquipe == true){
+                            contenuHtml += "<select class='select_style'>";
+                            contenuHtml += "<option selected disabled>Mes adversaires</option>";
+                            var equipeB = demande.equipeB;
+                            for (j = 0; j < demande.equipeB.length; j++) {
+                                var adherent = equipeB[j].adherent;
+                                contenuHtml += "<option>"+adherent.nom+"</option>";
+                            }
+                            contenuHtml += "</select>";
+                        }
+                       
+                        
+                        contenuHtml += "</td>";
+                        contenuHtml += "</tr>";
+                        contenuHtml += "</table>";
+                        contenuHtml += "</td>";
+                        contenuHtml += "<tr>";
+
+                        
                         contenuHtml += "</tbody>";
                         contenuHtml += "</table>";
                         contenuHtml += "</td>";
@@ -198,7 +202,13 @@ and open the template in the editor.
                 });
             }
             
+            function createDemande() {
+                $('#btn_top').css("display",'none')
+            }
+            
+            
         </script>
+        
        
     </head>
 
@@ -220,8 +230,7 @@ and open the template in the editor.
                                     <br/>
                                     <br/>
                                     <br/>
-                                    <input type="hidden" value="connexion" name="action" id="action"/>
-                                    <input type="submit" value="Se Connecter" name="connexion" id="connexion" />
+                                    <input type="submit" value="Se Connecter" name="connexion" id="connexion"/>
                                     <br/>
                                     <br/>                                  
                                     <br/>
@@ -262,7 +271,7 @@ and open the template in the editor.
                                         </tr>
                                         <tr>
                                             <td>
-                                                <form class="nouvelleDemande" method="post" action="NoAction">
+                                                <form id='nouvelleDemande' class="nouvelleDemande" method="post" action="">
                                                     <table>
                                                         <tr>
                                                             <td>
@@ -283,7 +292,7 @@ and open the template in the editor.
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <input type="text" class="datepicker"/> 
+                                                                <input type="text" class="datepicker" id="datepicker"/> 
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -303,6 +312,41 @@ and open the template in the editor.
 
                                                     </table>
                                                 </form>
+                                                
+                                                <script>
+                                                    var myForm = document.getElementById('nouvelleDemande');
+                                                    
+                                                    myForm.addEventListener('submit', function(e) {
+                                                        e.preventDefault();//empeche le rechargeme de la page
+//                                                        alert($('#datepicker').datepicker('getDate'));
+                                                        var $date = new Date($("#datepicker").datepicker("getDate"));
+                                                        var $activite = $('#ActivitesSelect').val();
+                                                        if($date.getTime() > 0 && $('#ActivitesSelect').prop('selectedIndex') != "0") {//document.getElementById("ActivitesSelect")
+                                                            alert($date.getTime()+" "+$activite);
+                                                            $.ajax({
+                                                                url: './ActionServlet',
+                                                                type: 'POST',
+                                                                data: { 
+                                                                    action: 'createDemande',
+                                                                    date: $date.getTime(),
+                                                                    activite: $activite
+                                                                }
+                                                            })
+                                                            .done(function(data) {
+                                                                myForm.reset();
+                                                            })
+                                                            .fail(function() {
+                                                                alert("erreur creation");
+                                                            })
+                                                            .always(function() {
+                                                                
+                                                            });
+                                                        }
+                                                        
+                                                    }, true);
+
+                                                 </script>
+                                              
                                             </td>
                                             <td>
                                                 <div class="listeDemandes">

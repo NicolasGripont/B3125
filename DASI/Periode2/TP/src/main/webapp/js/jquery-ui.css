@@ -178,6 +178,7 @@
 	padding: .2em .6em .3em .6em;
 	width: auto;
 	overflow: visible;
+        opacity: 0.6;
 }
 .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
 	float: left;

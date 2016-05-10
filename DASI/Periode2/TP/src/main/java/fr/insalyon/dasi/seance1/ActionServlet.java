@@ -7,6 +7,7 @@ package fr.insalyon.dasi.seance1;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -64,7 +65,26 @@ public class ActionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        printAllActivitesInJson(request, response);
+        if(request.getParameter("action").compareTo("getActivites")==0) {
+            printAllActivitesInJson(request, response);
+        } else if (request.getParameter("action").compareTo("getDemandes")==0){
+            printDemandesInJson(request, response);
+        } else if (request.getParameter("action").compareTo("getNomsActivites")==0){
+            printAllNomActivitesInJson(request, response);
+        } else if (request.getParameter("action").compareTo("")==0){
+
+            
+        } else if (request.getParameter("action").compareTo("")==0){
+
+            
+        } else if (request.getParameter("action").compareTo("")==0){
+
+            
+        } else if (request.getParameter("action").compareTo("")==0){
+
+        } else {
+            
+        }
     }
 
     /**
@@ -83,13 +103,20 @@ public class ActionServlet extends HttpServlet {
             printAllActivitesInJson(request, response);
         } else if (request.getParameter("action").compareTo("getDemandes")==0){
             printDemandesInJson(request, response);
-        } 
-        else if (request.getParameter("action").compareTo("getNomsActivites")==0){
+        } else if (request.getParameter("action").compareTo("getNomsActivites")==0){
             printAllNomActivitesInJson(request, response);
-//            printAllActivitesInJson(request, response);
-        } else if (request.getParameter("action").compareTo("getDemande")==0){
-//            printDemandeInJson(request, response);
-//            printAllActivitesInJson(request, response);
+        } else if (request.getParameter("action").compareTo("")==0){
+
+            
+        } else if (request.getParameter("action").compareTo("")==0){
+
+            
+        } else if (request.getParameter("action").compareTo("")==0){
+
+            
+        } else if (request.getParameter("action").compareTo("")==0){
+
+            
         } else {
             
         }
@@ -142,18 +169,4 @@ public class ActionServlet extends HttpServlet {
         }
     }
     
-    private void printDemande(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException{
-//        ServiceMetier.
-//        Demande demande = ServiceMetier.AffichageDetail(noEvent)
-        List<String> noms = ServiceMetier.AfficheNomActivites();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            request.getSession().setAttribute("user", "ngripont");
-            Cookie[] cookies = request.getCookies();
-            response.addCookie(new Cookie("user", "ngripont"));
-            Serialisation.printListeNomActivites(out, noms);
-        }
-    }
 }
