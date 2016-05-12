@@ -186,6 +186,8 @@ public class EvenementDao {
             requete+= "AND a.dateEvenement=:date ";
         }
         
+        requete += "ORDER BY a.dateEvenement";
+        
         EntityManager em = JpaUtil.obtenirEntityManager();
         try {
         Query q = em.createQuery(requete);

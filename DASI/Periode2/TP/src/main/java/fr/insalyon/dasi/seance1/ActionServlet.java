@@ -7,16 +7,18 @@ package fr.insalyon.dasi.seance1;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import metier.modele.Activite;
 import metier.modele.Demande;
+import metier.modele.Evenement;
 import metier.service.ServiceMetier;
 
 /**
@@ -71,16 +73,13 @@ public class ActionServlet extends HttpServlet {
             printDemandesInJson(request, response);
         } else if (request.getParameter("action").compareTo("getNomsActivites")==0){
             printAllNomActivitesInJson(request, response);
-        } else if (request.getParameter("action").compareTo("")==0){
-
-            
-        } else if (request.getParameter("action").compareTo("")==0){
-
-            
-        } else if (request.getParameter("action").compareTo("")==0){
-
-            
-        } else if (request.getParameter("action").compareTo("")==0){
+        } else if (request.getParameter("action").compareTo("createDemande")==0){
+            createDemande(request, response);
+        } else if (request.getParameter("action").compareTo("getEvenements")==0){
+            printEventsInJson(request, response);
+        } else if (request.getParameter("action").compareTo("getNomsLieux")==0){
+            printAllNomLieuxInJson(request, response);
+        } else if (request.getParameter("action").compareTo("getStatuts")==0){
 
         } else {
             
@@ -98,25 +97,23 @@ public class ActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        //
+        // /!\ remplacer param 'id' par une valeur dans la session pour getDemandes createDemande
+        //
         if(request.getParameter("action").compareTo("getActivites")==0) {
             printAllActivitesInJson(request, response);
         } else if (request.getParameter("action").compareTo("getDemandes")==0){
             printDemandesInJson(request, response);
         } else if (request.getParameter("action").compareTo("getNomsActivites")==0){
             printAllNomActivitesInJson(request, response);
-        } else if (request.getParameter("action").compareTo("")==0){
-
-            
-        } else if (request.getParameter("action").compareTo("")==0){
-
-            
-        } else if (request.getParameter("action").compareTo("")==0){
-
-            
-        } else if (request.getParameter("action").compareTo("")==0){
-
-            
+        } else if (request.getParameter("action").compareTo("createDemande")==0){
+            createDemande(request, response);
+        } else if (request.getParameter("action").compareTo("getEvenements")==0){
+            printEventsInJson(request, response);
+        } else if (request.getParameter("action").compareTo("getNomsLieux")==0){
+            printAllNomLieuxInJson(request, response);
+        } else if (request.getParameter("action").compareTo("getStatuts")==0){
+            printAllStatusInJson(request, response);
         } else {
             
         }
@@ -162,11 +159,51 @@ public class ActionServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            request.getSession().setAttribute("user", "ngripont");
-            Cookie[] cookies = request.getCookies();
-            response.addCookie(new Cookie("user", "ngripont"));
             Serialisation.printListeNomActivites(out, noms);
         }
     }
     
+    private void createDemande(HttpServletRequest request, HttpServletResponse response) {
+        ServiceMetier.CreerDemande(request.getParameter("activite"), new Date(Long.parseLong(request.getParameter("date"))), Integer.parseInt(request.getParameter("id")));
+        
+    }
+    
+    private void printAllNomLieuxInJson(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException{
+        
+        List<String> noms = ServiceMetier.AfficheNomLieux();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            Serialisation.printListeNomLieux(out, noms);
+        }
+    }
+    
+    private void printAllStatusInJson(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException{
+        
+        List<String> noms = ServiceMetier.AfficheStatut();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            Serialisation.printListeStatuts(out, noms);
+        }
+    }
+    
+    private void printEventsInJson(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException{
+        Date d = null;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            d = sdf.parse("01/01/1970");
+        } catch(ParseException e){
+            
+        }
+        List<Evenement> evenements = ServiceMetier.AffichageEvenementsFiltres("Statut","Activité","Lieu",d);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            Serialisation.printListeEvenements(out, evenements);
+        }
+    }
 }

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="js/jquery-ui.css" />
+        <title>Collect'IF</title>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js">//uniquement datepicker</script> 
+        <script type="text/javascript" src="script.js"></script>
+        
+        <script>
+            
+            function plus(trParticipants,plusButtonID) {
+                $('#'+trParticipants).css('display','');
+                $('#'+plusButtonID).replaceWith("<img id='"+plusButtonID+"' class='button' src='images/moins.png' onclick=\"moins('"+trParticipants+"','"+plusButtonID+"');\">");
+            }
+            
+            function moins(trParticipants,plusButtonID) {
+                $('#'+trParticipants).css('display','none');
+                $('#'+plusButtonID).replaceWith("<img id='"+plusButtonID+"' class='button' src='images/plus.png' onclick=\"plus('"+trParticipants+"','"+plusButtonID+"');\">");
+            }
+
+            
+            $(document).ready(function() {
+                loadEvenements();
+                loadNomsActivites();
+                loadNomsLieux();
+                loadStatuts();
+            });
+            
+            function loadEvenements() {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: { 
+                        action: 'getEvenements',
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var evenements = data.evenements;
+                    var contenuHtml = $('#listeEvenements').html();
+                    var i;
+                    
+                    for (i = 0; i < evenements.length; i++) {
+                        var evenement = evenements[i].evenement;
+                        var plusButtonID = "moreInfoButton" + evenement.id;
+                        var trParticipants = "participant" + evenement.id;
+                        
+                        contenuHtml += "<tr class='evenement'>";                        
+                        contenuHtml += "<td colspan='5'>";
+                        //en focntion du statut
+                        contenuHtml += "<table class='evenementPlanifie'>";
+                        contenuHtml += "<tr>";
+                        contenuHtml += "<td>";
+                        contenuHtml += "Evénement n° " + evenement.id + " :";
+                        contenuHtml += "</td>";
+                        contenuHtml += "<td>";
+                        //en focntion du statut
+                        contenuHtml += "Statut : A planifier";
+                        contenuHtml += "</td>";
+                        contenuHtml += "<td></td>";
+                        contenuHtml += "<td rowspan='2' class='evtImage'>";
+                        //en focntion du lieu/statut
+                        contenuHtml += "<img src='images/location.png'>";
+                        contenuHtml += "</td>";
+                        contenuHtml += "<td rowspan='2' class='evtImage'>";
+                        //en focntion du statut add onclik
+                        contenuHtml += "<img id='"+plusButtonID+"' class='button' src='images/plus.png' onclick=\"plus('"+trParticipants+"','"+plusButtonID+"');\">";
+                        contenuHtml += "</td>";
+                        contenuHtml += "</tr>";
+                        contenuHtml += "<tr>";
+                        contenuHtml += "<td>";
+                        contenuHtml += "Activité : " + evenement.activite;
+                        contenuHtml += "</td>";
+                        contenuHtml += "<td>";
+                        contenuHtml += "Date : " + evenement.date;
+                        contenuHtml += "</td>";
+                        contenuHtml += "<td class='evtLieu'>";
+                        contenuHtml += "Lieu : ";
+                        if(evenement.lieu == "null") {
+                            contenuHtml += "&Oslash;";
+                        } else {
+                            contenuHtml += evenement.lieu;
+                        }
+                        contenuHtml += "</td>";
+                        contenuHtml += "</tr>";
+                        contenuHtml += "<tr class='participant' style='display:none;' id='"+trParticipants+"'>";
+                        contenuHtml += "<td colspan='5'>";
+                        contenuHtml += "participant";
+                        contenuHtml += "</td>";
+                        contenuHtml += "<tr>";
+                        contenuHtml += "</table>";
+                        contenuHtml += "</td>";
+                        contenuHtml += "</tr>";
+                    }
+                    $('#listeEvenements').html(contenuHtml);
+                    
+                })
+                .fail(function() {
+                    $('#listeEvenements').html('<tr><td>ERREUR de chargement</td></tr>');
+                })
+                .always(function() {
+                    //
+                });
+
+            }
+           
+           
+            function loadNomsActivites() {
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: { 
+                        action: 'getNomsActivites'
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var nomsActivites = data.nomsActivites;
+                    var contenuHtml = '<option selected disabled>Activités</option>';
+                    var i;
+
+                    for (i = 0; i < nomsActivites.length; i++) {
+                        var activite = nomsActivites[i];
+                        contenuHtml += "<option value='";
+                        contenuHtml += activite.nom;
+                        contenuHtml += "'>";
+                        contenuHtml += activite.nom;
+                        contenuHtml += "</option>" ;
+                    }
+                    $('#ActivitesSelect').html(contenuHtml);
+                })
+                .fail(function() {
+                    $('#ActivitesSelect').html('<option>ERREUR de chargement</option>');
+                })
+                .always(function() {
+                    //
+                });
+            }
+            
+            function loadNomsLieux() {
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: { 
+                        action: 'getNomsLieux'
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var nomsLieux = data.nomsLieux;
+                    var contenuHtml = '<option selected disabled>Lieu</option>';
+                    var i;
+
+                    for (i = 0; i < nomsLieux.length; i++) {
+                        var nomLieu = nomsLieux[i];
+                        contenuHtml += "<option value='";
+                        contenuHtml += nomLieu.nomLieu;
+                        contenuHtml += "'>";
+                        contenuHtml += nomLieu.nomLieu;
+                        contenuHtml += "</option>" ;
+                    }
+                    $('#LieuxSelect').html(contenuHtml);
+                })
+                .fail(function() {
+                    $('#LieuxSelect').html('<option>ERREUR de chargement</option>');
+                })
+                .always(function() {
+                    //
+                });
+            }
+            
+            function loadStatuts() {
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: { 
+                        action: 'getStatuts'
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var statuts = data.statuts;
+                    var contenuHtml = '<option selected disabled>Statut</option>';
+                    var i;
+
+                    for (i = 0; i < statuts.length; i++) {
+                        var statut = statuts[i];
+                        contenuHtml += "<option value='";
+                        contenuHtml += statut.statut;
+                        contenuHtml += "'>";
+                        contenuHtml += statut.statut;
+                        contenuHtml += "</option>" ;
+                    }
+                    $('#StatutsSelect').html(contenuHtml);
+                })
+                .fail(function() {
+                    $('#StatutsSelect').html('<option>ERREUR de chargement</option>');
+                })
+                .always(function() {
+                    //
+                });
+            }
+            
+        </script>
+        
+       
+    </head>
+
+
+
+    <body>
+        <table class="global" >
+            <tbody>
+                <tr>
+                    <td class="panel">
+                        <section class="panel">
+                             <header>
+                                 <a href="javascript:window.location.reload(true)">
+                                    <h1>Collect'IF</h1>
+                                </a>
+                            </header>
+                            <form method="post" action="Connexion">
+                                    <input type="email" placeholder="collect@if.fr" name="login" id='login'/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <input type="submit" value="Se Connecter" name="connexion" id="connexion"/>
+                                    <br/>
+                                    <br/>                                  
+                                    <br/>
+                                </form>
+                                
+
+                            <div id="btn_top" class="btn_top" style="">
+                                <a href="#">
+                                    <img src="images/arrowtop.png" alt="logo">
+                                </a>
+                            </div>
+                        </section>
+                    </td>
+
+<!-- corps -->
+
+                    <td>
+                        <table class="corps">
+                            
+   
+
+
+    <!-- menu adherent -->
+                             <tr>
+                                <td>
+                                    <table class="mainMenuResponsable" id="listeEvenements">                                                        
+                                        <tr class="evenement">
+                                            <th>
+                                                <select class="select_style" name="Statut" id="StatutsSelect">
+                                                    
+                                                </select> 
+                                            </th>
+                                            <th>
+                                                <select class="select_style" name="ActivitesSelect" id="ActivitesSelect">
+                                                  
+                                                </select>
+                                            </th>
+                                            <th>
+                                                <select class="select_style" name="Lieu" id="LieuxSelect">
+                                                    
+                                                </select>
+                                            </th>
+                                            <th>
+                                                <input type="text" class="datepicker"/> 
+                                            </th>
+                                            <th>
+                                                <input type="submit" value="Filtrer">
+                                            </th>
+                                        </tr>
+                                    </table>
+                                   
+                                </td>
+                            </tr>
+
+                        </table>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                        <br/>   
+                        <br/>
+                     </td>               
+
+<!-- footer -->   
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <footer>
+                            <div>
+                                <p>
+                                    Copyright Nicolas GRIPONT &amp; Rim EL IDRISSI MOKDAD - Tous droits réservés
+                                </p>
+                            </div>            
+                        </footer>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
+

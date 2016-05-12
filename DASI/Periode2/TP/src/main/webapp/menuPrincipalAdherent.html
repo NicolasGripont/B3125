@@ -29,7 +29,7 @@ and open the template in the editor.
             }
 
             
-            $(function() {
+            $(document).ready(function() {
                 loadHistorique();
                 loadNomsActivites();
             });
@@ -123,7 +123,7 @@ and open the template in the editor.
                         contenuHtml += "</tr>";
                         contenuHtml += "<tr>";
                         contenuHtml += "<td colspan='2'>";
-                        if(demande.lieu != "null"){
+                        if(demande.lieu == "null"){
                             contenuHtml += "Lieu : &Oslash;";
                         } else {
                             contenuHtml += "Lieu : " + demande.lieu;
@@ -322,18 +322,20 @@ and open the template in the editor.
                                                         var $date = new Date($("#datepicker").datepicker("getDate"));
                                                         var $activite = $('#ActivitesSelect').val();
                                                         if($date.getTime() > 0 && $('#ActivitesSelect').prop('selectedIndex') != "0") {//document.getElementById("ActivitesSelect")
-                                                            alert($date.getTime()+" "+$activite);
+                                                            
                                                             $.ajax({
                                                                 url: './ActionServlet',
                                                                 type: 'POST',
                                                                 data: { 
                                                                     action: 'createDemande',
                                                                     date: $date.getTime(),
-                                                                    activite: $activite
+                                                                    activite: $activite,
+                                                                    id: '39'//remplacer par valeur session
                                                                 }
                                                             })
                                                             .done(function(data) {
-                                                                myForm.reset();
+                                                               
+                                                                location.reload();
                                                             })
                                                             .fail(function() {
                                                                 alert("erreur creation");

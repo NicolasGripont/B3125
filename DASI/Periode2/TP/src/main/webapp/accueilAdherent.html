@@ -14,6 +14,39 @@ and open the template in the editor.
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.js">//uniquement datepicker</script> 
         <script type="text/javascript" src="script.js"></script> 
+        <script>
+            function loadNomsActivites() {
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: { 
+                        action: 'getNomsActivites'
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var nomsActivites = data.nomsActivites;
+                    var contenuHtml = '<option selected disabled>Activités</option>';
+                    var i;
+
+                    for (i = 0; i < nomsActivites.length; i++) {
+                        var activite = nomsActivites[i];
+                        contenuHtml += "<option value='";
+                        contenuHtml += activite.nom;
+                        contenuHtml += "'>";
+                        contenuHtml += activite.nom;
+                        contenuHtml += "</option>" ;
+                    }
+                    $('#ActivitesSelect').html(contenuHtml);
+                })
+                .fail(function() {
+                    $('#ActivitesSelect').html('<option>ERREUR de chargement</option>');
+                })
+                .always(function() {
+                    //
+                });
+            }
+        </script>
     </head>
     
 
@@ -29,17 +62,17 @@ and open the template in the editor.
                                     <h1>Collect'IF</h1>
                                 </a>
                             </header>
-                            <form method="post" action="Connexion">
-                                    <input type="email" placeholder="collect@if.fr" name="login" id='login'/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <input type="hidden" value="connexion" name="action" id="action"/>
-                                    <input type="submit" value="Se Connecter" name="connexion" id="connexion" />
-                                    <br/>
-                                    <br/>                                  
-                                    <br/>
-                                </form>
+                            <form method="post" action="">
+                                <p></p>
+                                <input type="email" placeholder="collect@if.fr" id="email" name="email"/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <input type="submit" value="Se Connecter"/>
+                                <br/>
+                                <br/>                                  
+                                <br/>
+                            </form>
                                 
 
                             <div id="btn_top" class="btn_top" style="">
