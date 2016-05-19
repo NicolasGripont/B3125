@@ -16,7 +16,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import metier.modele.Activite;
+import metier.modele.Adherent;
 import metier.modele.Demande;
 import metier.modele.Evenement;
 import metier.modele.Lieu;
@@ -68,25 +70,7 @@ public class ActionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(request.getParameter("action").compareTo("getActivites")==0) {
-            printAllActivitesInJson(request, response);
-        } else if (request.getParameter("action").compareTo("getDemandes")==0){
-            printDemandesInJson(request, response);
-        } else if (request.getParameter("action").compareTo("getNomsActivites")==0){
-            printAllNomActivitesInJson(request, response);
-        } else if (request.getParameter("action").compareTo("createDemande")==0){
-            createDemande(request, response);
-        } else if (request.getParameter("action").compareTo("getEvenements")==0){
-            printEventsInJson(request, response);
-        } else if (request.getParameter("action").compareTo("getNomsLieux")==0){
-            printAllNomLieuxInJson(request, response);
-        } else if (request.getParameter("action").compareTo("getStatuts")==0){
-            printAllStatusInJson(request, response);
-        } else if (request.getParameter("action").compareTo("getLieuxEvent")==0){
-            printNomsLieuxEventInJson(request,response);
-        } else {
-            
-        }
+        traiterRequete(request,response);
     }
 
     /**
@@ -99,6 +83,22 @@ public class ActionServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        traiterRequete(request,response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+    
+    private void traiterRequete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //
         // /!\ remplacer param 'id' par une valeur dans la session pour getDemandes createDemande
@@ -119,21 +119,18 @@ public class ActionServlet extends HttpServlet {
             printAllStatusInJson(request, response);
         }  else if (request.getParameter("action").compareTo("getLieuxEvent")==0) {
             printNomsLieuxEventInJson(request,response);
-        } else {
-            
+        } else if (request.getParameter("action").compareTo("connexion")==0) {
+            creerSessionAdherent(request,response);
+        } else if (request.getParameter("action").compareTo("deconnexion")==0) {
+            supprimerSessionAdherent(request,response);
+        } else if (request.getParameter("action").compareTo("creerDemande")==0) {
+            createDemande(request,response);
+        } else if (request.getParameter("action").compareTo("inscription")==0) {
+            inscription(request,response);
+        } else if (request.getParameter("action").compareTo("getEvenementEtLieux")==0) {
+            printEvenementEtLieux(request,response);
         }
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
     
     private void printAllActivitesInJson(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException{
@@ -148,12 +145,13 @@ public class ActionServlet extends HttpServlet {
     
     private void printDemandesInJson(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException{
-        
-        List<Demande> demandes = ServiceMetier.selectDemandeByIdAdherent(Integer.parseInt(request.getParameter("id")));//a modifier avec l'id stockée dans la session
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            Serialisation.printListeDemandes(out,demandes);
+        if(isSessionAdherentValide(request)) {
+            List<Demande> demandes = ServiceMetier.selectDemandeByIdAdherent(Integer.parseInt(request.getSession().getAttribute("id").toString()));
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            try (PrintWriter out = response.getWriter()) {
+                Serialisation.printListeDemandes(out,demandes);
+            }
         }
     }
     
@@ -168,9 +166,23 @@ public class ActionServlet extends HttpServlet {
         }
     }
     
-    private void createDemande(HttpServletRequest request, HttpServletResponse response) {
-        ServiceMetier.CreerDemande(request.getParameter("activite"), new Date(Long.parseLong(request.getParameter("date"))), Integer.parseInt(request.getParameter("id")));
-        
+    private void createDemande(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        if(isSessionAdherentValide(request)) {
+//            ServiceMetier.CreerDemande(request.getParameter("activite"), new Date(Long.parseLong(request.getParameter("date"))), Integer.parseInt(request.getSession().getAttribute("id").toString()));
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                ServiceMetier.CreerDemande(request.getParameter("activite"), sdf.parse(request.getParameter("date")),  Integer.parseInt(request.getSession().getAttribute("id").toString()));
+                
+            } catch(Exception e){
+
+            }
+//            request.getRequestDispatcher("menuPrincipalAdherent.html").forward(request, response);
+//            response.sendRedirect("menuPrincipalAdherent.html");
+            try (PrintWriter out = response.getWriter()) {
+                Serialisation.printResult(out, 0, "");
+            }
+        }
     }
     
     private void printAllNomLieuxInJson(HttpServletRequest request, HttpServletResponse response) 
@@ -186,7 +198,7 @@ public class ActionServlet extends HttpServlet {
     
     private void printAllStatusInJson(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException{
-        
+
         List<String> noms = ServiceMetier.AfficheStatut();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -221,6 +233,73 @@ public class ActionServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             Serialisation.printListeLieux(out, lieux);
+        }
+    }
+    
+    private void creerSessionAdherent(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        Adherent adherent = ServiceMetier.selectAdherentByMail(request.getParameter("mail"));
+        int result = 1;
+        if(adherent != null) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("id", adherent.getId());
+            //rborrotimatiasdantas4171@free.fr
+            
+//            request.getRequestDispatcher("menuPrincipalAdherent.html").forward(request, response);
+//           response.sendRedirect("menuPrincipalAdherent.html");
+            result = 0;
+        }
+//        } else {
+////           request.getRequestDispatcher("accueilAdherent.html").forward(request, response);
+////           response.sendRedirect("accueilAdherent.html");
+//        }
+        try (PrintWriter out = response.getWriter()) {
+            Serialisation.printResult(out, result, "");
+        }
+    }
+    
+    private void supprimerSessionAdherent(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        Adherent adherent = ServiceMetier.selectAdherentByMail(request.getParameter("mail"));
+       
+        HttpSession session = request.getSession();
+        session.invalidate();
+        try (PrintWriter out = response.getWriter()) {
+            Serialisation.printResult(out, 0, "");
+        }
+//        request.getRequestDispatcher("accueilAdherent.html").forward(request, response);
+//        response.sendRedirect("accueilAdherent.html");
+    }
+    
+    private Boolean isSessionAdherentValide(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("id") == null) {
+            session.invalidate();
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
+    }
+    
+    private void inscription(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        Adherent adherent = ServiceMetier.creerAdherent(request.getParameter("nom"),request.getParameter("prenom"),request.getParameter("adresse"),request.getParameter("mail"));
+        int result = 1;
+        if(adherent != null) {
+            result = 0;
+        }
+        try (PrintWriter out = response.getWriter()) {
+            Serialisation.printResult(out, result, "");
+        }
+        
+    }
+    
+    private void printEvenementEtLieux(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        Evenement event = ServiceMetier.getEvenement(Long.parseLong(request.getParameter("id")));
+        List<Lieu> lieux = ServiceMetier.obtenirLieux(event);
+        
+        try (PrintWriter out = response.getWriter()) {
+            Serialisation.printEventEtLieux(out, event, lieux);
         }
     }
 }

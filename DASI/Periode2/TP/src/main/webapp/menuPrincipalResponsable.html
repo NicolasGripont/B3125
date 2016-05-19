@@ -19,12 +19,12 @@ and open the template in the editor.
         <script>
             
             function plus(trParticipants,plusButtonID) {
-                $('#'+trParticipants).css('display','');
+                $('#'+trParticipants).fadeIn(500);
                 $('#'+plusButtonID).replaceWith("<img id='"+plusButtonID+"' class='button' src='images/moins.png' onclick=\"moins('"+trParticipants+"','"+plusButtonID+"');\">");
             }
             
             function moins(trParticipants,plusButtonID) {
-                $('#'+trParticipants).css('display','none');
+                $('#'+trParticipants).fadeOut(500);
                 $('#'+plusButtonID).replaceWith("<img id='"+plusButtonID+"' class='button' src='images/plus.png' onclick=\"plus('"+trParticipants+"','"+plusButtonID+"');\">");
             }
 
@@ -101,7 +101,7 @@ and open the template in the editor.
                         contenuHtml += "<td rowspan='2' class='evtImage'>";
                         //en focntion du lieu/statut/date
                         if(evenement.lieu == "null" && evenement.depasse == false && (evenement.statut == "A planifier" || evenement.statut == "Non complet")) {
-                            contenuHtml += "<img class='button' src='images/location.png'>";//onclik
+                            contenuHtml += "<img class='button' src='images/location.png' onclick='afficherDetails("+evenement.id+")'>";
                         }
                         contenuHtml += "</td>";
                         contenuHtml += "<td rowspan='2' class='evtImage'>";
@@ -189,6 +189,10 @@ and open the template in the editor.
                     //
                 });
 
+            }
+           
+            function afficherDetails(eventId) {
+                self.location.href="selectionnerUnLieu.html?event="+eventId;
             }
            
            

@@ -15,6 +15,7 @@ and open the template in the editor.
         <script type="text/javascript" src="js/jquery-ui.js">//uniquement datepicker</script> 
         <script type="text/javascript" src="script.js"></script> 
         <script>
+            
             function loadNomsActivites() {
                 $.ajax({
                     url: './ActionServlet',
@@ -46,12 +47,70 @@ and open the template in the editor.
                     //
                 });
             }
+            
+            $(document).ready(function (){
+                $(document).on("submit", "#connexionForm", function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: './ActionServlet',
+                        type: 'POST',
+                        data: { 
+                            action: 'connexion',
+                            mail: $('#mailConnexion').val()
+                        },
+                        dataType: 'json'
+                    })
+                    .done(function(data) {
+                        if(data.result == '0') {//succes
+                            self.location.href="./menuPrincipalAdherent.html";
+                        } else {
+                            $('#erreurConnexion').html("Erreur, utilisateur inconnu.");
+                        }
+                    })
+                    .fail(function() {
+                        $('#erreurConnexion').html("Une erreur est survenue.");
+                    })
+                    .always(function() {
+                        //
+                    });
+                });
+                
+                $(document).on("submit", "#inscriptionForm", function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: './ActionServlet',
+                        type: 'POST',
+                        data: { 
+                            action: 'inscription',
+                            nom: $('#nom').val(),
+                            prenom: $('#prenom').val(),
+                            adresse: $('#adresse').val(),
+                            mail: $('#mailInscription').val()
+                        },
+                        dataType: 'json'
+                    })
+                    .done(function(data) {
+                        if(data.result == '0') {//succes
+                            $('#messageInscription').html("Inscription réussie.");
+                        } else {
+                            $('#messageInscription').html("Erreur, inscription.");
+                        }
+                    })
+                    .fail(function() {
+                        $('#messageInscription').html("Une erreur est survenue.");
+                    })
+                    .always(function() {
+                        //
+                    });
+                });
+            });
+           
         </script>
     </head>
     
 
 
-    <body>      
+    <body>
         <table class="global" >
             <tbody>
                 <tr>
@@ -62,13 +121,14 @@ and open the template in the editor.
                                     <h1>Collect'IF</h1>
                                 </a>
                             </header>
-                            <form method="post" action="">
-                                <p></p>
-                                <input type="email" placeholder="collect@if.fr" id="email" name="email"/>
+                            <form method="post" id="connexionForm">
+                                <p id="erreurConnexion"></p>
+                                <input type="email" placeholder="collect@if.fr" required name="mail" id="mailConnexion"/>
                                 <br/>
                                 <br/>
                                 <br/>
-                                <input type="submit" value="Se Connecter"/>
+                                <!--<input type="hidden" name="action" value="connexion"/>-->
+                                <input type="submit" value="Se Connecter" id="boutonConnexion"/>
                                 <br/>
                                 <br/>                                  
                                 <br/>
@@ -94,28 +154,30 @@ and open the template in the editor.
                                     <div class="formulaire">
                                         <br/>
                                         <h1>S'inscrire</h1>
-                                         <form method="post" action="Inscription">
+                                         <form method="post" id="inscriptionForm">
                                             <br/>
-                                            <input type="text" placeholder="Nom" id='nom'/>
+                                            <p id="messageInscription"></p>
                                             <br/>
-                                            <br/>
-                                            <br/>
-                                            <input type="text" placeholder="Prenom" id='prenom'/>
+                                            <input type="text" placeholder="Nom" required id='nom'/>
                                             <br/>
                                             <br/>
                                             <br/>
-                                            <input type="text" placeholder="Adresse Postale" id='adresse'/>
+                                            <input type="text" placeholder="Prenom" required id='prenom'/>
                                             <br/>
                                             <br/>
                                             <br/>
-                                            <input type="email" placeholder="collect@if.com" id='email'/>
+                                            <input type="text" placeholder="Adresse Postale" required id='adresse'/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <input type="email" placeholder="collect@if.com" required id='mailInscription'/>
                                             <br/>
                                             <br/>
                                             <br/>
                                             <br/>
                                             <br/>
                                             <br/>
-                                            <input type="submit" value="S'inscrire" id="inscription">
+                                            <input type="submit" value="S'inscrire" id="boutonInscription">
                                             <br/>   
                                             <br/>
                                         </form>

@@ -19,12 +19,14 @@ and open the template in the editor.
         <script>
             
             function plus(trDetailsId,plusButtonID) {
-                $('#'+trDetailsId).css('display','');
+//                $('#'+trDetailsId).css('display','');
+                $('#'+trDetailsId).fadeIn(500);
                 $('#'+plusButtonID).replaceWith("<img id='"+plusButtonID+"' class='button' src='images/moins.png' onclick=\"moins('"+trDetailsId+"','"+plusButtonID+"');\">");
             }
             
             function moins(trDetailsId,plusButtonID) {
-                $('#'+trDetailsId).css('display','none');
+//                $('#'+trDetailsId).css('display','none');
+                $('#'+trDetailsId).fadeOut(500);
                 $('#'+plusButtonID).replaceWith("<img id='"+plusButtonID+"' class='button' src='images/plus.png' onclick=\"plus('"+trDetailsId+"','"+plusButtonID+"');\">");
             }
 
@@ -32,6 +34,51 @@ and open the template in the editor.
             $(document).ready(function() {
                 loadHistorique();
                 loadNomsActivites();
+                //handler deconnexion
+                $(document).on("click", "#boutonDeconnexion", function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: './ActionServlet',
+                        type: 'POST',
+                        data: { 
+                            action: 'deconnexion' 
+                        },
+                        dataType: 'json'
+                    })
+                    .done(function(data) {
+                        self.location.href="./accueilAdherent.html";
+                    })
+                    .fail(function() {
+//                        $('#erreurConnexion').html("Une erreur est survenue.");
+                    })
+                    .always(function() {
+                        //
+                    });
+                });
+                
+                $(document).on("click", "#boutonValider", function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: './ActionServlet',
+                        type: 'POST',
+                        data: { 
+                            action: 'creerDemande',
+                            activite: $('#ActivitesSelect').val(),
+                            date: $('#datepicker').val()
+                        },
+                        dataType: 'json'
+                    })
+                    .done(function(data) {
+                        self.location.reload();
+                    })
+                    .fail(function() {
+//                        $('#erreurConnexion').html("Une erreur est survenue.");
+                    })
+                    .always(function() {
+                        //
+                    });
+                });
+                
             });
             
             function loadHistorique() {
@@ -40,8 +87,7 @@ and open the template in the editor.
                     url: './ActionServlet',
                     type: 'POST',
                     data: { 
-                        action: 'getDemandes',
-                        id: '39'
+                        action: 'getDemandes'
                     },
                     dataType: 'json'
                 })
@@ -50,7 +96,7 @@ and open the template in the editor.
                     var contenuHtml;//= '<ul>';
                     var i;
                     
-                    for (i = 0; i < demandes.length; i++) {
+                    for (i = demandes.length-1; i >= 0 ; i--) {
                         var demande = demandes[i].demande;
                         var plusButtonID = "moreInfoButton" + demande.id;
                         var trDetailsId = "details" + demande.id;
@@ -158,7 +204,6 @@ and open the template in the editor.
                     }
 //                    contenuHtml += '</ul>';
                     $('#listeDemandes').html(contenuHtml);
-                    
                 })
                 .fail(function() {
                     $('#listeDemandes').html('<tr><td>ERREUR de chargement</td></tr>');
@@ -196,6 +241,7 @@ and open the template in the editor.
                 })
                 .fail(function() {
                     $('#ActivitesSelect').html('<option>ERREUR de chargement</option>');
+                    
                 })
                 .always(function() {
                     //
@@ -205,8 +251,7 @@ and open the template in the editor.
             function createDemande() {
                 $('#btn_top').css("display",'none')
             }
-            
-            
+
         </script>
         
        
@@ -225,16 +270,16 @@ and open the template in the editor.
                                     <h1>Collect'IF</h1>
                                 </a>
                             </header>
-                            <form method="post" action="Connexion">
-                                    <input type="email" placeholder="collect@if.fr" name="login" id='login'/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <input type="submit" value="Se Connecter" name="connexion" id="connexion"/>
-                                    <br/>
-                                    <br/>                                  
-                                    <br/>
-                                </form>
+                            <form method="post">
+                                <input type="hidden" name="action" value="deconnexion"/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <input type="submit" value="Se Deconnecter" id="boutonDeconnexion"/>
+                                <br/>
+                                <br/>                                  
+                                <br/>
+                            </form>
                                 
 
                             <div id="btn_top" class="btn_top" style="">
@@ -271,11 +316,11 @@ and open the template in the editor.
                                         </tr>
                                         <tr>
                                             <td>
-                                                <form id='nouvelleDemande' class="nouvelleDemande" method="post" action="">
+                                                <form id='nouvelleDemande' class="nouvelleDemande" method="post">
                                                     <table>
                                                         <tr>
                                                             <td>
-                                                                <select class="select_style" id="ActivitesSelect">
+                                                                <select class="select_style" id="ActivitesSelect" name="activite">
                                                                     <option selected disabled>Activités</option>
                                                                 
                                                                 </select> 
@@ -292,7 +337,7 @@ and open the template in the editor.
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <input type="text" class="datepicker" id="datepicker"/> 
+                                                                <input type="text" class="datepickerMinDate" id="datepicker" name="date"/> 
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -306,6 +351,7 @@ and open the template in the editor.
                                                         </tr>
                                                         <tr>
                                                             <td>
+                                                                <!--<input type="hidden" value="creerDemande" name="action">-->
                                                                 <input type="submit" value="Valider" id="boutonValider">
                                                             </td>
                                                         </tr>
@@ -314,38 +360,39 @@ and open the template in the editor.
                                                 </form>
                                                 
                                                 <script>
-                                                    var myForm = document.getElementById('nouvelleDemande');
-                                                    
-                                                    myForm.addEventListener('submit', function(e) {
-                                                        e.preventDefault();//empeche le rechargeme de la page
-//                                                        alert($('#datepicker').datepicker('getDate'));
-                                                        var $date = new Date($("#datepicker").datepicker("getDate"));
-                                                        var $activite = $('#ActivitesSelect').val();
-                                                        if($date.getTime() > 0 && $('#ActivitesSelect').prop('selectedIndex') != "0") {//document.getElementById("ActivitesSelect")
-                                                            
-                                                            $.ajax({
-                                                                url: './ActionServlet',
-                                                                type: 'POST',
-                                                                data: { 
-                                                                    action: 'createDemande',
-                                                                    date: $date.getTime(),
-                                                                    activite: $activite,
-                                                                    id: '39'//remplacer par valeur session
-                                                                }
-                                                            })
-                                                            .done(function(data) {
-                                                               
-                                                                location.reload();
-                                                            })
-                                                            .fail(function() {
-                                                                alert("erreur creation");
-                                                            })
-                                                            .always(function() {
-                                                                
-                                                            });
-                                                        }
-                                                        
-                                                    }, true);
+//                                                    var myForm = document.getElementById('nouvelleDemande');
+//                                                    
+//                                                    myForm.addEventListener('submit', function(e) {
+//                                                        e.preventDefault();//empeche le rechargeme de la page
+////                                                        alert($('#datepicker').datepicker('getDate'));
+//                                                        var $date = new Date($("#datepicker").datepicker("getDate"));
+//                                                        var $activite = $('#ActivitesSelect').val();
+//                                                        if($date.getTime() > 0 && $('#ActivitesSelect').prop('selectedIndex') != "0") {//document.getElementById("ActivitesSelect")
+//                                                            
+//                                                            $.ajax({
+//                                                                url: './ActionServlet',
+//                                                                type: 'POST',
+//                                                                data: { 
+//                                                                    action: 'createDemande',
+//                                                                    date: $date.getTime(),
+//                                                                    activite: $activite
+//                                                                }
+//                                                            })
+//                                                            .done(function(data) {
+//                                                                location.reload();
+//                                                                $('')
+//                                                                loadHistorique();
+//                                                            })
+//                                                            .fail(function() {
+//                                                                alert("erreur creation");
+//                                                            })
+//                                                            .always(function() {
+//                                                                
+//                                                            });
+//                                                        }
+//                                                        
+//                                                    }, true);
+//                                                   
 
                                                  </script>
                                               

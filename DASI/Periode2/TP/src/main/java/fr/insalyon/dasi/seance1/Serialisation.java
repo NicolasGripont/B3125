@@ -316,4 +316,89 @@ public class Serialisation {
         String json = gson.toJson(container);
         out.write(json);
     }
+    
+    public static void printResult(PrintWriter out, int result, String message) {
+        JsonObject jsonResult = new JsonObject();
+        jsonResult.addProperty("result", result);
+        jsonResult.addProperty("message", message);
+        
+        // Serialisation & écriture sur le flux de sortie
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(jsonResult);
+        out.write(json);
+    }
+
+    static void printEventEtLieux(PrintWriter out, Evenement e, List<Lieu> lieux) {
+        JsonObject jsonEvenement = new JsonObject();
+            
+        jsonEvenement.addProperty("id", e.getId());
+        if(e.getDateEvenement().before(new Date())) {
+            jsonEvenement.addProperty("depasse",Boolean.TRUE);
+        } else {
+            jsonEvenement.addProperty("depasse",Boolean.FALSE);
+        }
+        if(e.getStatut() == 1) {
+            jsonEvenement.addProperty("statut","Planifie");
+        } else if (e.getStatut() == 0){
+            jsonEvenement.addProperty("statut","A planifier");
+        } else {
+            jsonEvenement.addProperty("statut","Non complet");
+        }
+        jsonEvenement.addProperty("activite", e.getActivite().getDenomination());
+        jsonEvenement.addProperty("nbParticipants", e.getNombreParticipants());
+        jsonEvenement.addProperty("nbParticipantsDemandes", e.getActivite().getNbParticipants());
+        jsonEvenement.addProperty("nbParticipants", e.getNombreParticipants());
+        jsonEvenement.addProperty("date",dateToString(e.getDateEvenement())); 
+        jsonEvenement.addProperty("parEquipe", e.getActivite().isParEquipe());
+        if(e.getLieu() == null) {
+            jsonEvenement.addProperty("lieu","null");
+        } else {
+            jsonEvenement.addProperty("lieu",e.getLieu().getDenomination());
+        }
+        if(e.getActivite().isParEquipe()) {
+            JsonArray jsonEquipeA = new JsonArray();
+            for(Adherent a :e.getEquipeA()){
+                JsonObject adherent = new JsonObject();
+                adherent.add("adherent", getAdherentInJson(a));
+                jsonEquipeA.add(adherent);
+            }
+            jsonEvenement.add("equipeA", jsonEquipeA);
+
+            JsonArray jsonEquipeB = new JsonArray();
+            for(Adherent a :e.getEquipeB()){
+                JsonObject adherent = new JsonObject();
+                adherent.add("adherent", getAdherentInJson(a));
+                jsonEquipeA.add(adherent);
+            }
+            jsonEvenement.add("equipeB", jsonEquipeB);
+        } else {
+            JsonArray jsonParticipants = new JsonArray();
+            for(Adherent a :e.getParticipants()){
+                JsonObject adherent = new JsonObject();
+                adherent.add("adherent", getAdherentInJson(a));
+                jsonParticipants.add(adherent);
+            }
+            jsonEvenement.add("participants", jsonParticipants);
+        }
+            
+        JsonArray jsonList = new JsonArray();
+        
+        for (Lieu l : lieux) {
+            JsonObject jsonActivite = new JsonObject();
+            
+            jsonActivite.addProperty("nomLieu", l.getDenomination());
+            
+            jsonList.add(jsonActivite);
+        }
+        
+        // Objet Json "conteneur"
+        JsonObject container = new JsonObject();
+        container.add("nomsLieux", jsonList);
+        
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(jsonEvenement);
+        json += gson.toJson(jsonList);
+        out.write(json);
+    }
 }

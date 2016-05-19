@@ -66,13 +66,29 @@ and open the template in the editor.
                 
                 
                 $(document).ready(function() {
-                    _init();
-                    loadNomsLieux();
-                    document.getElementById("selectLieu").addEventListener("change", addActivityItem, false);
+//                    _init();
+//                    loadNomsLieux();
+//                    document.getElementById("selectLieu").addEventListener("change", addActivityItem, false);
+                    $.ajax({
+                        url: './ActionServlet',
+                        type: 'POST',
+                        data: { 
+                            action: '',
+                            id: $.urlParam('event')
+                        },
+                        dataType: 'json'
+                    })
+                    .done(function(data) {
+                        
+                    })
+                    .fail(function() {
+                        
+                    })
+                    .always(function() {
+                        //
+                    });
                 });
-                
-                
-                      
+       
       
 
                 function addActivityItem(){

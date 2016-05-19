@@ -16,22 +16,41 @@ $(window).scroll(function(){
 });
 
 
-jQuery(function($){
-	$(".datepicker").datepicker({
-	    showOn: 'button',
-	    buttonText: 'Show Date',
-	    buttonImageOnly: true,
-	    buttonImage: 'images/calendar.png',
-	    dateFormat: 'dd/mm/yy',
-	    constrainInput: true,
-	    minDate : 0
-	});
 
-	$(".ui-datepicker-trigger").mouseover(function() {
-	    $(this).css('cursor', 'pointer');
-	});
-	$(".ui-datepicker-trigger").css("margin-bottom","-6px");
-	$(".ui-datepicker-trigger").css("margin-left","2px");
+
+jQuery(function($){
+    $(".datepicker").datepicker({
+        showOn: 'button',
+        buttonText: 'Show Date',
+        buttonImageOnly: true,
+        buttonImage: 'images/calendar.png',
+        dateFormat: 'dd/mm/yy',
+        constrainInput: true
+    });
+
+    $(".ui-datepicker-trigger").mouseover(function() {
+        $(this).css('cursor', 'pointer');
+    });
+    $(".ui-datepicker-trigger").css("margin-bottom","-6px");
+    $(".ui-datepicker-trigger").css("margin-left","2px");
+});
+
+jQuery(function($){
+    $(".datepickerMinDate").datepicker({
+        showOn: 'button',
+        buttonText: 'Show Date',
+        buttonImageOnly: true,
+        buttonImage: 'images/calendar.png',
+        dateFormat: 'dd/mm/yy',
+        constrainInput: true,
+        minDate : 0
+    });
+
+    $(".ui-datepicker-trigger").mouseover(function() {
+        $(this).css('cursor', 'pointer');
+    });
+    $(".ui-datepicker-trigger").css("margin-bottom","-6px");
+    $(".ui-datepicker-trigger").css("margin-left","2px");
 });
 
 
@@ -62,4 +81,10 @@ function formattedDate(date) {
     if (day.length < 2) day = '0' + day;
 
     return [day, month, year].join('/');
+}
+
+
+$.urlParam = function(name){
+	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+	return results[1] || 0;
 }

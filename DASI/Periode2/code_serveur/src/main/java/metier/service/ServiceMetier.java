@@ -65,7 +65,7 @@ public class ServiceMetier {
      * @param mail
 
      */
-    public static void creerAdherent(String nom, String prenom, String adresse, String mail)
+    public static Adherent creerAdherent(String nom, String prenom, String adresse, String mail)
     {
         AdherentDao adherentManager = new AdherentDao();
         boolean mailExist=true;
@@ -85,10 +85,10 @@ public class ServiceMetier {
             ServiceTechnique.mailInscriptionEchec(mail,prenom);
         }
         else {
-            nouvelAdherent = new Adherent(nom,  prenom,  adresse,  mail);
+           nouvelAdherent = new Adherent(nom,  prenom,  adresse,  mail);
            LatLng latLng = getLatLng(adresse);
            if(latLng!=null)
-           nouvelAdherent.setCoordonnees(latLng);
+            nouvelAdherent.setCoordonnees(latLng);
 
            try {
               JpaUtil.ouvrirTransaction();
@@ -100,9 +100,11 @@ public class ServiceMetier {
               ex.printStackTrace();
               ServiceTechnique.mailInscriptionEchec(mail,prenom);
               annulerTransaction();
+              nouvelAdherent = null;
           }
         }
         JpaUtil.fermerEntityManager();
+        return nouvelAdherent;
     }
 
     /**
