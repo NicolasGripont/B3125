@@ -18,6 +18,7 @@ import metier.modele.Activite;
 import metier.modele.Adherent;
 import metier.modele.Demande;
 import metier.modele.Evenement;
+import metier.modele.Lieu;
 
 /**
  *
@@ -96,6 +97,38 @@ public class Serialisation {
         out.write(json);
     }
     
+    
+    public static void printListeLieux(
+        PrintWriter out, List<Lieu> lieux) {
+        
+        JsonArray jsonList = new JsonArray();
+        
+        for (Lieu l : lieux) {
+            JsonObject jsonLieuContainer = new JsonObject();
+            JsonObject jsonLieu = new JsonObject();
+            
+            jsonLieu.addProperty("id", l.getId());
+            jsonLieu.addProperty("denomination", l.getDenomination());
+            jsonLieu.addProperty("description", l.getDescription());
+            jsonLieu.addProperty("latitude", l.getLatitude());
+            jsonLieu.addProperty("longitude", l.getLongitude());
+            jsonLieu.addProperty("adresse", l.getAdresse());
+
+            jsonLieuContainer.add("lieu", jsonLieu);
+            jsonList.add(jsonLieuContainer);
+        }
+        
+        // Objet Json "conteneur"
+        JsonObject container = new JsonObject();
+        container.add("lieux", jsonList);
+                
+        // Serialisation & écriture sur le flux de sortie
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(container);
+        out.write(json);
+    }
+            
+            
     public static void printListeStatuts(
         PrintWriter out, List<String> noms) {
         
@@ -138,10 +171,20 @@ public class Serialisation {
             }
             jsonDemande.addProperty("dateEvenement",dateToString(d.getEvenement().getDateEvenement()));
             
+            // -1 non complet (lieu donné mais pas assez de gens), 0 à planifier (lieu non défini), 
+            // 1 planifié(equipe complete et lieu donné)
+            
+            // planifié non dépassé : vert, demande en cours : jaune, demande a aboutie et dépassée : orange,
+            // demande non aboutie depassé : rouge
             if(d.getEvenement().getDateEvenement().before(new Date())) {
                 jsonDemande.addProperty("depasse",Boolean.TRUE);
             } else {
                 jsonDemande.addProperty("depasse",Boolean.FALSE);
+            }
+            if(d.getEvenement().getStatut() == 1) {
+                jsonDemande.addProperty("statut","complet");
+            } else {
+                jsonDemande.addProperty("statut","non complet");
             }
             
             jsonDemande.addProperty("isParEquipe", d.getActivite().isParEquipe());
@@ -211,12 +254,24 @@ public class Serialisation {
             JsonObject jsonEvenement = new JsonObject();
             
             jsonEvenement.addProperty("id", e.getId());
-            jsonEvenement.addProperty("statut", e.getStatut());
+            if(e.getDateEvenement().before(new Date())) {
+                jsonEvenement.addProperty("depasse",Boolean.TRUE);
+            } else {
+                jsonEvenement.addProperty("depasse",Boolean.FALSE);
+            }
+            if(e.getStatut() == 1) {
+                jsonEvenement.addProperty("statut","Planifie");
+            } else if (e.getStatut() == 0){
+                jsonEvenement.addProperty("statut","A planifier");
+            } else {
+                jsonEvenement.addProperty("statut","Non complet");
+            }
             jsonEvenement.addProperty("activite", e.getActivite().getDenomination());
             jsonEvenement.addProperty("nbParticipants", e.getNombreParticipants());
             jsonEvenement.addProperty("nbParticipantsDemandes", e.getActivite().getNbParticipants());
             jsonEvenement.addProperty("nbParticipants", e.getNombreParticipants());
             jsonEvenement.addProperty("date",dateToString(e.getDateEvenement())); 
+            jsonEvenement.addProperty("parEquipe", e.getActivite().isParEquipe());
             if(e.getLieu() == null) {
                 jsonEvenement.addProperty("lieu","null");
             } else {

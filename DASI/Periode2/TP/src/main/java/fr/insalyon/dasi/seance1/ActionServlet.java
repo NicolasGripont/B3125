@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import metier.modele.Activite;
 import metier.modele.Demande;
 import metier.modele.Evenement;
+import metier.modele.Lieu;
 import metier.service.ServiceMetier;
 
 /**
@@ -80,7 +81,9 @@ public class ActionServlet extends HttpServlet {
         } else if (request.getParameter("action").compareTo("getNomsLieux")==0){
             printAllNomLieuxInJson(request, response);
         } else if (request.getParameter("action").compareTo("getStatuts")==0){
-
+            printAllStatusInJson(request, response);
+        } else if (request.getParameter("action").compareTo("getLieuxEvent")==0){
+            printNomsLieuxEventInJson(request,response);
         } else {
             
         }
@@ -102,18 +105,20 @@ public class ActionServlet extends HttpServlet {
         //
         if(request.getParameter("action").compareTo("getActivites")==0) {
             printAllActivitesInJson(request, response);
-        } else if (request.getParameter("action").compareTo("getDemandes")==0){
+        } else if (request.getParameter("action").compareTo("getDemandes")==0) {
             printDemandesInJson(request, response);
-        } else if (request.getParameter("action").compareTo("getNomsActivites")==0){
+        } else if (request.getParameter("action").compareTo("getNomsActivites")==0) {
             printAllNomActivitesInJson(request, response);
-        } else if (request.getParameter("action").compareTo("createDemande")==0){
+        } else if (request.getParameter("action").compareTo("createDemande")==0) {
             createDemande(request, response);
-        } else if (request.getParameter("action").compareTo("getEvenements")==0){
+        } else if (request.getParameter("action").compareTo("getEvenements")==0) {
             printEventsInJson(request, response);
-        } else if (request.getParameter("action").compareTo("getNomsLieux")==0){
+        } else if (request.getParameter("action").compareTo("getNomsLieux")==0) {
             printAllNomLieuxInJson(request, response);
-        } else if (request.getParameter("action").compareTo("getStatuts")==0){
+        } else if (request.getParameter("action").compareTo("getStatuts")==0) {
             printAllStatusInJson(request, response);
+        }  else if (request.getParameter("action").compareTo("getLieuxEvent")==0) {
+            printNomsLieuxEventInJson(request,response);
         } else {
             
         }
@@ -195,15 +200,29 @@ public class ActionServlet extends HttpServlet {
         Date d = null;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            d = sdf.parse("01/01/1970");
+            d = sdf.parse(request.getParameter("date"));
         } catch(ParseException e){
             
         }
-        List<Evenement> evenements = ServiceMetier.AffichageEvenementsFiltres("Statut","Activité","Lieu",d);
+        List<Evenement> evenements = ServiceMetier.AffichageEvenementsFiltres(request.getParameter("statut"),request.getParameter("activite"),request.getParameter("lieu"),d);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             Serialisation.printListeEvenements(out, evenements);
         }
     }
+    
+    
+    private void printNomsLieuxEventInJson(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException{
+        Evenement event = ServiceMetier.getEvenement(Long.parseLong(request.getParameter("id")));
+        List<Lieu> lieux = ServiceMetier.obtenirLieux(event);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            Serialisation.printListeLieux(out, lieux);
+        }
+    }
 }
+
+

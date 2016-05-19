@@ -17,7 +17,7 @@ $(window).scroll(function(){
 
 
 jQuery(function($){
-		$(".datepicker").datepicker({
+	$(".datepicker").datepicker({
 	    showOn: 'button',
 	    buttonText: 'Show Date',
 	    buttonImageOnly: true,
@@ -50,4 +50,16 @@ function getCookie(name){
       }
     }
     return null;
+}
+
+function formattedDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [day, month, year].join('/');
 }

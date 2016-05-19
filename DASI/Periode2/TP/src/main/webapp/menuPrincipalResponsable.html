@@ -30,28 +30,44 @@ and open the template in the editor.
 
             
             $(document).ready(function() {
-                loadEvenements();
                 loadNomsActivites();
                 loadNomsLieux();
                 loadStatuts();
+                loadEvenements('Statut','Activité','Lieu','01/01/1970');
             });
             
-            function loadEvenements() {
+            function filtrer() {
+                //StatutsSelect ActivitesSelect LieuxSelect
+                var statut = $('#StatutsSelect').val();
+                var activite = $('#ActivitesSelect').val();
+                var lieu = $('#LieuxSelect').val();
+                var date = new Date($("#datepicker").datepicker("getDate"));
+
+                loadEvenements(statut,activite,lieu,formattedDate(date));
+            }
+            
+
+            
+            function loadEvenements($statut,$activite,$lieu,$date) {
 
                 $.ajax({
                     url: './ActionServlet',
                     type: 'POST',
                     data: { 
                         action: 'getEvenements',
+                        activite: $activite,
+                        statut: $statut,
+                        lieu: $lieu,
+                        date: $date
                     },
                     dataType: 'json'
                 })
                 .done(function(data) {
                     var evenements = data.evenements;
-                    var contenuHtml = $('#listeEvenements').html();
+                    var contenuHtml = "";
                     var i;
                     
-                    for (i = 0; i < evenements.length; i++) {
+                    for (i = evenements.length-1; i >= 0; i--) {
                         var evenement = evenements[i].evenement;
                         var plusButtonID = "moreInfoButton" + evenement.id;
                         var trParticipants = "participant" + evenement.id;
@@ -59,19 +75,34 @@ and open the template in the editor.
                         contenuHtml += "<tr class='evenement'>";                        
                         contenuHtml += "<td colspan='5'>";
                         //en focntion du statut
-                        contenuHtml += "<table class='evenementPlanifie'>";
+                        if(evenement.depasse == true) {
+                            if(evenement.statut=="Non complet" || evenement.statut=="A planifier") {
+                                contenuHtml += "<table class='evenementNonAboutie'>";
+                            } else {
+                                contenuHtml += "<table class='evenementAboutie'>";
+                            }
+                        } else {
+                            if(evenement.statut=="Non complet" || evenement.statut=="A planifier") {
+                                contenuHtml += "<table class='evenementEnCours'>";
+                            } else {
+                                contenuHtml += "<table class='evenementPlanifie'>";
+                            }
+                        }
+                        
                         contenuHtml += "<tr>";
                         contenuHtml += "<td>";
                         contenuHtml += "Evénement n° " + evenement.id + " :";
                         contenuHtml += "</td>";
                         contenuHtml += "<td>";
                         //en focntion du statut
-                        contenuHtml += "Statut : A planifier";
+                        contenuHtml += "Statut : "+evenement.statut;
                         contenuHtml += "</td>";
                         contenuHtml += "<td></td>";
                         contenuHtml += "<td rowspan='2' class='evtImage'>";
-                        //en focntion du lieu/statut
-                        contenuHtml += "<img src='images/location.png'>";
+                        //en focntion du lieu/statut/date
+                        if(evenement.lieu == "null" && evenement.depasse == false && (evenement.statut == "A planifier" || evenement.statut == "Non complet")) {
+                            contenuHtml += "<img class='button' src='images/location.png'>";//onclik
+                        }
                         contenuHtml += "</td>";
                         contenuHtml += "<td rowspan='2' class='evtImage'>";
                         //en focntion du statut add onclik
@@ -95,15 +126,60 @@ and open the template in the editor.
                         contenuHtml += "</td>";
                         contenuHtml += "</tr>";
                         contenuHtml += "<tr class='participant' style='display:none;' id='"+trParticipants+"'>";
-                        contenuHtml += "<td colspan='5'>";
-                        contenuHtml += "participant";
-                        contenuHtml += "</td>";
+                        
+                        if(evenement.parEquipe == false){
+                            contenuHtml += "<td colspan='5' style='text-align:center;'>";
+                            var participants = evenement.participants;
+                            
+                            contenuHtml += "<ul>";
+                            var j;
+                            for(j=0; j<participants.length; j++) {
+                                var adherent = participants[j].adherent;
+                                contenuHtml += "<li style='list-style-type : none;'>"+adherent.nom + " " +adherent.prenom +"</li>";
+                            }
+                            contenuHtml += "</ul>";
+                            contenuHtml += "</td>";
+                        } else {
+                            contenuHtml += "<td colspan='5'>";
+                            contenuHtml += "<table style='width:100%;'>";
+                            contenuHtml += "<tr>";
+                            contenuHtml += "<td style='text-align:center; width:40%;'>";
+                            var participants = evenement.equipeA;
+                            
+                            contenuHtml += "<ul>";
+                            for(var j=0; j<participants.length; j++) {
+                                var adherent = participants[j].adherent;
+                                contenuHtml += "<li style='list-style-type : none;'>"+adherent.nom + " " +adherent.prenom +"</li>";
+                            }
+                            contenuHtml += "</ul>";
+                            contenuHtml += "</td>";
+                            
+                            contenuHtml += "<td style='text-align:center; font-size: 500%; width:20%;'>";
+                            contenuHtml += "VS";
+                            contenuHtml += "</td>";
+                            
+                            contenuHtml += "<td style='text-align:center; width:40%;'>";
+                            var participants = evenement.equipeB;
+                            
+                            contenuHtml += "<ul>";
+                            for(var j=0; j<participants.length; j++) {
+                                var adherent = participants[j].adherent;
+                                contenuHtml += "<li style='list-style-type : none;'>"+adherent.nom + " " +adherent.prenom +"</li>";
+                            }
+                            contenuHtml += "</ul>";
+                            contenuHtml += "</td>";
+                            contenuHtml += "</tr>";
+                            contenuHtml += "</table>";
+                            contenuHtml += "</td>";
+                        }
+                        
                         contenuHtml += "<tr>";
                         contenuHtml += "</table>";
                         contenuHtml += "</td>";
                         contenuHtml += "</tr>";
                     }
                     $('#listeEvenements').html(contenuHtml);
+                    
                     
                 })
                 .fail(function() {
@@ -127,7 +203,7 @@ and open the template in the editor.
                 })
                 .done(function(data) {
                     var nomsActivites = data.nomsActivites;
-                    var contenuHtml = '<option selected disabled>Activités</option>';
+                    var contenuHtml = '<option selected>Activité</option>';
                     var i;
 
                     for (i = 0; i < nomsActivites.length; i++) {
@@ -159,7 +235,7 @@ and open the template in the editor.
                 })
                 .done(function(data) {
                     var nomsLieux = data.nomsLieux;
-                    var contenuHtml = '<option selected disabled>Lieu</option>';
+                    var contenuHtml = '<option selected>Lieu</option>';
                     var i;
 
                     for (i = 0; i < nomsLieux.length; i++) {
@@ -191,7 +267,7 @@ and open the template in the editor.
                 })
                 .done(function(data) {
                     var statuts = data.statuts;
-                    var contenuHtml = '<option selected disabled>Statut</option>';
+                    var contenuHtml = '<option selected>Statut</option>';
                     var i;
 
                     for (i = 0; i < statuts.length; i++) {
@@ -230,17 +306,7 @@ and open the template in the editor.
                                     <h1>Collect'IF</h1>
                                 </a>
                             </header>
-                            <form method="post" action="Connexion">
-                                    <input type="email" placeholder="collect@if.fr" name="login" id='login'/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <input type="submit" value="Se Connecter" name="connexion" id="connexion"/>
-                                    <br/>
-                                    <br/>                                  
-                                    <br/>
-                                </form>
-                                
+                            
 
                             <div id="btn_top" class="btn_top" style="">
                                 <a href="#">
@@ -261,35 +327,43 @@ and open the template in the editor.
     <!-- menu adherent -->
                              <tr>
                                 <td>
-                                    <table class="mainMenuResponsable" id="listeEvenements">                                                        
-                                        <tr class="evenement">
-                                            <th>
-                                                <select class="select_style" name="Statut" id="StatutsSelect">
-                                                    
-                                                </select> 
-                                            </th>
-                                            <th>
-                                                <select class="select_style" name="ActivitesSelect" id="ActivitesSelect">
-                                                  
-                                                </select>
-                                            </th>
-                                            <th>
-                                                <select class="select_style" name="Lieu" id="LieuxSelect">
-                                                    
-                                                </select>
-                                            </th>
-                                            <th>
-                                                <input type="text" class="datepicker"/> 
-                                            </th>
-                                            <th>
-                                                <input type="submit" value="Filtrer">
-                                            </th>
-                                        </tr>
+                                    <br/>
+                                    <br/>
+                                    <table class="mainMenuResponsable">    
+                                        <thead>
+                                            <tr class="evenement">
+                                                <th>
+                                                    <select class="select_style" name="Statut" id="StatutsSelect">
+
+                                                    </select> 
+                                                </th>
+                                                <th>
+                                                    <select class="select_style" name="ActivitesSelect" id="ActivitesSelect">
+
+                                                    </select>
+                                                </th>
+                                                <th>
+                                                    <select class="select_style" name="Lieu" id="LieuxSelect">
+
+                                                    </select>
+                                                </th>
+                                                <th>
+                                                    <input type="text" class="datepicker" id="datepicker"/> 
+                                                </th>
+                                                <th>
+                                                    <input type="submit" value="Filtrer" onclick="filtrer();">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="listeEvenements">
+                                            
+                                        </tbody>
+                                       
                                     </table>
                                    
                                 </td>
                             </tr>
-
+                            
                         </table>
                         <br/>   
                         <br/>

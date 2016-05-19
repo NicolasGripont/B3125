@@ -58,13 +58,13 @@ and open the template in the editor.
                         contenuHtml += "<tr class='demande'>";                        
                         contenuHtml += "<td>";
                         if(demande.depasse == true) {
-                            if(demande.lieu == "null") {
+                            if(demande.statut == "non complet") {
                                 contenuHtml += "<table class='demandeNonAboutie'>";
                             } else {
                                 contenuHtml += "<table class='demandeAboutie'>";
                             }
                         } else {
-                            if(demande.lieu == "null") {
+                            if(demande.statut == "non complet") {
                                 contenuHtml += "<table class='demandeEnCours'>";
                             } else {
                                 contenuHtml += "<table class='demandePlanifie'>";

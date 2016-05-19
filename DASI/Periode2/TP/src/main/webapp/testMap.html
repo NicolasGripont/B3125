@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html class="no-js" lang="fr">
+	<head>
+		<title>Insérer une Google Maps sur mon site</title>		
+		<meta charset="UTF-8" />
+	</head>
+
+	<body onload="_init();">
+		<!-- C'est dans cette div#map que la carte sera contenue -->
+                <div id="map" style="margin:auto;width: 700px; height: 500px;"></div>
+
+		<script>
+		var map;
+                var myLatLng;
+		/**
+		 * Initialisation du script Google Maps
+		*/
+		function _init()
+		{
+			// Insertion du script Google Maps + Création map
+			var script = document.createElement("script");
+			script.type = "text/javascript";
+			script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyBQhROXNGtRsvRaDvDQeax-Q5S33-U2yKQ&sensor=false&callback=_initMap";
+			document.body.appendChild(script);
+		}
+
+		/**
+		 * Initialisation de la map
+		*/
+		function _initMap()
+		{	
+                    // Options de la map
+                    myLatLng = new google.maps.LatLng(45.781863, 4.887115);
+                    var mapOptions = {
+                            zoom: 12,
+                            center: myLatLng,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+
+                    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                    var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+                    var marker = new google.maps.Marker({
+                      position: myLatLng,
+                      map: map,
+                          icon: iconBase + 'play_maps.png'
+                    });
+
+                    marker.tooltipContent = 'this content should go inside the tooltip';
+                    var infoWindow = new google.maps.InfoWindow({
+                        content: 'This is an info window'
+                    });
+                    google.maps.event.addListener(marker, 'mouseover', function () {
+                        infoWindow.open(map, marker);
+                    });
+                    google.maps.event.addListener(marker, 'mouseout', function () {
+                        infoWindow.close(map, marker);
+                    });
+		}
+                
+                
+
+                
+		</script>
+	</body>
+</html>
