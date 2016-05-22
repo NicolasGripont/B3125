@@ -60,8 +60,7 @@ and open the template in the editor.
                 
                 
                 $(document).ready(function() {
-//                    idEvent =  $.urlParam('event');
-                    idEvent = loadJsonInLocalStorage("event");
+                    idEvent =  $.urlParam('event');
                     _init();
                     loadLieux();
 //                    document.getElementById("selectLieu").addEventListener("change", addActivityItem, false);
@@ -72,6 +71,7 @@ and open the template in the editor.
                 
                 function validerLieu() {
                     var select = $('#selectLieu option:selected');
+                    alert(select.text());
                     if(select.index() > 0) {
                         $.ajax({
                             url: './ActionServlet',
@@ -89,7 +89,7 @@ and open the template in the editor.
                             }
                         })
                         .fail(function() {
-                            alert("Erreur lors de la communication avec le serveur.");
+                            
                         })
                         .always(function() {
                             //
