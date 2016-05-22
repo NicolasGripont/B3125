@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.insalyon.dasi.seance1;
+package fr.insalyon.dasi.collectif;
 
 import java.io.IOException;
 import java.io.PrintWriter;
