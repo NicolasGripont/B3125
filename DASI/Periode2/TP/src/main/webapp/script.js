@@ -88,3 +88,15 @@ $.urlParam = function(name){
 	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
 	return results[1] || 0;
 }
+
+
+function saveJsonInLocalStorage(key, fragmentJson){
+    var lieux_json = JSON.stringify(fragmentJson);
+    localStorage.setItem(key,lieux_json);
+}
+
+function loadJsonInLocalStorage(key){
+    var lieux2_json = localStorage.getItem(key);
+    return JSON.parse(lieux2_json);
+}
+

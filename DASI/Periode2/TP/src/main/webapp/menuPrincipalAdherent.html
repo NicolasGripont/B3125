@@ -35,51 +35,55 @@ and open the template in the editor.
                 loadHistorique();
                 loadNomsActivites();
                 //handler deconnexion
-                $(document).on("click", "#boutonDeconnexion", function(e) {
-                    e.preventDefault();
-                    $.ajax({
-                        url: './ActionServlet',
-                        type: 'POST',
-                        data: { 
-                            action: 'deconnexion' 
-                        },
-                        dataType: 'json'
-                    })
-                    .done(function(data) {
-                        self.location.href="./accueilAdherent.html";
-                    })
-                    .fail(function() {
-//                        $('#erreurConnexion').html("Une erreur est survenue.");
-                    })
-                    .always(function() {
-                        //
-                    });
-                });
-                
-                $(document).on("click", "#boutonValider", function(e) {
-                    e.preventDefault();
-                    $.ajax({
-                        url: './ActionServlet',
-                        type: 'POST',
-                        data: { 
-                            action: 'creerDemande',
-                            activite: $('#ActivitesSelect').val(),
-                            date: $('#datepicker').val()
-                        },
-                        dataType: 'json'
-                    })
-                    .done(function(data) {
-                        self.location.reload();
-                    })
-                    .fail(function() {
-//                        $('#erreurConnexion').html("Une erreur est survenue.");
-                    })
-                    .always(function() {
-                        //
-                    });
-                });
+                $(document).on("click", "#boutonDeconnexion", deconnexion);
+                //handler validationDemande
+                $(document).on("click", "#boutonValider", validerNouvelleDemande);
                 
             });
+            
+            function deconnexion(e){
+                e.preventDefault();
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: { 
+                        action: 'deconnexion' 
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    self.location.href="./accueilAdherent.html";
+                })
+                .fail(function() {
+//                        $('#erreurConnexion').html("Une erreur est survenue.");
+                })
+                .always(function() {
+                 //   
+                });
+            }
+            
+            function validerNouvelleDemande(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: { 
+                        action: 'creerDemande',
+                        activite: $('#ActivitesSelect').val(),
+                        date: $('#datepicker').val()
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    self.location.reload();
+                })
+                .fail(function() {
+//                        $('#erreurConnexion').html("Une erreur est survenue.");
+                })
+                .always(function() {
+                    //
+                });
+            }
             
             function loadHistorique() {
 

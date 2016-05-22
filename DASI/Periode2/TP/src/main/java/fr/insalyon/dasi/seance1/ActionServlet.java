@@ -127,8 +127,10 @@ public class ActionServlet extends HttpServlet {
             createDemande(request,response);
         } else if (request.getParameter("action").compareTo("inscription")==0) {
             inscription(request,response);
-        } else if (request.getParameter("action").compareTo("getEvenementEtLieux")==0) {
-            printEvenementEtLieux(request,response);
+        } else if (request.getParameter("action").compareTo("getEvenement")==0) {
+            printEvenement(request,response);
+        } else if (request.getParameter("action").compareTo("validerLieu")==0) {
+            validerLieu(request,response);
         }
     }
     
@@ -293,15 +295,23 @@ public class ActionServlet extends HttpServlet {
         
     }
     
-    private void printEvenementEtLieux(HttpServletRequest request, HttpServletResponse response)
+    private void printEvenement(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         Evenement event = ServiceMetier.getEvenement(Long.parseLong(request.getParameter("id")));
-        List<Lieu> lieux = ServiceMetier.obtenirLieux(event);
         
         try (PrintWriter out = response.getWriter()) {
-            Serialisation.printEventEtLieux(out, event, lieux);
+            Serialisation.printEvent(out, event);
         }
     }
+
+    private void validerLieu(HttpServletRequest request, HttpServletResponse response) 
+        throws ServletException, IOException {
+        ServiceMetier.finaliserEvenement(request.getParameter("lieu"), Long.parseLong(request.getParameter("id")));
+        try (PrintWriter out = response.getWriter()) {
+            Serialisation.printResult(out, 0, "");
+        }
+    }
+
 }
 
 

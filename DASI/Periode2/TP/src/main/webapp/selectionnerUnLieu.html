@@ -18,9 +18,10 @@ and open the template in the editor.
         
         <script>
 		var map;
-                var myLatLng;
-		/**
-		 * Initialisation du script Google Maps
+                var markerLieu = null;
+                var idEvent;
+                /**
+                 * Initialisation du script Google Maps
 		*/
 		function _init()
 		{
@@ -41,20 +42,110 @@ and open the template in the editor.
                     var mapOptions = {
                             zoom: 12,
                             center: myLatLng,
-                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                            mapTypeId: google.maps.MapTypeId.ROADMAP,
+                            styles: [
+                                {
+                                    featureType: "all",
+                                    stylers: [
+                                        { saturation: -100 }
+                                    ]
+                                }
+                            ]
                     };
 
                     map = new google.maps.Map(document.getElementById('map'), mapOptions);
-                    var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+                    
+                    afficherEvenement();
+		}
+                
+                
+                $(document).ready(function() {
+                    idEvent =  $.urlParam('event');
+                    _init();
+                    loadLieux();
+//                    document.getElementById("selectLieu").addEventListener("change", addActivityItem, false);
+//                    afficherEvenement();
+                    $(document).on("change", "#selectLieu", afficherLieuSurMap);
+                    $(document).on("click", "#boutonValider", validerLieu);
+                });
+                
+                function validerLieu() {
+                    var select = $('#selectLieu option:selected');
+                    alert(select.text());
+                    if(select.index() > 0) {
+                        $.ajax({
+                            url: './ActionServlet',
+                            type: 'POST',
+                            data: { 
+                                action: 'validerLieu',
+                                lieu: select.text(),
+                                id: idEvent
+                            },
+                            dataType: 'json'
+                        })
+                        .done(function(data) {
+                            if(data.result == '0'){
+                                self.location.href = 'menuPrincipalResponsable.html';
+                            }
+                        })
+                        .fail(function() {
+                            
+                        })
+                        .always(function() {
+                            //
+                        });
+                    }
+                }
+                
+                
+       
+                function afficherLieuSurMap(e) {
+                    var select = $('#selectLieu option:selected');
+                    if(select.index() > 0) {
+                        var lieux = loadJsonInLocalStorage("lieux");
+                        var lieu = lieux[select.index()-1].lieu;
+                    
+                        var latLong = new google.maps.LatLng(lieu.latitude,lieu.longitude);
+                        
+                        //suppression de l'ancien marker de lieu
+                        if(markerLieu!=null){
+                            markerLieu.setMap(null);
+                        }
+                        
+                        markerLieu = new google.maps.Marker({
+                          position: latLong,
+                          map: map,
+                          icon: 'images/lieu.png'
+                        });
+
+                        markerLieu.tooltipContent = 'this content should go inside the tooltip';
+                        var infos = "<span style='font-weight: bold;'>"+lieu.denomination + " : " +"</span><br/>  "+ lieu.description +"<br/><br/>"+ lieu.adresse;
+                        var infoWindow = new google.maps.InfoWindow({
+                            content: infos
+                        });
+                        google.maps.event.addListener(markerLieu, 'mouseover', function () {
+                            infoWindow.open(map, markerLieu);
+                        });
+                        google.maps.event.addListener(markerLieu, 'mouseout', function () {
+                            infoWindow.close(map, markerLieu);
+                        });   
+                    }
+                }
+       
+                function afficherParticipantSurMap(adherent) {
+                    var latLong = new google.maps.LatLng(adherent.latitude,adherent.longitude);
+//                    var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
                     var marker = new google.maps.Marker({
-                      position: myLatLng,
+                      position: latLong,
                       map: map,
-                          icon: iconBase + 'play_maps.png'
+//                      icon: iconBase + 'man_maps.png'
+                      icon: 'images/adherent.png'
                     });
 
                     marker.tooltipContent = 'this content should go inside the tooltip';
+                    var infos = "<span style='font-weight: bold;'>"+adherent.nom + " " + adherent.prenom +"</span><br/><br/>"+ adherent.adresse;
                     var infoWindow = new google.maps.InfoWindow({
-                        content: 'This is an info window'
+                        content: infos
                     });
                     google.maps.event.addListener(marker, 'mouseover', function () {
                         infoWindow.open(map, marker);
@@ -62,91 +153,76 @@ and open the template in the editor.
                     google.maps.event.addListener(marker, 'mouseout', function () {
                         infoWindow.close(map, marker);
                     });
-		}
+                }
                 
-                
-                $(document).ready(function() {
-//                    _init();
-//                    loadNomsLieux();
-//                    document.getElementById("selectLieu").addEventListener("change", addActivityItem, false);
-                    $.ajax({
-                        url: './ActionServlet',
-                        type: 'POST',
-                        data: { 
-                            action: '',
-                            id: $.urlParam('event')
-                        },
-                        dataType: 'json'
-                    })
-                    .done(function(data) {
-                        
-                    })
-                    .fail(function() {
-                        
-                    })
-                    .always(function() {
-                        //
-                    });
-                });
-       
-      
 
-                function addActivityItem(){
+                function afficherEvenement(){
                       //option is selected
                     $.ajax({
                         url: './ActionServlet',
                         type: 'POST',
                         data: { 
-                            action: 'getNomsActivites'
+                            action: 'getEvenement',
+                            id: idEvent
                         },
                         dataType: 'json'
                     })
                     .done(function(data) {
-                        var nomsActivites = data.nomsActivites;
-                        var contenuHtml = '<option selected>Activité</option>';
+                        var evenement = data.evenement;
                         var i;
-
-                        for (i = 0; i < nomsActivites.length; i++) {
-                            var activite = nomsActivites[i];
-                            contenuHtml += "<option value='";
-                            contenuHtml += activite.nom;
-                            contenuHtml += "'>";
-                            contenuHtml += activite.nom;
-                            contenuHtml += "</option>" ;
+                        var participants;
+                        $('#activite').html(evenement.activite);
+                        $('#date').html(evenement.date);
+                        if(evenement.parEquipe == false) {
+                            participants = evenement.participants;
+                            for(i=0; i<participants.length; i++) {
+                                afficherParticipantSurMap(participants[i].adherent);
+                            }
+                        } else {
+                            participants = evenement.equipeA;
+                            for(i=0; i<participants.length; i++) {
+                                afficherParticipantSurMap(participants[i].adherent);
+                            }
+                            participants = evenement.equipeB;
+                            for(i=0; i<participants.length; i++) {
+                                afficherParticipantSurMap(participants[i].adherent);
+                            }
                         }
-                        $('#ActivitesSelect').html(contenuHtml);
                     })
                     .fail(function() {
-                        $('#ActivitesSelect').html('<option>ERREUR de chargement</option>');
+                        
                     })
                     .always(function() {
                         //
                     });
                 }
 
-                function loadNomsLieux() {
+                function loadLieux() {
                     $.ajax({
                         url: './ActionServlet',
                         type: 'POST',
                         data: { 
-                            action: 'getNomsLieux'
+                            action: 'getLieuxEvent',
+                            id: idEvent
                         },
                         dataType: 'json'
                     })
                     .done(function(data) {
-                        var nomsLieux = data.nomsLieux;
+                        var lieux = data.lieux;
                         var contenuHtml = '<option selected>Lieu</option>';
                         var i;
-
-                        for (i = 0; i < nomsLieux.length; i++) {
-                            var nomLieu = nomsLieux[i];
+                        for (i = 0; i < lieux.length; i++) {
+                            var lieu = lieux[i].lieu;
+                           
                             contenuHtml += "<option value='";
-                            contenuHtml += nomLieu.nomLieu;
+                            contenuHtml += lieu.id;
                             contenuHtml += "'>";
-                            contenuHtml += nomLieu.nomLieu;
+                            contenuHtml += lieu.denomination;
                             contenuHtml += "</option>" ;
                         }
                         $('#selectLieu').html(contenuHtml);
+                        
+                        saveJsonInLocalStorage("lieux",lieux);
                     })
                     .fail(function() {
                         $('#selectLieu').html('<option>ERREUR de chargement</option>');
@@ -155,6 +231,8 @@ and open the template in the editor.
                         //
                     });
                 }
+
+
 
 
 
@@ -209,15 +287,15 @@ and open the template in the editor.
                                                     <h1>
                                                         Activité :
                                                     </h1>
-                                                    <p>
-                                                        Football
+                                                    <p id='activite'>
+                                                        
                                                     </p>
                                                     <br/>
                                                     <h1>
                                                         Date :
                                                     </h1>
-                                                    <p>
-                                                        04/06/2016
+                                                    <p id='date'>
+                                                        
                                                     </p>
                                                     <br/>
                                                     <h1>
@@ -229,7 +307,7 @@ and open the template in the editor.
                                                     <br/>
                                                     <br/>
                                                     <br/>
-                                                    <input type="submit" value="Valider"/>
+                                                    <input type="submit" value="Valider" id="boutonValider"/>
                                                     <br/>
                                                     <br/>
                                                     <br/>
@@ -240,11 +318,7 @@ and open the template in the editor.
                                 </td>
                             </tr> 
    
-
-
-    <!-- menu adherent -->
-                             
-                            
+ 
                         </table>
                         <br/>   
                         <br/>
