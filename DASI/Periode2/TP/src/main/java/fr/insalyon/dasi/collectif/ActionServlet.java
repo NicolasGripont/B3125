@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.insalyon.dasi.seance1;
+package fr.insalyon.dasi.collectif;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -255,6 +255,8 @@ public class ActionServlet extends HttpServlet {
 ////           request.getRequestDispatcher("accueilAdherent.html").forward(request, response);
 ////           response.sendRedirect("accueilAdherent.html");
 //        }
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             Serialisation.printResult(out, result, "");
         }
@@ -266,6 +268,8 @@ public class ActionServlet extends HttpServlet {
        
         HttpSession session = request.getSession();
         session.invalidate();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             Serialisation.printResult(out, 0, "");
         }
@@ -289,6 +293,8 @@ public class ActionServlet extends HttpServlet {
         if(adherent != null) {
             result = 0;
         }
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             Serialisation.printResult(out, result, "");
         }
@@ -298,7 +304,8 @@ public class ActionServlet extends HttpServlet {
     private void printEvenement(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         Evenement event = ServiceMetier.getEvenement(Long.parseLong(request.getParameter("id")));
-        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             Serialisation.printEvent(out, event);
         }
@@ -307,6 +314,8 @@ public class ActionServlet extends HttpServlet {
     private void validerLieu(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException {
         ServiceMetier.finaliserEvenement(request.getParameter("lieu"), Long.parseLong(request.getParameter("id")));
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             Serialisation.printResult(out, 0, "");
         }
