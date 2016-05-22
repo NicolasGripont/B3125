@@ -192,7 +192,8 @@ and open the template in the editor.
             }
            
             function afficherDetails(eventId) {
-                self.location.href="selectionnerUnLieu.html?event="+eventId;
+                saveJsonInLocalStorage("event",eventId);
+                self.location.href="selectionnerUnLieu.html"//?event="+eventId;
             }
            
            
