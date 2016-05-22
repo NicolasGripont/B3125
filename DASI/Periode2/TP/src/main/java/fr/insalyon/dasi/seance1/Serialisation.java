@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.insalyon.dasi.collectif;
+package fr.insalyon.dasi.seance1;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
