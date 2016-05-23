@@ -14,95 +14,69 @@ and open the template in the editor.
         <script type="text/javascript" src="js/jquery-ui.js">//uniquement datepicker</script> 
         <script type="text/javascript" src="script.js"></script> 
         <script>
-            
-            function loadNomsActivites() {
+            $(document).ready(function (){
+                $(document).on("submit", "#connexionForm", connexion);
+                
+                $(document).on("submit", "#inscriptionForm", inscription);
+                $(".loader").hide();
+            });
+           
+           function connexion(e) {
+                $(".loader").show();
+                e.preventDefault();
                 $.ajax({
-                    url: './ActionServlet',
+                    url: './AdherentServlet',
                     type: 'POST',
                     data: { 
-                        action: 'getNomsActivites'
+                        action: 'connexion',
+                        mail: $('#mailConnexion').val()
                     },
                     dataType: 'json'
                 })
                 .done(function(data) {
-                    var nomsActivites = data.nomsActivites;
-                    var contenuHtml = '<option selected disabled>Activités</option>';
-                    var i;
-
-                    for (i = 0; i < nomsActivites.length; i++) {
-                        var activite = nomsActivites[i];
-                        contenuHtml += "<option value='";
-                        contenuHtml += activite.nom;
-                        contenuHtml += "'>";
-                        contenuHtml += activite.nom;
-                        contenuHtml += "</option>" ;
+                    if(data.result == '0') {//succes
+                        self.location.href="./menuPrincipalAdherent.html";
+                    } else {
+                        $('#erreurConnexion').html("Erreur, utilisateur inconnu.");
                     }
-                    $('#ActivitesSelect').html(contenuHtml);
                 })
                 .fail(function() {
-                    $('#ActivitesSelect').html('<option>ERREUR de chargement</option>');
+                    $('#erreurConnexion').html("Une erreur est survenue.");
                 })
                 .always(function() {
-                    //
+                    $(".loader").hide();
                 });
             }
             
-            $(document).ready(function (){
-                $(document).on("submit", "#connexionForm", function(e) {
-                    e.preventDefault();
-                    $.ajax({
-                        url: './ActionServlet',
-                        type: 'POST',
-                        data: { 
-                            action: 'connexion',
-                            mail: $('#mailConnexion').val()
-                        },
-                        dataType: 'json'
-                    })
-                    .done(function(data) {
-                        if(data.result == '0') {//succes
-                            self.location.href="./menuPrincipalAdherent.html";
-                        } else {
-                            $('#erreurConnexion').html("Erreur, utilisateur inconnu.");
-                        }
-                    })
-                    .fail(function() {
-                        $('#erreurConnexion').html("Une erreur est survenue.");
-                    })
-                    .always(function() {
-                        //
-                    });
+            function inscription(e) {
+                $(".loader").show();
+                e.preventDefault();
+                $.ajax({
+                    url: './AdherentServlet',
+                    type: 'POST',
+                    data: { 
+                        action: 'inscription',
+                        nom: $('#nom').val(),
+                        prenom: $('#prenom').val(),
+                        adresse: $('#adresse').val(),
+                        mail: $('#mailInscription').val()
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    if(data.result == '0') {//succes
+                        $('#messageInscription').html("Inscription réussie.");
+                    } else {
+                        $('#messageInscription').html("Erreur, inscription.");
+                    }
+                })
+                .fail(function() {
+                    $('#messageInscription').html("Une erreur est survenue.");
+                })
+                .always(function() {
+                    $(".loader").hide();
                 });
-                
-                $(document).on("submit", "#inscriptionForm", function(e) {
-                    e.preventDefault();
-                    $.ajax({
-                        url: './ActionServlet',
-                        type: 'POST',
-                        data: { 
-                            action: 'inscription',
-                            nom: $('#nom').val(),
-                            prenom: $('#prenom').val(),
-                            adresse: $('#adresse').val(),
-                            mail: $('#mailInscription').val()
-                        },
-                        dataType: 'json'
-                    })
-                    .done(function(data) {
-                        if(data.result == '0') {//succes
-                            $('#messageInscription').html("Inscription réussie.");
-                        } else {
-                            $('#messageInscription').html("Erreur, inscription.");
-                        }
-                    })
-                    .fail(function() {
-                        $('#messageInscription').html("Une erreur est survenue.");
-                    })
-                    .always(function() {
-                        //
-                    });
-                });
-            });
+            }
            
         </script>
     </head>
@@ -209,6 +183,7 @@ and open the template in the editor.
                 </tr>
             </tbody>
         </table>
+        <div class="loader"></div>
     </body>
 </html>
 

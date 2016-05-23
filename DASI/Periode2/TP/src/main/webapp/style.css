@@ -21,6 +21,7 @@ body {
 	padding: 0px;
 	font:12px Arial;
 	min-width: 1000px;
+        z-index: 1;
 }
 
 table{
@@ -518,4 +519,17 @@ div.select_lieu h1{
 img.button:hover {
         opacity: 0.6;
         cursor: pointer;
+}
+
+
+.loader {
+
+    position : fixed;
+    z-index: 9999;
+    background : url('images/loader.svg') 50% 50% no-repeat;
+    top : 0px;
+    left : 0px;
+    height : 100%;
+    width : 100%;
+    cursor : wait;
 }

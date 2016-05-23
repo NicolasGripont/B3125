@@ -182,7 +182,7 @@ public class ActionServlet extends HttpServlet {
 //            request.getRequestDispatcher("menuPrincipalAdherent.html").forward(request, response);
 //            response.sendRedirect("menuPrincipalAdherent.html");
             try (PrintWriter out = response.getWriter()) {
-                Serialisation.printResult(out, 0, "");
+                Serialisation.printResult(out, 0);
             }
         }
     }
@@ -256,18 +256,18 @@ public class ActionServlet extends HttpServlet {
 ////           response.sendRedirect("accueilAdherent.html");
 //        }
         try (PrintWriter out = response.getWriter()) {
-            Serialisation.printResult(out, result, "");
+            Serialisation.printResult(out, result);
         }
     }
     
     private void supprimerSessionAdherent(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        Adherent adherent = ServiceMetier.selectAdherentByMail(request.getParameter("mail"));
+//        Adherent adherent = ServiceMetier.selectAdherentByMail(request.getParameter("mail"));
        
         HttpSession session = request.getSession();
         session.invalidate();
         try (PrintWriter out = response.getWriter()) {
-            Serialisation.printResult(out, 0, "");
+            Serialisation.printResult(out, 0);
         }
 //        request.getRequestDispatcher("accueilAdherent.html").forward(request, response);
 //        response.sendRedirect("accueilAdherent.html");
@@ -290,7 +290,7 @@ public class ActionServlet extends HttpServlet {
             result = 0;
         }
         try (PrintWriter out = response.getWriter()) {
-            Serialisation.printResult(out, result, "");
+            Serialisation.printResult(out, result);
         }
         
     }
@@ -300,7 +300,7 @@ public class ActionServlet extends HttpServlet {
         Evenement event = ServiceMetier.getEvenement(Long.parseLong(request.getParameter("id")));
         
         try (PrintWriter out = response.getWriter()) {
-            Serialisation.printEvent(out, event);
+            Serialisation.printEvenement(out, event);
         }
     }
 
@@ -308,7 +308,7 @@ public class ActionServlet extends HttpServlet {
         throws ServletException, IOException {
         ServiceMetier.finaliserEvenement(request.getParameter("lieu"), Long.parseLong(request.getParameter("id")));
         try (PrintWriter out = response.getWriter()) {
-            Serialisation.printResult(out, 0, "");
+            Serialisation.printResult(out, 0);
         }
     }
 

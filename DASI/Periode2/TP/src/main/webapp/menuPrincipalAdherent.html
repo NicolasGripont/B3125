@@ -38,13 +38,14 @@ and open the template in the editor.
                 $(document).on("click", "#boutonDeconnexion", deconnexion);
                 //handler validationDemande
                 $(document).on("click", "#boutonValider", validerNouvelleDemande);
-                
+                $(".loader").hide();
             });
             
             function deconnexion(e){
+                $(".loader").show();
                 e.preventDefault();
                 $.ajax({
-                    url: './ActionServlet',
+                    url: './AdherentServlet',
                     type: 'POST',
                     data: { 
                         action: 'deconnexion' 
@@ -58,14 +59,15 @@ and open the template in the editor.
 //                        $('#erreurConnexion').html("Une erreur est survenue.");
                 })
                 .always(function() {
-                 //   
+                    $(".loader").hide();
                 });
             }
             
             function validerNouvelleDemande(e) {
+                $(".loader").show();
                 e.preventDefault();
                 $.ajax({
-                    url: './ActionServlet',
+                    url: './AdherentServlet',
                     type: 'POST',
                     data: { 
                         action: 'creerDemande',
@@ -81,14 +83,14 @@ and open the template in the editor.
 //                        $('#erreurConnexion').html("Une erreur est survenue.");
                 })
                 .always(function() {
-                    //
+                    $(".loader").hide();
                 });
             }
             
             function loadHistorique() {
 
                 $.ajax({
-                    url: './ActionServlet',
+                    url: './AdherentServlet',
                     type: 'POST',
                     data: { 
                         action: 'getDemandes'
@@ -221,7 +223,7 @@ and open the template in the editor.
             
             function loadNomsActivites() {
                 $.ajax({
-                    url: './ActionServlet',
+                    url: './AdherentServlet',
                     type: 'POST',
                     data: { 
                         action: 'getNomsActivites'
@@ -362,43 +364,7 @@ and open the template in the editor.
 
                                                     </table>
                                                 </form>
-                                                
-                                                <script>
-//                                                    var myForm = document.getElementById('nouvelleDemande');
-//                                                    
-//                                                    myForm.addEventListener('submit', function(e) {
-//                                                        e.preventDefault();//empeche le rechargeme de la page
-////                                                        alert($('#datepicker').datepicker('getDate'));
-//                                                        var $date = new Date($("#datepicker").datepicker("getDate"));
-//                                                        var $activite = $('#ActivitesSelect').val();
-//                                                        if($date.getTime() > 0 && $('#ActivitesSelect').prop('selectedIndex') != "0") {//document.getElementById("ActivitesSelect")
-//                                                            
-//                                                            $.ajax({
-//                                                                url: './ActionServlet',
-//                                                                type: 'POST',
-//                                                                data: { 
-//                                                                    action: 'createDemande',
-//                                                                    date: $date.getTime(),
-//                                                                    activite: $activite
-//                                                                }
-//                                                            })
-//                                                            .done(function(data) {
-//                                                                location.reload();
-//                                                                $('')
-//                                                                loadHistorique();
-//                                                            })
-//                                                            .fail(function() {
-//                                                                alert("erreur creation");
-//                                                            })
-//                                                            .always(function() {
-//                                                                
-//                                                            });
-//                                                        }
-//                                                        
-//                                                    }, true);
-//                                                   
-
-                                                 </script>
+                                          
                                               
                                             </td>
                                             <td>
@@ -440,6 +406,7 @@ and open the template in the editor.
                 </tr>
             </tbody>
         </table>
+        <div class="loader"></div>
     </body>
 </html>
 

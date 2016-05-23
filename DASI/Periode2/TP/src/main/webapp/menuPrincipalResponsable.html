@@ -34,16 +34,19 @@ and open the template in the editor.
                 loadNomsLieux();
                 loadStatuts();
                 loadEvenements('Statut','Activité','Lieu','01/01/1970');
+                $(".loader").hide();
             });
             
             function filtrer() {
                 //StatutsSelect ActivitesSelect LieuxSelect
+                $(".loader").show();
                 var statut = $('#StatutsSelect').val();
                 var activite = $('#ActivitesSelect').val();
                 var lieu = $('#LieuxSelect').val();
                 var date = new Date($("#datepicker").datepicker("getDate"));
 
                 loadEvenements(statut,activite,lieu,formattedDate(date));
+                $(".loader").hide();
             }
             
 
@@ -51,7 +54,7 @@ and open the template in the editor.
             function loadEvenements($statut,$activite,$lieu,$date) {
 
                 $.ajax({
-                    url: './ActionServlet',
+                    url: './ResponsableServlet',
                     type: 'POST',
                     data: { 
                         action: 'getEvenements',
@@ -192,13 +195,14 @@ and open the template in the editor.
             }
            
             function afficherDetails(eventId) {
-                self.location.href="selectionnerUnLieu.html?event="+eventId;
+                saveJsonInLocalStorage("event",eventId);
+                self.location.href="selectionnerUnLieu.html";//?event="+eventId;
             }
            
            
             function loadNomsActivites() {
                 $.ajax({
-                    url: './ActionServlet',
+                    url: './ResponsableServlet',
                     type: 'POST',
                     data: { 
                         action: 'getNomsActivites'
@@ -230,7 +234,7 @@ and open the template in the editor.
             
             function loadNomsLieux() {
                 $.ajax({
-                    url: './ActionServlet',
+                    url: './ResponsableServlet',
                     type: 'POST',
                     data: { 
                         action: 'getNomsLieux'
@@ -262,7 +266,7 @@ and open the template in the editor.
             
             function loadStatuts() {
                 $.ajax({
-                    url: './ActionServlet',
+                    url: './ResponsableServlet',
                     type: 'POST',
                     data: { 
                         action: 'getStatuts'
@@ -352,7 +356,7 @@ and open the template in the editor.
                                                     </select>
                                                 </th>
                                                 <th>
-                                                    <input type="text" class="datepicker" id="datepicker"/> 
+                                                    <input type="text" class="datepicker" id="datepicker" onClick="this.select();"/> 
                                                 </th>
                                                 <th>
                                                     <input type="submit" value="Filtrer" onclick="filtrer();">
@@ -394,6 +398,7 @@ and open the template in the editor.
                 </tr>
             </tbody>
         </table>
+       <div class="loader"></div>
     </body>
 </html>
 
