@@ -57,6 +57,7 @@ and open the template in the editor.
                 })
                 .fail(function() {
 //                        $('#erreurConnexion').html("Une erreur est survenue.");
+                    showError("Erreur déconnexion.");
                 })
                 .always(function() {
                     $(".loader").hide();
@@ -77,10 +78,15 @@ and open the template in the editor.
                     dataType: 'json'
                 })
                 .done(function(data) {
-                    self.location.reload();
+                    if(data.result = '0') {
+                        self.location.reload();
+                    } else {
+                        showError("Erreur de validation nouvelle demande.");
+                    }
                 })
                 .fail(function() {
 //                        $('#erreurConnexion').html("Une erreur est survenue.");
+                    showError("Erreur de validation nouvelle demande.");
                 })
                 .always(function() {
                     $(".loader").hide();
@@ -212,7 +218,8 @@ and open the template in the editor.
                     $('#listeDemandes').html(contenuHtml);
                 })
                 .fail(function() {
-                    $('#listeDemandes').html('<tr><td>ERREUR de chargement</td></tr>');
+//                    $('#listeDemandes').html('<tr><td>ERREUR de chargement</td></tr>');
+                    showError("Erreur de chargement historique.");
                 })
                 .always(function() {
                     //
@@ -246,16 +253,18 @@ and open the template in the editor.
                     $('#ActivitesSelect').html(contenuHtml);
                 })
                 .fail(function() {
-                    $('#ActivitesSelect').html('<option>ERREUR de chargement</option>');
-                    
+//                    $('#ActivitesSelect').html('<option>ERREUR de chargement</option>');
+                    showError("Erreur de chargement activites.");
                 })
                 .always(function() {
                     //
                 });
             }
             
-            function createDemande() {
-                $('#btn_top').css("display",'none')
+            function showError(message) {
+                var contenu = $('#erreur').html();
+                contenu += '<br/>' + message;
+                $('#erreur').html(contenu);
             }
 
         </script>
@@ -276,6 +285,7 @@ and open the template in the editor.
                                     <h1>Collect'IF</h1>
                                 </a>
                             </header>
+                            <p id="erreur" style="color: red;"></p>
                             <form method="post">
                                 <input type="hidden" name="action" value="deconnexion"/>
                                 <br/>

@@ -90,10 +90,12 @@ and open the template in the editor.
                             if(data.result == '0'){
                                 localStorage.removeItem("event");
                                 self.location.href = 'menuPrincipalResponsable.html';
+                            } else {
+                                showError("Erreur de validation du lieu.");
                             }
                         })
                         .fail(function() {
-                            
+                            showError("Erreur de validation du lieu.");
                         })
                         .always(function() {
                             $(".loader").hide();
@@ -134,6 +136,10 @@ and open the template in the editor.
                         google.maps.event.addListener(markerLieu, 'mouseout', function () {
                             infoWindow.close(map, markerLieu);
                         });   
+                    } else {
+                        if(markerLieu!=null){
+                            markerLieu.setMap(null);
+                        }
                     }
                 }
        
@@ -195,7 +201,7 @@ and open the template in the editor.
                         }
                     })
                     .fail(function() {
-                        
+                        showError("Erreur de chargement evenement.");
                     })
                     .always(function() {
                         //
@@ -230,13 +236,19 @@ and open the template in the editor.
                         saveJsonInLocalStorage("lieux",lieux);
                     })
                     .fail(function() {
-                        $('#selectLieu').html('<option>ERREUR de chargement</option>');
+//                        $('#selectLieu').html('<option>ERREUR de chargement</option>');
+                        showError("Erreur de chargement lieux.");
                     })
                     .always(function() {
                         //
                     });
                 }
 
+                function showError(message) {
+                    var contenu = $('#erreur').html();
+                    contenu += '<br/>' + message;
+                    $('#erreur').html(contenu);
+                }
 		</script>
             
 
@@ -257,7 +269,8 @@ and open the template in the editor.
                                     <h1>Collect'IF</h1>
                                 </a>
                             </header>
-                            
+                            <p id="erreur" style="color: red;"></p>
+
                                 
 
                             <div id="btn_top" class="btn_top" style="">

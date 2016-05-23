@@ -186,7 +186,8 @@ and open the template in the editor.
                     
                 })
                 .fail(function() {
-                    $('#listeEvenements').html('<tr><td>ERREUR de chargement</td></tr>');
+//                    $('#listeEvenements').html('<tr><td>ERREUR de chargement</td></tr>');
+                    showError("Erreur de chargement evenements.");
                 })
                 .always(function() {
                     //
@@ -225,7 +226,8 @@ and open the template in the editor.
                     $('#ActivitesSelect').html(contenuHtml);
                 })
                 .fail(function() {
-                    $('#ActivitesSelect').html('<option>ERREUR de chargement</option>');
+//                    $('#ActivitesSelect').html('<option>ERREUR de chargement</option>');
+                    showError("Erreur de chargement Activites.");
                 })
                 .always(function() {
                     //
@@ -257,7 +259,8 @@ and open the template in the editor.
                     $('#LieuxSelect').html(contenuHtml);
                 })
                 .fail(function() {
-                    $('#LieuxSelect').html('<option>ERREUR de chargement</option>');
+//                    $('#LieuxSelect').html('<option>ERREUR de chargement</option>');
+                    showError("Erreur de chargement lieux.");
                 })
                 .always(function() {
                     //
@@ -289,11 +292,18 @@ and open the template in the editor.
                     $('#StatutsSelect').html(contenuHtml);
                 })
                 .fail(function() {
-                    $('#StatutsSelect').html('<option>ERREUR de chargement</option>');
+//                    $('#StatutsSelect').html('<option>ERREUR de chargement</option>');
+                    showError("Erreur de chargement statuts.");
                 })
                 .always(function() {
                     //
                 });
+            }
+            
+            function showError(message) {
+                var contenu = $('#erreur').html();
+                contenu += '<br/>' + message;
+                $('#erreur').html(contenu);
             }
             
         </script>
@@ -314,6 +324,7 @@ and open the template in the editor.
                                     <h1>Collect'IF</h1>
                                 </a>
                             </header>
+                            <p id="erreur" style="color: red;"></p>
                             
 
                             <div id="btn_top" class="btn_top" style="">
