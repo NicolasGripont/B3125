@@ -18,7 +18,10 @@ and open the template in the editor.
                 $(document).on("submit", "#connexionForm", connexion);
                 
                 $(document).on("submit", "#inscriptionForm", inscription);
+                
+                $(document).on("blur", "#mailInscription", validerMail);
                 $(".loader").hide();
+                
             });
            
            function connexion(e) {
@@ -75,6 +78,33 @@ and open the template in the editor.
                 })
                 .always(function() {
                     $(".loader").hide();
+                });
+            }
+            
+            function validerMail(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: './AdherentServlet',
+                    type: 'POST',
+                    data: { 
+                        action: 'validerMail',
+                        mail: $('#mailInscription').val()
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    if(data.result == '0') {//succes
+                        $('#messageInscription').html("Mail valide.");
+                        $('#boutonInscription')[0].disabled = false;
+                    } else {
+                        $('#messageInscription').html("Mail déja utilisé.");
+                        $('#boutonInscription')[0].disabled = true;
+                    }
+                })
+                .fail(function() {
+
+                })
+                .always(function() {
                 });
             }
            

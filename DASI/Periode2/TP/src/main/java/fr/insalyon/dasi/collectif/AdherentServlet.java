@@ -10,6 +10,7 @@ import fr.insalyon.dasi.collectif.action.CreerDemandeAction;
 import fr.insalyon.dasi.collectif.action.GetDemandesAction;
 import fr.insalyon.dasi.collectif.action.GetNomsActivitesAction;
 import fr.insalyon.dasi.collectif.action.InscriptionAction;
+import fr.insalyon.dasi.collectif.action.ValiderMailAction;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -109,6 +110,8 @@ public class AdherentServlet extends HttpServlet {
             creerDemande(request, response);
         } else if (request.getParameter("action").compareTo("inscription")==0) {
             inscription(request, response);
+        } else if (request.getParameter("action").compareTo("validerMail")==0) {
+            validerMail(request, response);
         } 
     }
     
@@ -159,6 +162,8 @@ public class AdherentServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.invalidate();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             Serialisation.printResult(out, 0);
         }
@@ -171,6 +176,8 @@ public class AdherentServlet extends HttpServlet {
         if(action.execute(request)) {
             result = 0;
         }
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             Serialisation.printResult(out, result);
         }
@@ -184,6 +191,8 @@ public class AdherentServlet extends HttpServlet {
             if(action.execute(request)) {
                 result = 0;
             }
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
             try (PrintWriter out = response.getWriter()) {
                 Serialisation.printResult(out, result);
             }
@@ -199,5 +208,19 @@ public class AdherentServlet extends HttpServlet {
             result = Boolean.FALSE;
         }
         return result;
+    }
+
+    private void validerMail(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        int result = 1;
+        ValiderMailAction action = new ValiderMailAction();
+        if(action.execute(request)) {
+            result = 0;
+        }
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            Serialisation.printResult(out, result);
+        }
     }
 }
