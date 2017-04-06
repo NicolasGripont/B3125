@@ -11,7 +11,7 @@
     </session-config>
     
     <welcome-file-list>
-        <welcome-file>listeActivites.html</welcome-file>
+        <welcome-file>accueilAdherent.html</welcome-file>
     </welcome-file-list>
     
     
